@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>WinGo AI Signal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#0a0e27;min-height:100vh;padding:15px;overflow-x:hidden}.matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.03;pointer-events:none}.container{max-width:700px;margin:0 auto;position:relative;z-index:1}.header{text-align:center;margin-bottom:20px;position:relative}.logo{font-size:28px;color:#00ff41;text-shadow:0 0 20px #00ff41;animation:glow 2s ease-in-out infinite;margin-bottom:8px}@keyframes glow{0%,100%{text-shadow:0 0 20px #00ff41}50%{text-shadow:0 0 30px #00ff41,0 0 60px #00ff41}}.title{color:#00ff41;font-size:13px;letter-spacing:2px;text-transform:uppercase}.badge{display:inline-block;background:linear-gradient(135deg,#ff0055,#aa00ff);padding:4px 12px;border-radius:20px;font-size:10px;margin-top:5px;animation:badgePulse 2s infinite}@keyframes badgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}.scan-line{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,#00ff41,transparent);animation:scan 3s linear infinite}@keyframes scan{0%{top:0}100%{top:100%}}.ai-status{background:linear-gradient(135deg,rgba(170,0,255,.2),rgba(255,0,85,.2));border:1px solid #aa00ff;border-radius:8px;padding:10px;margin-bottom:15px;text-align:center}.ai-indicator{display:inline-flex;align-items:center;gap:8px;color:#aa00ff;font-size:12px;font-weight:bold}.ai-dot{width:8px;height:8px;background:#aa00ff;border-radius:50%;animation:aiPulse 1.5s infinite}@keyframes aiPulse{0%,100%{opacity:1;box-shadow:0 0 10px #aa00ff}50%{opacity:.3;box-shadow:0 0 20px #aa00ff}}.prediction-container{background:linear-gradient(135deg,rgba(0,255,65,.1) 0%,rgba(0,100,255,.1) 100%);border:2px solid #00ff41;border-radius:12px;overflow:hidden;box-shadow:0 0 30px rgba(0,255,65,.3);margin-bottom:20px;animation:borderPulse 2s ease-in-out infinite}@keyframes borderPulse{0%,100%{box-shadow:0 0 30px rgba(0,255,65,.3)}50%{box-shadow:0 0 50px rgba(0,255,65,.5)}}.prediction-header{padding:12px;text-align:center;background:linear-gradient(135deg,rgba(0,255,65,.2) 0%,rgba(0,100,255,.2) 100%);border-bottom:1px solid #00ff41}.prediction-header h3{color:#00ff41;font-size:15px;letter-spacing:2px;text-transform:uppercase}.prediction-content{padding:30px 20px;text-align:center}.prediction-result{font-size:56px;font-weight:bold;margin-bottom:15px;text-transform:uppercase;letter-spacing:4px;animation:fadeInScale 1s ease-out}@keyframes fadeInScale{0%{opacity:0;transform:scale(.5)}100%{opacity:1;transform:scale(1)}}.prediction-big{color:#ff0055;text-shadow:0 0 20px #ff0055}.prediction-small{color:#00ff41;text-shadow:0 0 20px #00ff41}.ai-adjustment{font-size:11px;color:#aa00ff;margin-top:10px;padding:8px;background:rgba(170,0,255,.1);border-radius:6px;border:1px solid rgba(170,0,255,.3)}.confidence-bar{width:180px;height:8px;background:rgba(255,255,255,.1);border-radius:4px;margin:15px auto;overflow:hidden}.confidence-fill{height:100%;background:linear-gradient(90deg,#ff0055,#ffaa00,#00ff41);border-radius:4px;animation:fillBar 2s ease-out;position:relative}@keyframes fillBar{0%{width:0%}}.confidence-fill::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer 2s infinite}@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}.confidence-label{color:#00ff41;font-size:12px;margin-top:8px;letter-spacing:1px;text-transform:uppercase}.confidence-high{color:#00ff41;text-shadow:0 0 10px #00ff41}.confidence-low{color:#ff0055;text-shadow:0 0 10px #ff0055}.stats-container{background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,rgba(0,100,255,.05) 100%);border:1px solid rgba(0,255,65,.3);border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 0 20px rgba(0,255,65,.2)}.stats-info{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.stat-item{text-align:center;padding:12px 8px;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.2);border-radius:8px;transition:all .3s ease}.stat-item:hover{transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,255,65,.3)}.stat-label{font-size:9px;color:#00ff41;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;opacity:.7}.stat-value{font-size:24px;font-weight:bold;color:#00ff41;text-shadow:0 0 10px #00ff41}.stat-win{color:#00ff41;text-shadow:0 0 15px #00ff41}.stat-loss{color:#ff0055;text-shadow:0 0 15px #ff0055}.stat-streak{color:#ffaa00;text-shadow:0 0 15px #ffaa00}.table-container{background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,rgba(0,100,255,.05) 100%);border:1px solid rgba(0,255,65,.3);border-radius:12px;overflow:hidden;box-shadow:0 0 20px rgba(0,255,65,.2)}table{width:100%;border-collapse:collapse}thead{background:linear-gradient(135deg,rgba(0,255,65,.2) 0%,rgba(0,100,255,.2) 100%)}th{padding:12px 6px;text-align:center;font-weight:600;color:#00ff41;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #00ff41}tbody tr{background:rgba(0,0,0,.3);transition:all .3s ease;border-bottom:1px solid rgba(0,255,65,.1)}tbody tr:hover{background:rgba(0,255,65,.1);transform:scale(1.01);box-shadow:0 0 15px rgba(0,255,65,.3)}td{padding:10px 6px;text-align:center;color:#00ff41;font-size:11px}.period-cell{font-family:'Courier New',monospace;font-size:10px;opacity:.7}.number-cell{font-size:22px;font-weight:bold}.color-cell{display:flex;justify-content:center;align-items:center;gap:4px}.color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:2px solid rgba(0,255,65,.3);animation:dotPulse 2s infinite}@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}.red{background:#ff0055;box-shadow:0 0 8px #ff0055}.green{background:#00ff41;box-shadow:0 0 8px #00ff41}.violet{background:#aa00ff;box-shadow:0 0 8px #aa00ff}.result-cell{font-weight:bold;font-size:11px;padding:5px 8px;border-radius:4px}.result-win{color:#00ff41;background:rgba(0,255,65,.2);border:1px solid #00ff41;text-shadow:0 0 5px #00ff41}.result-loss{color:#ff0055;background:rgba(255,0,85,.2);border:1px solid #ff0055;text-shadow:0 0 5px #ff0055}.time-display{background:rgba(0,255,65,.1);padding:15px 30px;border-radius:12px;display:inline-block;margin-top:15px;border:1px solid rgba(0,255,65,.3);box-shadow:0 0 20px rgba(0,255,65,.2)}.current-time{font-size:28px;font-weight:bold;color:#00ff41;font-family:'Courier New',monospace;letter-spacing:2px;text-shadow:0 0 20px #00ff41}.seconds-highlight{color:#ff0055;font-size:32px;animation:pulse 1s infinite;text-shadow:0 0 20px #ff0055}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}.refresh-btn{position:fixed;bottom:25px;right:25px;background:linear-gradient(135deg,#00ff41 0%,#00aaff 100%);color:#0a0e27;border:none;padding:14px 24px;border-radius:40px;font-size:14px;font-weight:bold;cursor:pointer;box-shadow:0 0 30px rgba(0,255,65,.5);display:flex;align-items:center;gap:8px;transition:all .3s;z-index:1000;text-transform:uppercase;letter-spacing:1.5px}.refresh-btn:hover{transform:scale(1.08);box-shadow:0 0 50px rgba(0,255,65,.8)}.refresh-btn:active{transform:scale(.95)}.refresh-icon{font-size:18px}.refresh-icon.spinning{animation:spin .5s linear}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.loading{text-align:center;padding:15px;color:#00ff41;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}.update-time{text-align:center;margin-top:15px}@media (max-width:600px){.logo{font-size:22px}.title{font-size:10px;letter-spacing:1px}.stats-info{grid-template-columns:repeat(2,1fr);gap:10px}.prediction-result{font-size:40px;letter-spacing:2px}th,td{padding:8px 4px;font-size:10px}.number-cell{font-size:18px}.refresh-btn{bottom:15px;right:15px;padding:12px 20px;font-size:12px}.current-time{font-size:22px}.stat-value{font-size:20px}}
+</style>
+</head>
+<body>
+<canvas class="matrix-bg" id="matrix"></canvas>
+<div class="container">
+<div class="header">
+<div class="scan-line"></div>
+<div class="logo">⚡ WINGO AI</div>
+<div class="title">AI ADAPTIVE ANALYZER v5.0</div>
+<div class="badge">🤖 AI POWERED</div>
+</div>
+<div class="ai-status">
+<div class="ai-indicator">
+<span class="ai-dot"></span>
+<span id="aiStatus">AI LEARNING ACTIVE</span>
+</div>
+</div>
+<div class="prediction-container">
+<div class="prediction-header"><h3>🔮 AI PREDICTION</h3></div>
+<div class="prediction-content">
+<div class="prediction-result" id="currPred"><div class="loading" style="font-size:16px">[ AI ANALYZING... ]</div></div>
+<div class="ai-adjustment" id="aiMsg">AI initializing pattern recognition...</div>
+<div class="confidence-bar"><div class="confidence-fill" id="confBar" style="width:0%"></div></div>
+<div class="confidence-label" id="confLabel">ANALYZING</div>
+</div>
+</div>
+<div class="stats-container">
+<div class="stats-info">
+<div class="stat-item"><div class="stat-label">Win</div><div class="stat-value stat-win" id="wc">0</div></div>
+<div class="stat-item"><div class="stat-label">Loss</div><div class="stat-value stat-loss" id="lc">0</div></div>
+<div class="stat-item"><div class="stat-label">Total</div><div class="stat-value" id="tc">0</div></div>
+<div class="stat-item"><div class="stat-label">Accuracy</div><div class="stat-value" id="wr">0%</div></div>
+<div class="stat-item"><div class="stat-label">Win Streak</div><div class="stat-value stat-streak" id="mw">0</div></div>
+<div class="stat-item"><div class="stat-label">Loss Streak</div><div class="stat-value stat-streak" id="ml">0</div></div>
+</div>
+</div>
+<div class="table-container">
+<table>
+<thead><tr><th>Period</th><th>Number</th><th>Size</th><th>Color</th><th>Result</th></tr></thead>
+<tbody id="tb"><tr><td colspan="5" class="loading">[ LOADING DATA... ]</td></tr></tbody>
+</table>
+</div>
+<p class="update-time"><span class="time-display"><div class="current-time" id="rt">00:00:00</div></span></p>
+</div>
+<button class="refresh-btn" onclick="_r()"><span class="refresh-icon" id="ri">⟳</span><span>Refresh</span></button>
+
+<script>
+// Matrix Background Animation
+const c=document.getElementById('matrix'),ctx=c.getContext('2d');
+c.width=window.innerWidth;c.height=window.innerHeight;
+const chars='01',fontSize=14,cols=c.width/fontSize,drops=[];
+for(let i=0;i<cols;i++)drops[i]=1;
+function drawMatrix(){
+  ctx.fillStyle='rgba(10,14,39,0.05)';
+  ctx.fillRect(0,0,c.width,c.height);
+  ctx.fillStyle='#00ff41';
+  ctx.font=fontSize+'px monospace';
+  for(let i=0;i<drops.length;i++){
+    const t=chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(t,i*fontSize,drops[i]*fontSize);
+    if(drops[i]*fontSize>c.height&&Math.random()>0.975)drops[i]=0;
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix,50);
+
+// Main Prediction System with AI
+(function(){
+  const _0x4a=['Big','Small','win','loss'];
+  let _p=null,_c=null,_h=[],_lp=null,_ct;
+  
+  // AI State
+  let AI = {
+    winStreak: 0,
+    lossStreak: 0,
+    mode: 'normal', // normal, reverse, boost
+    lastMode: 'normal'
+  };
+  
+  const _d=h=>{
+    let s='';
+    for(let i=0;i<h.length;i+=2)
+      s+=String.fromCharCode(parseInt(h.substr(i,2),16));
+    return s;
+  };
+  
+  const _k={
+    u1:_d('68747470733a2f2f647261772e61722d6c6f74746572793031'),
+    u2:_d('2e636f6d2f57696e476f2f57696e476f5f314d2f'),
+    u3:_d('476574486973746f7279497373756550616765'),
+    u4:_d('2e6a736f6e'),
+    i:1000,
+    m:59
+  };
+  
+  const _x=n=>parseInt(n)>=5?_0x4a[0]:_0x4a[1];
+  
+  const _g=(n,c)=>{
+    let a=[];
+    if(c==='red')a.push('red');
+    else if(c==='green')a.push('green');
+    else if(c==='violet')a.push('violet');
+    if(n===0){a.push('violet');a.push('red')}
+    else if(n===5){a.push('violet');a.push('green')}
+    return a;
+  };
+  
+  // AI Decision Engine
+  const aiEngine = (basePred, baseConf, history) => {
+    if(history.length < 2) {
+      return {
+        pred: basePred, 
+        conf: baseConf, 
+        msg: '🤖 AI Learning: Collecting data...',
+        mode: 'normal'
+      };
+    }
+    
+    // Update streaks
+    const lastRes = history[0]?.res;
+    if(lastRes === 'win') {
+      AI.winStreak++;
+      AI.lossStreak = 0;
+    } else if(lastRes === 'loss') {
+      AI.lossStreak++;
+      AI.winStreak = 0;
+    }
+    
+    // Calculate accuracy
+    const last10 = history.slice(0, 10);
+    const wins = last10.filter(h => h.res === 'win').length;
+    const accuracy = last10.length > 0 ? (wins / last10.length) * 100 : 0;
+    
+    let finalPred = basePred;
+    let finalConf = baseConf;
+    let aiMsg = '';
+    let mode = 'normal';
+    
+    // RULE 1: বেশি Loss হলে উল্টো দিকে যাও (REVERSE)
+    if(AI.lossStreak >= 3) {
+      finalPred = basePred === 'Big' ? 'Small' : 'Big';
+      finalConf = Math.min(95, baseConf + 20);
+      aiMsg = `🔄 AI REVERSE MODE: ${AI.lossStreak} consecutive losses - Signal INVERTED!`;
+      mode = 'reverse';
+    }
+    // RULE 2: অনেক বেশি Loss (5+) = আরো বেশি confidence
+    else if(AI.lossStreak >= 5) {
+      finalPred = basePred === 'Big' ? 'Small' : 'Big';
+      finalConf = Math.min(98, baseConf + 30);
+      aiMsg = `⚡ AI STRONG REVERSE: ${AI.lossStreak} losses - HIGH CONFIDENCE REVERSE!`;
+      mode = 'reverse';
+    }
+    // RULE 3: বেশি Win হলে সেই দিকেই থাকো (BOOST)
+    else if(AI.winStreak >= 5) {
+      finalConf = Math.min(96, baseConf + 15);
+      aiMsg = `✅ AI BOOST MODE: ${AI.winStreak} consecutive wins - Pattern CONFIRMED!`;
+      mode = 'boost';
+    }
+    // RULE 4: মাঝারি Win streak = confidence বাড়াও
+    else if(AI.winStreak >= 3) {
+      finalConf = Math.min(92, baseConf + 10);
+      aiMsg = `✨ AI CONFIDENCE: ${AI.winStreak} wins - Following pattern`;
+      mode = 'boost';
+    }
+    // RULE 5: Accuracy খুব কম (<35%) = উল্টো করো
+    else if(history.length >= 8 && accuracy < 35) {
+      finalPred = basePred === 'Big' ? 'Small' : 'Big';
+      finalConf = Math.min(90, baseConf + 15);
+      aiMsg = `🔄 AI CORRECTION: Accuracy ${Math.round(accuracy)}% - Strategy REVERSED`;
+      mode = 'reverse';
+    }
+    // RULE 6: Accuracy ভালো (>70%) = confidence বাড়াও
+    else if(history.length >= 8 && accuracy > 70) {
+      finalConf = Math.min(94, baseConf + 12);
+      aiMsg = `🎯 AI HIGH ACCURACY: ${Math.round(accuracy)}% - Strong signal`;
+      mode = 'boost';
+    }
+    // RULE 7: 2 Loss after 3+ Wins = সাবধান, উল্টো করো
+    else if(AI.lossStreak === 2 && history.length >= 5) {
+      const last5 = history.slice(2, 7);
+      const prevWins = last5.filter(h => h.res === 'win').length;
+      if(prevWins >= 3) {
+        finalPred = basePred === 'Big' ? 'Small' : 'Big';
+        finalConf = Math.min(88, baseConf + 12);
+        aiMsg = `⚠️ AI PATTERN SHIFT: Detected trend change - Adjusting`;
+        mode = 'reverse';
+      }
+    }
+    // RULE 8: মাঝারি accuracy = normal mode
+    else if(history.length >= 5) {
+      aiMsg = `🤖 AI MONITORING: Accuracy ${Math.round(accuracy)}% - Standard mode`;
+      mode = 'normal';
+    }
+    else {
+      aiMsg = `🤖 AI ACTIVE: Analyzing patterns...`;
+      mode = 'normal';
+    }
+    
+    AI.mode = mode;
+    AI.lastMode = mode;
+    
+    // Update AI status indicator
+    const statusEl = document.getElementById('aiStatus');
+    if(statusEl) {
+      if(mode === 'reverse') {
+        statusEl.textContent = 'AI REVERSE MODE';
+        statusEl.style.color = '#ff0055';
+      } else if(mode === 'boost') {
+        statusEl.textContent = 'AI BOOST MODE';
+        statusEl.style.color = '#00ff41';
+      } else {
+        statusEl.textContent = 'AI LEARNING ACTIVE';
+        statusEl.style.color = '#aa00ff';
+      }
+    }
+    
+    return {
+      pred: finalPred,
+      conf: Math.round(finalConf),
+      msg: aiMsg,
+      mode: mode
+    };
+  };
+  
+  // Base Prediction Algorithm
+  const _a=d=>{
+    if(d.length<3)return{p:_0x4a[0],c:55};
+    let cs=0,cb=0,lcs=0,lcb=0;
+    for(let i=0;i<d.length;i++){
+      if(d[i]===_0x4a[1]){
+        cs++;
+        if(cb>0)lcb=cb;
+        cb=0;
+      }else{
+        cb++;
+        if(cs>0)lcs=cs;
+        cs=0;
+      }
+    }
+    
+    const lastWasBig=d[0]===_0x4a[0];
+    let isAlternating=true;
+    let alternateCount=0;
+    if(d.length>=3){
+      for(let i=1;i<Math.min(6,d.length);i++){
+        if(d[i]===d[i-1]){
+          isAlternating=false;
+          break;
+        }
+        alternateCount++;
+      }
+    }
+    
+    let bigCount=0,smallCount=0;
+    const checkLen=Math.min(10,d.length);
+    for(let i=0;i<checkLen;i++){
+      if(d[i]===_0x4a[0])bigCount++;
+      else smallCount++;
+    }
+    
+    let pred='';
+    let conf=50;
+    
+    if(isAlternating&&alternateCount>=4){
+      pred=lastWasBig?_0x4a[1]:_0x4a[0];
+      conf=88+Math.min(alternateCount*2,10);
+    }
+    else if(cs>=7){
+      pred=_0x4a[0];
+      conf=92+Math.min((cs-7)*2,6);
+    }
+    else if(cb>=7){
+      pred=_0x4a[1];
+      conf=92+Math.min((cb-7)*2,6);
+    }
+    else if(cs>=5){
+      pred=_0x4a[0];
+      conf=82+(cs*3);
+    }
+    else if(cb>=5){
+      pred=_0x4a[1];
+      conf=82+(cb*3);
+    }
+    else if(cs===4){
+      pred=_0x4a[0];
+      conf=78;
+    }
+    else if(cb===4){
+      pred=_0x4a[1];
+      conf=78;
+    }
+    else if(cs===3){
+      pred=_0x4a[0];
+      conf=70+Math.random()*8;
+    }
+    else if(cb===3){
+      pred=_0x4a[1];
+      conf=70+Math.random()*8;
+    }
+    else if(cs===2){
+      pred=_0x4a[0];
+      conf=62+Math.random()*10;
+    }
+    else if(cb===2){
+      pred=_0x4a[1];
+      conf=62+Math.random()*10;
+    }
+    else{
+      pred=lastWasBig?_0x4a[1]:_0x4a[0];
+      conf=52+Math.random()*10;
+    }
+    
+    conf=Math.min(98,Math.max(48,Math.round(conf)));
+    return{p:pred,c:conf};
+  };
+  
+  const _calcStreak=arr=>{
+    let mw=0,ml=0,cw=0,cl=0;
+    arr.forEach(e=>{
+      if(e.res===_0x4a[2]){
+        cw++;
+        if(cl>ml)ml=cl;
+        cl=0;
+      }else if(e.res===_0x4a[3]){
+        cl++;
+        if(cw>mw)mw=cw;
+        cw=0;
+      }
+    });
+    if(cw>mw)mw=cw;
+    if(cl>ml)ml=cl;
+    return{mw,ml};
+  };
+  
+  const _u=()=>{
+    const n=new Date(),h=String(n.getHours()).padStart(2,'0'),
+    m=String(n.getMinutes()).padStart(2,'0'),
+    s=String(n.getSeconds()).padStart(2,'0'),
+    e=document.getElementById('rt');
+    if(e)e.innerHTML=`${h}:${m}:<span class="seconds-highlight">${s}</span>`;
+    if(n.getSeconds()===_k.m)_l();
+  };
+  
+  const _s=()=>{
+    _u();
+    clearInterval(_ct);
+    _ct=setInterval(_u,_k.i);
+  };
+  
+  window._r=()=>{
+    const ic=document.getElementById('ri');
+    if(ic){
+      ic.classList.add('spinning');
+      setTimeout(()=>ic.classList.remove('spinning'),500);
+    }
+    _l();
+  };
+  
+  const _l=async()=>{
+    try{
+      const t=new Date().getTime(),
+      _u=_k.u1+_k.u2+_k.u3+_k.u4,
+      _q=`?${_d('7473')}=${t}`,
+      _f=_u+_q,
+      r=await fetch(_f),
+      d=await r.json();
+      
+      let ls=[];
+      const _pk=['data','list'],_sk=['list'];
+      if(d&&d[_pk[0]]&&d[_pk[0]][_pk[1]])ls=d[_pk[0]][_pk[1]].slice(0,10);
+      else if(d&&d[_sk[0]])ls=d[_sk[0]].slice(0,10);
+      else if(Array.isArray(d))ls=d.slice(0,10);
+      
+      const tb=document.getElementById("tb");
+      tb.innerHTML="";
+      
+      if(ls.length===0){
+        tb.innerHTML='<tr><td colspan="5" class="loading">[ NO DATA ]</td></tr>';
+        return;
+      }
+      
+      const _f1=['issue','period','issueNo','periodId','issueNumber'],
+      _f2=['result','number','num','openResult'],
+      _f3=['color','colour'],
+      _f4=['gameNo','drawNo','id'];
+      
+      const tp=String(ls[0][_f1[0]]||ls[0][_f1[1]]||ls[0][_f1[2]]||ls[0][_f1[3]]||ls[0][_f1[4]]||''),
+      tn=String(ls[0][_f2[0]]||ls[0][_f2[1]]||ls[0][_f2[2]]||ls[0][_f2[3]]||''),
+      ts=_x(tn);
+      
+      const sh=ls.map(i=>{
+        const rn=i[_f2[0]]||i[_f2[1]]||i[_f2[2]]||i[_f2[3]]||"?";
+        return _x(rn);
+      });
+      
+      const basePred=_a(sh);
+      
+      if(_lp!==tp){
+        if(_p){
+          const im=_p.pred===ts;
+          const re={per:tp,pred:_p.pred,act:ts,res:im?_0x4a[2]:_0x4a[3],num:tn};
+          _h.unshift(re);
+          if(_h.length>50)_h=_h.slice(0,50);
+        }
+        
+        // AI Decision
+        const aiResult = aiEngine(basePred.p, basePred.c, _h);
+        _c = aiResult;
+        _p = {..._c};
+        _lp=tp;
+      } else {
+        // Just show prediction without updating
+        const aiResult = aiEngine(basePred.p, basePred.c, _h);
+        _c = aiResult;
+      }
+      
+      const cr=document.getElementById("currPred"),
+      cb=document.getElementById("confBar"),
+      cl=document.getElementById("confLabel"),
+      am=document.getElementById("aiMsg");
+      
+      cr.innerHTML=`<span class="prediction-${_c.pred.toLowerCase()}">${_c.pred}</span>`;
+      cb.style.width=_c.conf+'%';
+      am.textContent=_c.msg;
+      
+      if(_c.conf>=70)cl.innerHTML='<span class="confidence-high">HIGH CONFIDENCE</span>';
+      else cl.innerHTML='<span class="confidence-low">LOW CONFIDENCE</span>';
+      
+      let wc=0,lc=0;
+      _h.forEach(e=>{
+        if(e.res===_0x4a[2])wc++;
+        if(e.res===_0x4a[3])lc++;
+      });
+      
+      const st=_calcStreak(_h);
+      
+      ls.forEach((it,ix)=>{
+        const tr=document.createElement("tr"),
+        tdp=document.createElement("td");
+        tdp.className="period-cell";
+        const pv=String(it[_f1[0]]||it[_f1[1]]||it[_f1[2]]||it[_f1[3]]||it[_f1[4]]||it[_f4[0]]||it[_f4[1]]||it[_f4[2]]||'');
+        tdp.textContent=pv||"N/A";
+        
+        const rn=it[_f2[0]]||it[_f2[1]]||it[_f2[2]]||it[_f2[3]]||"?",
+        tdn=document.createElement("td");
+        tdn.className="number-cell";
+        const ns=document.createElement("span"),
+        co=(it[_f3[0]]||it[_f3[1]]||"").toLowerCase();
+        
+        if(co==='red'){
+          ns.style.color='#ff0055';
+          ns.style.textShadow='0 0 10px #ff0055';
+        }else if(co==='green'){
+          ns.style.color='#00ff41';
+          ns.style.textShadow='0 0 10px #00ff41';
+        }else if(co==='violet'||co==='purple'){
+          ns.style.color='#aa00ff';
+          ns.style.textShadow='0 0 10px #aa00ff';
+        }
+        ns.textContent=rn;
+        tdn.appendChild(ns);
+        
+        const tds=document.createElement("td");
+        tds.textContent=sh[ix];
+        
+        const tdc=document.createElement("td");
+        tdc.className="color-cell";
+        const nv=parseInt(rn),
+        cls=_g(nv,co);
+        cls.forEach(c=>{
+          const dt=document.createElement("span");
+          dt.className=`color-dot ${c}`;
+          tdc.appendChild(dt);
+        });
+        
+        const tdr=document.createElement("td"),
+        mr=_h.find(q=>String(q.per)===String(pv));
+        if(mr){
+          if(mr.res===_0x4a[2]){
+            tdr.className="result-cell result-win";
+            tdr.textContent="✓ WIN";
+          }else{
+            tdr.className="result-cell result-loss";
+            tdr.textContent="✗ LOSS";
+          }
+        }else tdr.textContent="-";
+        
+        tr.appendChild(tdp);
+        tr.appendChild(tdn);
+        tr.appendChild(tds);
+        tr.appendChild(tdc);
+        tr.appendChild(tdr);
+        tb.appendChild(tr);
+      });
+      
+      const to=wc+lc,
+      wrt=to>0?Math.round((wc/to)*100):0;
+      document.getElementById('wc').textContent=wc;
+      document.getElementById('lc').textContent=lc;
+      document.getElementById('tc').textContent=to;
+      document.getElementById('wr').textContent=wrt+'%';
+      document.getElementById('mw').textContent=st.mw;
+      document.getElementById('ml').textContent=st.ml;
+      
+    }catch(e){
+      const _em=_d('5b204552524f52205d');
+      document.getElementById("tb").innerHTML=`<tr><td colspan="5" class="loading">${_em}</td></tr>`;
+    }
+  };
+  
+  _l();
+  _s();
+})();
+</script>
+
+</body>
+</html>
