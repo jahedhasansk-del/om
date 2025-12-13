@@ -52,73 +52,97 @@
 </div>
 <button class="refresh-btn" onclick="_r()"><span class="refresh-icon" id="ri">⟳</span><span>Refresh</span></button>
 
-<script>
-// Matrix Background Animation
-const c=document.getElementById('matrix'),ctx=c.getContext('2d');
-c.width=window.innerWidth;c.height=window.innerHeight;
-const chars='01',fontSize=14,cols=c.width/fontSize,drops=[];
-for(let i=0;i<cols;i++)drops[i]=1;
-function drawMatrix(){
-  ctx.fillStyle='rgba(10,14,39,0.05)';
-  ctx.fillRect(0,0,c.width,c.height);
-  ctx.fillStyle='#00ff41';
-  ctx.font=fontSize+'px monospace';
-  for(let i=0;i<drops.length;i++){
-    const t=chars[Math.floor(Math.random()*chars.length)];
-    ctx.fillText(t,i*fontSize,drops[i]*fontSize);
-    if(drops[i]*fontSize>c.height&&Math.random()>0.975)drops[i]=0;
+<script>// ============================================
+// PART 1: Matrix Background Animation
+// File: part1-matrix.js
+// ============================================
+
+const c = document.getElementById('matrix');
+const ctx = c.getContext('2d');
+c.width = window.innerWidth;
+c.height = window.innerHeight;
+
+const chars = '01';
+const fontSize = 14;
+const cols = c.width / fontSize;
+const drops = [];
+
+for(let i = 0; i < cols; i++) {
+  drops[i] = 1;
+}
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(10,14,39,0.05)';
+  ctx.fillRect(0, 0, c.width, c.height);
+  ctx.fillStyle = '#00ff41';
+  ctx.font = fontSize + 'px monospace';
+  
+  for(let i = 0; i < drops.length; i++) {
+    const t = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(t, i * fontSize, drops[i] * fontSize);
+    
+    if(drops[i] * fontSize > c.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
     drops[i]++;
   }
 }
-setInterval(drawMatrix,50);
 
-// Main Prediction System with AI
-(function(){
-  const _0x4a=['Big','Small','win','loss'];
-  let _p=null,_c=null,_h=[],_lp=null,_ct;
+setInterval(drawMatrix, 50);// ============================================
+// PART 2: Main Prediction System with Advanced AI
+// File: part2-prediction.js
+// ============================================
+
+(function() {
+  const _0x4a = ['Big', 'Small', 'win', 'loss'];
+  let _p = null, _c = null, _h = [], _lp = null, _ct;
   
-  // AI State
+  // Enhanced AI State
   let AI = {
     winStreak: 0,
     lossStreak: 0,
-    mode: 'normal', // normal, reverse, boost
-    lastMode: 'normal'
+    mode: 'normal',
+    lastMode: 'normal',
+    last10Pattern: [],
+    positionPattern: []
   };
   
-  const _d=h=>{
-    let s='';
-    for(let i=0;i<h.length;i+=2)
-      s+=String.fromCharCode(parseInt(h.substr(i,2),16));
+  const _d = h => {
+    let s = '';
+    for(let i = 0; i < h.length; i += 2)
+      s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
     return s;
   };
   
-  const _k={
-    u1:_d('68747470733a2f2f647261772e61722d6c6f74746572793031'),
-    u2:_d('2e636f6d2f57696e476f2f57696e476f5f314d2f'),
-    u3:_d('476574486973746f7279497373756550616765'),
-    u4:_d('2e6a736f6e'),
-    i:1000,
-    m:59
+  const _k = {
+    u1: _d('68747470733a2f2f647261772e61722d6c6f74746572793031'),
+    u2: _d('2e636f6d2f57696e476f2f57696e476f5f314d2f'),
+    u3: _d('476574486973746f7279497373756550616765'),
+    u4: _d('2e6a736f6e'),
+    i: 1000,
+    m: 59
   };
   
-  const _x=n=>parseInt(n)>=5?_0x4a[0]:_0x4a[1];
+  const _x = n => parseInt(n) >= 5 ? _0x4a[0] : _0x4a[1];
   
-  const _g=(n,c)=>{
-    let a=[];
-    if(c==='red')a.push('red');
-    else if(c==='green')a.push('green');
-    else if(c==='violet')a.push('violet');
-    if(n===0){a.push('violet');a.push('red')}
-    else if(n===5){a.push('violet');a.push('green')}
+  const _g = (n, c) => {
+    let a = [];
+    if(c === 'red') a.push('red');
+    else if(c === 'green') a.push('green');
+    else if(c === 'violet') a.push('violet');
+    if(n === 0) { a.push('violet'); a.push('red'); }
+    else if(n === 5) { a.push('violet'); a.push('green'); }
     return a;
   };
   
-  // AI Decision Engine
+  // ============================================
+  // ADVANCED AI DECISION ENGINE
+  // ============================================
   const aiEngine = (basePred, baseConf, history) => {
     if(history.length < 2) {
       return {
-        pred: basePred, 
-        conf: baseConf, 
+        pred: basePred,
+        conf: baseConf,
         msg: '🤖 AI Learning: Collecting data...',
         mode: 'normal'
       };
@@ -134,80 +158,217 @@ setInterval(drawMatrix,50);
       AI.winStreak = 0;
     }
     
-    // Calculate accuracy
-    const last10 = history.slice(0, 10);
-    const wins = last10.filter(h => h.res === 'win').length;
-    const accuracy = last10.length > 0 ? (wins / last10.length) * 100 : 0;
-    
     let finalPred = basePred;
     let finalConf = baseConf;
     let aiMsg = '';
     let mode = 'normal';
     
-    // RULE 1: বেশি Loss হলে উল্টো দিকে যাও (REVERSE)
-    if(AI.lossStreak >= 3) {
-      finalPred = basePred === 'Big' ? 'Small' : 'Big';
-      finalConf = Math.min(95, baseConf + 20);
-      aiMsg = `🔄 AI REVERSE MODE: ${AI.lossStreak} consecutive losses - Signal INVERTED!`;
-      mode = 'reverse';
-    }
-    // RULE 2: অনেক বেশি Loss (5+) = আরো বেশি confidence
-    else if(AI.lossStreak >= 5) {
-      finalPred = basePred === 'Big' ? 'Small' : 'Big';
-      finalConf = Math.min(98, baseConf + 30);
-      aiMsg = `⚡ AI STRONG REVERSE: ${AI.lossStreak} losses - HIGH CONFIDENCE REVERSE!`;
-      mode = 'reverse';
-    }
-    // RULE 3: বেশি Win হলে সেই দিকেই থাকো (BOOST)
-    else if(AI.winStreak >= 5) {
-      finalConf = Math.min(96, baseConf + 15);
-      aiMsg = `✅ AI BOOST MODE: ${AI.winStreak} consecutive wins - Pattern CONFIRMED!`;
-      mode = 'boost';
-    }
-    // RULE 4: মাঝারি Win streak = confidence বাড়াও
-    else if(AI.winStreak >= 3) {
-      finalConf = Math.min(92, baseConf + 10);
-      aiMsg = `✨ AI CONFIDENCE: ${AI.winStreak} wins - Following pattern`;
-      mode = 'boost';
-    }
-    // RULE 5: Accuracy খুব কম (<35%) = উল্টো করো
-    else if(history.length >= 8 && accuracy < 35) {
-      finalPred = basePred === 'Big' ? 'Small' : 'Big';
-      finalConf = Math.min(90, baseConf + 15);
-      aiMsg = `🔄 AI CORRECTION: Accuracy ${Math.round(accuracy)}% - Strategy REVERSED`;
-      mode = 'reverse';
-    }
-    // RULE 6: Accuracy ভালো (>70%) = confidence বাড়াও
-    else if(history.length >= 8 && accuracy > 70) {
-      finalConf = Math.min(94, baseConf + 12);
-      aiMsg = `🎯 AI HIGH ACCURACY: ${Math.round(accuracy)}% - Strong signal`;
-      mode = 'boost';
-    }
-    // RULE 7: 2 Loss after 3+ Wins = সাবধান, উল্টো করো
-    else if(AI.lossStreak === 2 && history.length >= 5) {
-      const last5 = history.slice(2, 7);
-      const prevWins = last5.filter(h => h.res === 'win').length;
-      if(prevWins >= 3) {
-        finalPred = basePred === 'Big' ? 'Small' : 'Big';
-        finalConf = Math.min(88, baseConf + 12);
-        aiMsg = `⚠️ AI PATTERN SHIFT: Detected trend change - Adjusting`;
-        mode = 'reverse';
+    // ============================================
+    // 60% WEIGHT: Last 10 History Pattern Analysis
+    // ============================================
+    let patternScore = 0;
+    let patternPrediction = basePred;
+    
+    const last10 = history.slice(0, 10);
+    if(last10.length >= 10) {
+      const bigCount = last10.filter(h => h.act === 'Big').length;
+      const smallCount = last10.filter(h => h.act === 'Small').length;
+      
+      // Pattern detection
+      let consecutiveSame = 0;
+      let alternatingCount = 0;
+      
+      for(let i = 0; i < last10.length - 1; i++) {
+        if(last10[i].act === last10[i+1].act) {
+          consecutiveSame++;
+        } else {
+          alternatingCount++;
+        }
+      }
+      
+      // If alternating pattern detected
+      if(alternatingCount >= 7) {
+        const lastAct = last10[0].act;
+        patternPrediction = lastAct === 'Big' ? 'Small' : 'Big';
+        patternScore = 85;
+      }
+      // If one side dominates
+      else if(bigCount >= 7) {
+        patternPrediction = 'Small'; // Reverse logic
+        patternScore = 75;
+      }
+      else if(smallCount >= 7) {
+        patternPrediction = 'Big'; // Reverse logic
+        patternScore = 75;
+      }
+      // Balanced pattern
+      else if(Math.abs(bigCount - smallCount) <= 2) {
+        patternPrediction = basePred;
+        patternScore = 60;
+      }
+      else {
+        patternPrediction = bigCount > smallCount ? 'Small' : 'Big';
+        patternScore = 65;
       }
     }
-    // RULE 8: মাঝারি accuracy = normal mode
-    else if(history.length >= 5) {
-      aiMsg = `🤖 AI MONITORING: Accuracy ${Math.round(accuracy)}% - Standard mode`;
-      mode = 'normal';
+    
+    // ============================================
+    // 20% WEIGHT: Win/Loss Streak Analysis
+    // ============================================
+    let streakScore = 0;
+    let streakPrediction = basePred;
+    
+    if(AI.lossStreak >= 3) {
+      streakPrediction = basePred === 'Big' ? 'Small' : 'Big';
+      streakScore = 80 + (AI.lossStreak * 3);
+      mode = 'reverse';
+      aiMsg = `🔄 LOSS REVERSE: ${AI.lossStreak} consecutive losses`;
+    }
+    else if(AI.lossStreak >= 2) {
+      streakPrediction = basePred === 'Big' ? 'Small' : 'Big';
+      streakScore = 70;
+    }
+    else if(AI.winStreak >= 5) {
+      streakPrediction = basePred;
+      streakScore = 85;
+      mode = 'boost';
+      aiMsg = `✅ WIN BOOST: ${AI.winStreak} consecutive wins`;
+    }
+    else if(AI.winStreak >= 3) {
+      streakPrediction = basePred;
+      streakScore = 75;
     }
     else {
-      aiMsg = `🤖 AI ACTIVE: Analyzing patterns...`;
-      mode = 'normal';
+      streakPrediction = basePred;
+      streakScore = 50;
     }
     
-    AI.mode = mode;
-    AI.lastMode = mode;
+    // ============================================
+    // 10% WEIGHT: Position Pattern (4-cell check)
+    // ============================================
+    let positionScore = 0;
+    let positionPrediction = basePred;
     
-    // Update AI status indicator
+    if(history.length >= 6) {
+      // Check if position 1 and position 5 predictions match
+      const pos1Match = history[0].pred === history[0].act;
+      const pos5Match = history[4]?.pred === history[4]?.act;
+      
+      // Check previous 4 cells pattern (positions 2,3,4,5)
+      const prev4Cells = history.slice(1, 5);
+      let prev4Matches = 0;
+      prev4Cells.forEach(h => {
+        if(h.pred === h.act) prev4Matches++;
+      });
+      
+      // If last 4 cells had good predictions, follow pattern
+      if(prev4Matches >= 3) {
+        positionPrediction = basePred;
+        positionScore = 75;
+      }
+      // If last 4 cells had bad predictions, reverse
+      else if(prev4Matches <= 1) {
+        positionPrediction = basePred === 'Big' ? 'Small' : 'Big';
+        positionScore = 70;
+      }
+      else {
+        positionPrediction = basePred;
+        positionScore = 50;
+      }
+    }
+    
+    // ============================================
+    // 10% WEIGHT: Accuracy Range Analysis
+    // ============================================
+    let accuracyScore = 0;
+    let accuracyPrediction = basePred;
+    
+    const totalGames = history.length;
+    if(totalGames >= 8) {
+      const wins = history.filter(h => h.res === 'win').length;
+      const accuracy = (wins / totalGames) * 100;
+      
+      // 49-60% accuracy range: Follow prediction
+      if(accuracy >= 49 && accuracy <= 60) {
+        accuracyPrediction = basePred;
+        accuracyScore = 70;
+        if(!aiMsg) aiMsg = `📊 Accuracy ${Math.round(accuracy)}%: Following pattern`;
+      }
+      // 65%+ accuracy: Reduce following (reverse)
+      else if(accuracy >= 65) {
+        accuracyPrediction = basePred === 'Big' ? 'Small' : 'Big';
+        accuracyScore = 75;
+        if(!aiMsg) aiMsg = `⚠️ High Accuracy ${Math.round(accuracy)}%: Reversing strategy`;
+      }
+      // Below 49%: Strong reverse
+      else if(accuracy < 49) {
+        accuracyPrediction = basePred === 'Big' ? 'Small' : 'Big';
+        accuracyScore = 80;
+        if(!aiMsg) aiMsg = `🔄 Low Accuracy ${Math.round(accuracy)}%: Strong reverse`;
+      }
+      else {
+        accuracyPrediction = basePred;
+        accuracyScore = 55;
+      }
+    }
+    
+    // ============================================
+    // WEIGHTED DECISION MAKING
+    // ============================================
+    const weights = {
+      pattern: 0.60,
+      streak: 0.20,
+      position: 0.10,
+      accuracy: 0.10
+    };
+    
+    // Calculate weighted scores for Big and Small
+    let bigScore = 0;
+    let smallScore = 0;
+    
+    // Pattern contribution (60%)
+    if(patternPrediction === 'Big') {
+      bigScore += patternScore * weights.pattern;
+    } else {
+      smallScore += patternScore * weights.pattern;
+    }
+    
+    // Streak contribution (20%)
+    if(streakPrediction === 'Big') {
+      bigScore += streakScore * weights.streak;
+    } else {
+      smallScore += streakScore * weights.streak;
+    }
+    
+    // Position contribution (10%)
+    if(positionPrediction === 'Big') {
+      bigScore += positionScore * weights.position;
+    } else {
+      smallScore += positionScore * weights.position;
+    }
+    
+    // Accuracy contribution (10%)
+    if(accuracyPrediction === 'Big') {
+      bigScore += accuracyScore * weights.accuracy;
+    } else {
+      smallScore += accuracyScore * weights.accuracy;
+    }
+    
+    // Final decision
+    if(bigScore > smallScore) {
+      finalPred = 'Big';
+      finalConf = Math.min(98, Math.round(bigScore));
+    } else {
+      finalPred = 'Small';
+      finalConf = Math.min(98, Math.round(smallScore));
+    }
+    
+    // Default message if not set
+    if(!aiMsg) {
+      aiMsg = `🤖 AI Analysis: Pattern=${patternScore}% Streak=${streakScore}% Position=${positionScore}% Accuracy=${accuracyScore}%`;
+    }
+    
+    // Update AI status
     const statusEl = document.getElementById('aiStatus');
     if(statusEl) {
       if(mode === 'reverse') {
@@ -224,274 +385,289 @@ setInterval(drawMatrix,50);
     
     return {
       pred: finalPred,
-      conf: Math.round(finalConf),
+      conf: Math.max(50, finalConf),
       msg: aiMsg,
       mode: mode
     };
   };
   
   // Base Prediction Algorithm
-  const _a=d=>{
-    if(d.length<3)return{p:_0x4a[0],c:55};
-    let cs=0,cb=0,lcs=0,lcb=0;
-    for(let i=0;i<d.length;i++){
-      if(d[i]===_0x4a[1]){
+  const _a = d => {
+    if(d.length < 3) return { p: _0x4a[0], c: 55 };
+    
+    let cs = 0, cb = 0, lcs = 0, lcb = 0;
+    for(let i = 0; i < d.length; i++) {
+      if(d[i] === _0x4a[1]) {
         cs++;
-        if(cb>0)lcb=cb;
-        cb=0;
-      }else{
+        if(cb > 0) lcb = cb;
+        cb = 0;
+      } else {
         cb++;
-        if(cs>0)lcs=cs;
-        cs=0;
+        if(cs > 0) lcs = cs;
+        cs = 0;
       }
     }
     
-    const lastWasBig=d[0]===_0x4a[0];
-    let isAlternating=true;
-    let alternateCount=0;
-    if(d.length>=3){
-      for(let i=1;i<Math.min(6,d.length);i++){
-        if(d[i]===d[i-1]){
-          isAlternating=false;
+    const lastWasBig = d[0] === _0x4a[0];
+    let isAlternating = true;
+    let alternateCount = 0;
+    
+    if(d.length >= 3) {
+      for(let i = 1; i < Math.min(6, d.length); i++) {
+        if(d[i] === d[i-1]) {
+          isAlternating = false;
           break;
         }
         alternateCount++;
       }
     }
     
-    let bigCount=0,smallCount=0;
-    const checkLen=Math.min(10,d.length);
-    for(let i=0;i<checkLen;i++){
-      if(d[i]===_0x4a[0])bigCount++;
+    let bigCount = 0, smallCount = 0;
+    const checkLen = Math.min(10, d.length);
+    for(let i = 0; i < checkLen; i++) {
+      if(d[i] === _0x4a[0]) bigCount++;
       else smallCount++;
     }
     
-    let pred='';
-    let conf=50;
+    let pred = '';
+    let conf = 50;
     
-    if(isAlternating&&alternateCount>=4){
-      pred=lastWasBig?_0x4a[1]:_0x4a[0];
-      conf=88+Math.min(alternateCount*2,10);
+    if(isAlternating && alternateCount >= 4) {
+      pred = lastWasBig ? _0x4a[1] : _0x4a[0];
+      conf = 88 + Math.min(alternateCount * 2, 10);
     }
-    else if(cs>=7){
-      pred=_0x4a[0];
-      conf=92+Math.min((cs-7)*2,6);
+    else if(cs >= 7) {
+      pred = _0x4a[0];
+      conf = 92 + Math.min((cs - 7) * 2, 6);
     }
-    else if(cb>=7){
-      pred=_0x4a[1];
-      conf=92+Math.min((cb-7)*2,6);
+    else if(cb >= 7) {
+      pred = _0x4a[1];
+      conf = 92 + Math.min((cb - 7) * 2, 6);
     }
-    else if(cs>=5){
-      pred=_0x4a[0];
-      conf=82+(cs*3);
+    else if(cs >= 5) {
+      pred = _0x4a[0];
+      conf = 82 + (cs * 3);
     }
-    else if(cb>=5){
-      pred=_0x4a[1];
-      conf=82+(cb*3);
+    else if(cb >= 5) {
+      pred = _0x4a[1];
+      conf = 82 + (cb * 3);
     }
-    else if(cs===4){
-      pred=_0x4a[0];
-      conf=78;
+    else if(cs === 4) {
+      pred = _0x4a[0];
+      conf = 78;
     }
-    else if(cb===4){
-      pred=_0x4a[1];
-      conf=78;
+    else if(cb === 4) {
+      pred = _0x4a[1];
+      conf = 78;
     }
-    else if(cs===3){
-      pred=_0x4a[0];
-      conf=70+Math.random()*8;
+    else if(cs === 3) {
+      pred = _0x4a[0];
+      conf = 70 + Math.random() * 8;
     }
-    else if(cb===3){
-      pred=_0x4a[1];
-      conf=70+Math.random()*8;
+    else if(cb === 3) {
+      pred = _0x4a[1];
+      conf = 70 + Math.random() * 8;
     }
-    else if(cs===2){
-      pred=_0x4a[0];
-      conf=62+Math.random()*10;
+    else if(cs === 2) {
+      pred = _0x4a[0];
+      conf = 62 + Math.random() * 10;
     }
-    else if(cb===2){
-      pred=_0x4a[1];
-      conf=62+Math.random()*10;
+    else if(cb === 2) {
+      pred = _0x4a[1];
+      conf = 62 + Math.random() * 10;
     }
-    else{
-      pred=lastWasBig?_0x4a[1]:_0x4a[0];
-      conf=52+Math.random()*10;
+    else {
+      pred = lastWasBig ? _0x4a[1] : _0x4a[0];
+      conf = 52 + Math.random() * 10;
     }
     
-    conf=Math.min(98,Math.max(48,Math.round(conf)));
-    return{p:pred,c:conf};
+    conf = Math.min(98, Math.max(48, Math.round(conf)));
+    return { p: pred, c: conf };
   };
   
-  const _calcStreak=arr=>{
-    let mw=0,ml=0,cw=0,cl=0;
-    arr.forEach(e=>{
-      if(e.res===_0x4a[2]){
+  const _calcStreak = arr => {
+    let mw = 0, ml = 0, cw = 0, cl = 0;
+    arr.forEach(e => {
+      if(e.res === _0x4a[2]) {
         cw++;
-        if(cl>ml)ml=cl;
-        cl=0;
-      }else if(e.res===_0x4a[3]){
+        if(cl > ml) ml = cl;
+        cl = 0;
+      } else if(e.res === _0x4a[3]) {
         cl++;
-        if(cw>mw)mw=cw;
-        cw=0;
+        if(cw > mw) mw = cw;
+        cw = 0;
       }
     });
-    if(cw>mw)mw=cw;
-    if(cl>ml)ml=cl;
-    return{mw,ml};
+    if(cw > mw) mw = cw;
+    if(cl > ml) ml = cl;
+    return { mw, ml };
   };
   
-  const _u=()=>{
-    const n=new Date(),h=String(n.getHours()).padStart(2,'0'),
-    m=String(n.getMinutes()).padStart(2,'0'),
-    s=String(n.getSeconds()).padStart(2,'0'),
-    e=document.getElementById('rt');
-    if(e)e.innerHTML=`${h}:${m}:<span class="seconds-highlight">${s}</span>`;
-    if(n.getSeconds()===_k.m)_l();
+  const _u = () => {
+    const n = new Date();
+    const h = String(n.getHours()).padStart(2, '0');
+    const m = String(n.getMinutes()).padStart(2, '0');
+    const s = String(n.getSeconds()).padStart(2, '0');
+    const e = document.getElementById('rt');
+    if(e) e.innerHTML = `${h}:${m}:<span class="seconds-highlight">${s}</span>`;
+    if(n.getSeconds() === _k.m) _l();
   };
   
-  const _s=()=>{
+  const _s = () => {
     _u();
     clearInterval(_ct);
-    _ct=setInterval(_u,_k.i);
+    _ct = setInterval(_u, _k.i);
   };
   
-  window._r=()=>{
-    const ic=document.getElementById('ri');
-    if(ic){
+  window._r = () => {
+    const ic = document.getElementById('ri');
+    if(ic) {
       ic.classList.add('spinning');
-      setTimeout(()=>ic.classList.remove('spinning'),500);
+      setTimeout(() => ic.classList.remove('spinning'), 500);
     }
     _l();
   };
   
-  const _l=async()=>{
-    try{
-      const t=new Date().getTime(),
-      _u=_k.u1+_k.u2+_k.u3+_k.u4,
-      _q=`?${_d('7473')}=${t}`,
-      _f=_u+_q,
-      r=await fetch(_f),
-      d=await r.json();
+  const _l = async () => {
+    try {
+      const t = new Date().getTime();
+      const _u = _k.u1 + _k.u2 + _k.u3 + _k.u4;
+      const _q = `?${_d('7473')}=${t}`;
+      const _f = _u + _q;
+      const r = await fetch(_f);
+      const d = await r.json();
       
-      let ls=[];
-      const _pk=['data','list'],_sk=['list'];
-      if(d&&d[_pk[0]]&&d[_pk[0]][_pk[1]])ls=d[_pk[0]][_pk[1]].slice(0,10);
-      else if(d&&d[_sk[0]])ls=d[_sk[0]].slice(0,10);
-      else if(Array.isArray(d))ls=d.slice(0,10);
+      let ls = [];
+      const _pk = ['data', 'list'];
+      const _sk = ['list'];
       
-      const tb=document.getElementById("tb");
-      tb.innerHTML="";
+      if(d && d[_pk[0]] && d[_pk[0]][_pk[1]]) ls = d[_pk[0]][_pk[1]];
+      else if(d && d[_sk[0]]) ls = d[_sk[0]];
+      else if(Array.isArray(d)) ls = d;
       
-      if(ls.length===0){
-        tb.innerHTML='<tr><td colspan="5" class="loading">[ NO DATA ]</td></tr>';
+      // UNLIMITED LOADING - Remove limit
+      ls = ls.slice(0, Math.min(100, ls.length)); // Show up to 100 records
+      
+      const tb = document.getElementById("tb");
+      tb.innerHTML = "";
+      
+      if(ls.length === 0) {
+        tb.innerHTML = '<tr><td colspan="5" class="loading">[ NO DATA ]</td></tr>';
         return;
       }
       
-      const _f1=['issue','period','issueNo','periodId','issueNumber'],
-      _f2=['result','number','num','openResult'],
-      _f3=['color','colour'],
-      _f4=['gameNo','drawNo','id'];
+      const _f1 = ['issue', 'period', 'issueNo', 'periodId', 'issueNumber'];
+      const _f2 = ['result', 'number', 'num', 'openResult'];
+      const _f3 = ['color', 'colour'];
+      const _f4 = ['gameNo', 'drawNo', 'id'];
       
-      const tp=String(ls[0][_f1[0]]||ls[0][_f1[1]]||ls[0][_f1[2]]||ls[0][_f1[3]]||ls[0][_f1[4]]||''),
-      tn=String(ls[0][_f2[0]]||ls[0][_f2[1]]||ls[0][_f2[2]]||ls[0][_f2[3]]||''),
-      ts=_x(tn);
+      const tp = String(ls[0][_f1[0]] || ls[0][_f1[1]] || ls[0][_f1[2]] || ls[0][_f1[3]] || ls[0][_f1[4]] || '');
+      const tn = String(ls[0][_f2[0]] || ls[0][_f2[1]] || ls[0][_f2[2]] || ls[0][_f2[3]] || '');
+      const ts = _x(tn);
       
-      const sh=ls.map(i=>{
-        const rn=i[_f2[0]]||i[_f2[1]]||i[_f2[2]]||i[_f2[3]]||"?";
+      const sh = ls.map(i => {
+        const rn = i[_f2[0]] || i[_f2[1]] || i[_f2[2]] || i[_f2[3]] || "?";
         return _x(rn);
       });
       
-      const basePred=_a(sh);
+      const basePred = _a(sh);
       
-      if(_lp!==tp){
-        if(_p){
-          const im=_p.pred===ts;
-          const re={per:tp,pred:_p.pred,act:ts,res:im?_0x4a[2]:_0x4a[3],num:tn};
+      if(_lp !== tp) {
+        if(_p) {
+          const im = _p.pred === ts;
+          const re = { 
+            per: tp, 
+            pred: _p.pred, 
+            act: ts, 
+            res: im ? _0x4a[2] : _0x4a[3], 
+            num: tn 
+          };
           _h.unshift(re);
-          if(_h.length>50)_h=_h.slice(0,50);
+          // UNLIMITED HISTORY - Remove limit
+          if(_h.length > 200) _h = _h.slice(0, 200); // Keep last 200
         }
         
-        // AI Decision
         const aiResult = aiEngine(basePred.p, basePred.c, _h);
         _c = aiResult;
-        _p = {..._c};
-        _lp=tp;
+        _p = { ..._c };
+        _lp = tp;
       } else {
-        // Just show prediction without updating
         const aiResult = aiEngine(basePred.p, basePred.c, _h);
         _c = aiResult;
       }
       
-      const cr=document.getElementById("currPred"),
-      cb=document.getElementById("confBar"),
-      cl=document.getElementById("confLabel"),
-      am=document.getElementById("aiMsg");
+      const cr = document.getElementById("currPred");
+      const cb = document.getElementById("confBar");
+      const cl = document.getElementById("confLabel");
+      const am = document.getElementById("aiMsg");
       
-      cr.innerHTML=`<span class="prediction-${_c.pred.toLowerCase()}">${_c.pred}</span>`;
-      cb.style.width=_c.conf+'%';
-      am.textContent=_c.msg;
+      cr.innerHTML = `<span class="prediction-${_c.pred.toLowerCase()}">${_c.pred}</span>`;
+      cb.style.width = _c.conf + '%';
+      am.textContent = _c.msg;
       
-      if(_c.conf>=70)cl.innerHTML='<span class="confidence-high">HIGH CONFIDENCE</span>';
-      else cl.innerHTML='<span class="confidence-low">LOW CONFIDENCE</span>';
+      if(_c.conf >= 70) cl.innerHTML = '<span class="confidence-high">HIGH CONFIDENCE</span>';
+      else cl.innerHTML = '<span class="confidence-low">LOW CONFIDENCE</span>';
       
-      let wc=0,lc=0;
-      _h.forEach(e=>{
-        if(e.res===_0x4a[2])wc++;
-        if(e.res===_0x4a[3])lc++;
+      let wc = 0, lc = 0;
+      _h.forEach(e => {
+        if(e.res === _0x4a[2]) wc++;
+        if(e.res === _0x4a[3]) lc++;
       });
       
-      const st=_calcStreak(_h);
+      const st = _calcStreak(_h);
       
-      ls.forEach((it,ix)=>{
-        const tr=document.createElement("tr"),
-        tdp=document.createElement("td");
-        tdp.className="period-cell";
-        const pv=String(it[_f1[0]]||it[_f1[1]]||it[_f1[2]]||it[_f1[3]]||it[_f1[4]]||it[_f4[0]]||it[_f4[1]]||it[_f4[2]]||'');
-        tdp.textContent=pv||"N/A";
+      ls.forEach((it, ix) => {
+        const tr = document.createElement("tr");
+        const tdp = document.createElement("td");
+        tdp.className = "period-cell";
+        const pv = String(it[_f1[0]] || it[_f1[1]] || it[_f1[2]] || it[_f1[3]] || it[_f1[4]] || it[_f4[0]] || it[_f4[1]] || it[_f4[2]] || '');
+        tdp.textContent = pv || "N/A";
         
-        const rn=it[_f2[0]]||it[_f2[1]]||it[_f2[2]]||it[_f2[3]]||"?",
-        tdn=document.createElement("td");
-        tdn.className="number-cell";
-        const ns=document.createElement("span"),
-        co=(it[_f3[0]]||it[_f3[1]]||"").toLowerCase();
+        const rn = it[_f2[0]] || it[_f2[1]] || it[_f2[2]] || it[_f2[3]] || "?";
+        const tdn = document.createElement("td");
+        tdn.className = "number-cell";
+        const ns = document.createElement("span");
+        const co = (it[_f3[0]] || it[_f3[1]] || "").toLowerCase();
         
-        if(co==='red'){
-          ns.style.color='#ff0055';
-          ns.style.textShadow='0 0 10px #ff0055';
-        }else if(co==='green'){
-          ns.style.color='#00ff41';
-          ns.style.textShadow='0 0 10px #00ff41';
-        }else if(co==='violet'||co==='purple'){
-          ns.style.color='#aa00ff';
-          ns.style.textShadow='0 0 10px #aa00ff';
+        if(co === 'red') {
+          ns.style.color = '#ff0055';
+          ns.style.textShadow = '0 0 10px #ff0055';
+        } else if(co === 'green') {
+          ns.style.color = '#00ff41';
+          ns.style.textShadow = '0 0 10px #00ff41';
+        } else if(co === 'violet' || co === 'purple') {
+          ns.style.color = '#aa00ff';
+          ns.style.textShadow = '0 0 10px #aa00ff';
         }
-        ns.textContent=rn;
+        ns.textContent = rn;
         tdn.appendChild(ns);
         
-        const tds=document.createElement("td");
-        tds.textContent=sh[ix];
+        const tds = document.createElement("td");
+        tds.textContent = sh[ix];
         
-        const tdc=document.createElement("td");
-        tdc.className="color-cell";
-        const nv=parseInt(rn),
-        cls=_g(nv,co);
-        cls.forEach(c=>{
-          const dt=document.createElement("span");
-          dt.className=`color-dot ${c}`;
+        const tdc = document.createElement("td");
+        tdc.className = "color-cell";
+        const nv = parseInt(rn);
+        const cls = _g(nv, co);
+        cls.forEach(c => {
+          const dt = document.createElement("span");
+          dt.className = `color-dot ${c}`;
           tdc.appendChild(dt);
         });
         
-        const tdr=document.createElement("td"),
-        mr=_h.find(q=>String(q.per)===String(pv));
-        if(mr){
-          if(mr.res===_0x4a[2]){
-            tdr.className="result-cell result-win";
-            tdr.textContent="✓ WIN";
-          }else{
-            tdr.className="result-cell result-loss";
-            tdr.textContent="✗ LOSS";
+        const tdr = document.createElement("td");
+        const mr = _h.find(q => String(q.per) === String(pv));
+        if(mr) {
+          if(mr.res === _0x4a[2]) {
+            tdr.className = "result-cell result-win";
+            tdr.textContent = "✓ WIN";
+          } else {
+            tdr.className = "result-cell result-loss";
+            tdr.textContent = "✗ LOSS";
           }
-        }else tdr.textContent="-";
+        } else {
+          tdr.textContent = "-";
+        }
         
         tr.appendChild(tdp);
         tr.appendChild(tdn);
@@ -501,25 +677,25 @@ setInterval(drawMatrix,50);
         tb.appendChild(tr);
       });
       
-      const to=wc+lc,
-      wrt=to>0?Math.round((wc/to)*100):0;
-      document.getElementById('wc').textContent=wc;
-      document.getElementById('lc').textContent=lc;
-      document.getElementById('tc').textContent=to;
-      document.getElementById('wr').textContent=wrt+'%';
-      document.getElementById('mw').textContent=st.mw;
-      document.getElementById('ml').textContent=st.ml;
+      const to = wc + lc;
+      const wrt = to > 0 ? Math.round((wc / to) * 100) : 0;
+      document.getElementById('wc').textContent = wc;
+      document.getElementById('lc').textContent = lc;
+      document.getElementById('tc').textContent = to;
+      document.getElementById('wr').textContent = wrt + '%';
+      document.getElementById('mw').textContent = st.mw;
+      document.getElementById('ml').textContent = st.ml;
       
-    }catch(e){
-      const _em=_d('5b204552524f52205d');
-      document.getElementById("tb").innerHTML=`<tr><td colspan="5" class="loading">${_em}</td></tr>`;
+    } catch(e) {
+      const _em = _d('5b204552524f52205d');
+      document.getElementById("tb").innerHTML = `<tr><td colspan="5" class="loading">${_em}</td></tr>`;
     }
   };
   
   _l();
   _s();
 })();
-</script>
-
+  <script>
+  
 </body>
 </html>
