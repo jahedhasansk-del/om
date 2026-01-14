@@ -3,698 +3,411 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>WinGo AI Signal</title>
+<title>WinGo Pro Signal</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#0a0e27;min-height:100vh;padding:15px;overflow-x:hidden}.matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.03;pointer-events:none}.container{max-width:700px;margin:0 auto;position:relative;z-index:1}.header{text-align:center;margin-bottom:20px;position:relative}.logo{font-size:28px;color:#00ff41;text-shadow:0 0 20px #00ff41;animation:glow 2s ease-in-out infinite;margin-bottom:8px}@keyframes glow{0%,100%{text-shadow:0 0 20px #00ff41}50%{text-shadow:0 0 30px #00ff41,0 0 60px #00ff41}}.title{color:#00ff41;font-size:13px;letter-spacing:2px;text-transform:uppercase}.badge{display:inline-block;background:linear-gradient(135deg,#ff0055,#aa00ff);padding:4px 12px;border-radius:20px;font-size:10px;margin-top:5px;animation:badgePulse 2s infinite}@keyframes badgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}.scan-line{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,#00ff41,transparent);animation:scan 3s linear infinite}@keyframes scan{0%{top:0}100%{top:100%}}.ai-status{background:linear-gradient(135deg,rgba(170,0,255,.2),rgba(255,0,85,.2));border:1px solid #aa00ff;border-radius:8px;padding:10px;margin-bottom:15px;text-align:center}.ai-indicator{display:inline-flex;align-items:center;gap:8px;color:#aa00ff;font-size:12px;font-weight:bold}.ai-dot{width:8px;height:8px;background:#aa00ff;border-radius:50%;animation:aiPulse 1.5s infinite}@keyframes aiPulse{0%,100%{opacity:1;box-shadow:0 0 10px #aa00ff}50%{opacity:.3;box-shadow:0 0 20px #aa00ff}}.prediction-container{background:linear-gradient(135deg,rgba(0,255,65,.1) 0%,rgba(0,100,255,.1) 100%);border:2px solid #00ff41;border-radius:12px;overflow:hidden;box-shadow:0 0 30px rgba(0,255,65,.3);margin-bottom:20px;animation:borderPulse 2s ease-in-out infinite}@keyframes borderPulse{0%,100%{box-shadow:0 0 30px rgba(0,255,65,.3)}50%{box-shadow:0 0 50px rgba(0,255,65,.5)}}.prediction-header{padding:12px;text-align:center;background:linear-gradient(135deg,rgba(0,255,65,.2) 0%,rgba(0,100,255,.2) 100%);border-bottom:1px solid #00ff41}.prediction-header h3{color:#00ff41;font-size:15px;letter-spacing:2px;text-transform:uppercase}.prediction-content{padding:30px 20px;text-align:center}.prediction-result{font-size:56px;font-weight:bold;margin-bottom:15px;text-transform:uppercase;letter-spacing:4px;animation:fadeInScale 1s ease-out}@keyframes fadeInScale{0%{opacity:0;transform:scale(.5)}100%{opacity:1;transform:scale(1)}}.prediction-big{color:#ff0055;text-shadow:0 0 20px #ff0055}.prediction-small{color:#00ff41;text-shadow:0 0 20px #00ff41}.ai-adjustment{font-size:11px;color:#aa00ff;margin-top:10px;padding:8px;background:rgba(170,0,255,.1);border-radius:6px;border:1px solid rgba(170,0,255,.3)}.confidence-bar{width:180px;height:8px;background:rgba(255,255,255,.1);border-radius:4px;margin:15px auto;overflow:hidden}.confidence-fill{height:100%;background:linear-gradient(90deg,#ff0055,#ffaa00,#00ff41);border-radius:4px;animation:fillBar 2s ease-out;position:relative}@keyframes fillBar{0%{width:0%}}.confidence-fill::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer 2s infinite}@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}.confidence-label{color:#00ff41;font-size:12px;margin-top:8px;letter-spacing:1px;text-transform:uppercase}.confidence-high{color:#00ff41;text-shadow:0 0 10px #00ff41}.confidence-low{color:#ff0055;text-shadow:0 0 10px #ff0055}.stats-container{background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,rgba(0,100,255,.05) 100%);border:1px solid rgba(0,255,65,.3);border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 0 20px rgba(0,255,65,.2)}.stats-info{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.stat-item{text-align:center;padding:12px 8px;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.2);border-radius:8px;transition:all .3s ease}.stat-item:hover{transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,255,65,.3)}.stat-label{font-size:9px;color:#00ff41;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;opacity:.7}.stat-value{font-size:24px;font-weight:bold;color:#00ff41;text-shadow:0 0 10px #00ff41}.stat-win{color:#00ff41;text-shadow:0 0 15px #00ff41}.stat-loss{color:#ff0055;text-shadow:0 0 15px #ff0055}.stat-streak{color:#ffaa00;text-shadow:0 0 15px #ffaa00}.table-container{background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,rgba(0,100,255,.05) 100%);border:1px solid rgba(0,255,65,.3);border-radius:12px;overflow:hidden;box-shadow:0 0 20px rgba(0,255,65,.2)}table{width:100%;border-collapse:collapse}thead{background:linear-gradient(135deg,rgba(0,255,65,.2) 0%,rgba(0,100,255,.2) 100%)}th{padding:12px 6px;text-align:center;font-weight:600;color:#00ff41;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #00ff41}tbody tr{background:rgba(0,0,0,.3);transition:all .3s ease;border-bottom:1px solid rgba(0,255,65,.1)}tbody tr:hover{background:rgba(0,255,65,.1);transform:scale(1.01);box-shadow:0 0 15px rgba(0,255,65,.3)}td{padding:10px 6px;text-align:center;color:#00ff41;font-size:11px}.period-cell{font-family:'Courier New',monospace;font-size:10px;opacity:.7}.number-cell{font-size:22px;font-weight:bold}.color-cell{display:flex;justify-content:center;align-items:center;gap:4px}.color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:2px solid rgba(0,255,65,.3);animation:dotPulse 2s infinite}@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}.red{background:#ff0055;box-shadow:0 0 8px #ff0055}.green{background:#00ff41;box-shadow:0 0 8px #00ff41}.violet{background:#aa00ff;box-shadow:0 0 8px #aa00ff}.result-cell{font-weight:bold;font-size:11px;padding:5px 8px;border-radius:4px}.result-win{color:#00ff41;background:rgba(0,255,65,.2);border:1px solid #00ff41;text-shadow:0 0 5px #00ff41}.result-loss{color:#ff0055;background:rgba(255,0,85,.2);border:1px solid #ff0055;text-shadow:0 0 5px #ff0055}.time-display{background:rgba(0,255,65,.1);padding:15px 30px;border-radius:12px;display:inline-block;margin-top:15px;border:1px solid rgba(0,255,65,.3);box-shadow:0 0 20px rgba(0,255,65,.2)}.current-time{font-size:28px;font-weight:bold;color:#00ff41;font-family:'Courier New',monospace;letter-spacing:2px;text-shadow:0 0 20px #00ff41}.seconds-highlight{color:#ff0055;font-size:32px;animation:pulse 1s infinite;text-shadow:0 0 20px #ff0055}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}.refresh-btn{position:fixed;bottom:25px;right:25px;background:linear-gradient(135deg,#00ff41 0%,#00aaff 100%);color:#0a0e27;border:none;padding:14px 24px;border-radius:40px;font-size:14px;font-weight:bold;cursor:pointer;box-shadow:0 0 30px rgba(0,255,65,.5);display:flex;align-items:center;gap:8px;transition:all .3s;z-index:1000;text-transform:uppercase;letter-spacing:1.5px}.refresh-btn:hover{transform:scale(1.08);box-shadow:0 0 50px rgba(0,255,65,.8)}.refresh-btn:active{transform:scale(.95)}.refresh-icon{font-size:18px}.refresh-icon.spinning{animation:spin .5s linear}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.loading{text-align:center;padding:15px;color:#00ff41;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}.update-time{text-align:center;margin-top:15px}@media (max-width:600px){.logo{font-size:22px}.title{font-size:10px;letter-spacing:1px}.stats-info{grid-template-columns:repeat(2,1fr);gap:10px}.prediction-result{font-size:40px;letter-spacing:2px}th,td{padding:8px 4px;font-size:10px}.number-cell{font-size:18px}.refresh-btn{bottom:15px;right:15px;padding:12px 20px;font-size:12px}.current-time{font-size:22px}.stat-value{font-size:20px}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;position:relative;overflow-x:hidden}
+body::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");z-index:0;opacity:.3}
+.container{max-width:900px;margin:0 auto;position:relative;z-index:1}
+.header{text-align:center;margin-bottom:30px;background:rgba(255,255,255,.95);padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(255,255,255,.1),transparent);animation:shine 3s infinite}
+@keyframes shine{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.logo{font-size:42px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;margin-bottom:10px;letter-spacing:2px}
+.subtitle{color:#666;font-size:14px;letter-spacing:3px;text-transform:uppercase;font-weight:600}
+.prediction-box{background:rgba(255,255,255,.95);border-radius:20px;padding:40px;margin-bottom:25px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}
+.prediction-box::after{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#667eea,#764ba2,#f093fb);animation:loading 2s ease-in-out infinite}
+@keyframes loading{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+.pred-title{text-align:center;color:#764ba2;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:25px}
+.pred-result{text-align:center;font-size:72px;font-weight:900;margin-bottom:20px;text-transform:uppercase;letter-spacing:8px;animation:popIn .6s cubic-bezier(0.68,-0.55,0.265,1.55)}
+@keyframes popIn{0%{opacity:0;transform:scale(.3) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
+.pred-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(245,87,108,.3))}
+.pred-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(79,172,254,.3))}
+.confidence-info{display:flex;justify-content:center;align-items:center;gap:15px;margin-top:20px;flex-wrap:wrap}
+.conf-badge{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:12px 30px;border-radius:50px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;box-shadow:0 10px 25px rgba(102,126,234,.4)}
+.pattern-badge{background:linear-gradient(135deg,#00f2fe 0%,#4facfe 100%);color:white;padding:12px 25px;border-radius:50px;font-weight:700;font-size:13px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin-bottom:25px}
+.stat-card{background:rgba(255,255,255,.95);border-radius:15px;padding:25px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:all .3s ease;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#667eea,#764ba2)}
+.stat-card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,0,0,.3)}
+.stat-label{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600}
+.stat-value{font-size:36px;font-weight:900;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-win{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-loss{background:linear-gradient(135deg,#f5576c 0%,#f093fb 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.history-section{background:rgba(255,255,255,.95);border-radius:20px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin-bottom:25px}
+.section-title{font-size:20px;font-weight:800;color:#764ba2;margin-bottom:20px;text-transform:uppercase;letter-spacing:2px;text-align:center}
+.match-info{background:rgba(255,215,0,.1);border-radius:15px;padding:15px;margin-top:15px;border:2px solid #ffd700}
+.match-title{font-size:14px;font-weight:700;color:#764ba2;margin-bottom:10px;text-align:center}
+.match-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.match-item{background:linear-gradient(135deg,#fff9e6 0%,#ffe8a3 100%);padding:8px 15px;border-radius:20px;font-size:12px;font-weight:600;color:#333;border:2px solid #ffd700}
+.table-wrapper{background:rgba(255,255,255,.95);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+table{width:100%;border-collapse:collapse}
+thead{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
+th{padding:18px 12px;text-align:center;font-weight:700;color:white;font-size:13px;text-transform:uppercase;letter-spacing:1px}
+tbody tr{transition:all .3s ease;border-bottom:1px solid #f0f0f0}
+tbody tr:hover{background:linear-gradient(135deg,rgba(102,126,234,.1) 0%,rgba(118,75,162,.1) 100%);transform:scale(1.01)}
+tbody tr.match-row{background:linear-gradient(135deg,rgba(255,215,0,.15) 0%,rgba(255,215,0,.25) 100%);border-left:5px solid #ffd700}
+tbody tr.match-row:hover{background:linear-gradient(135deg,rgba(255,215,0,.25) 0%,rgba(255,215,0,.35) 100%)}
+td{padding:16px 12px;text-align:center;color:#333;font-size:13px;font-weight:600}
+.period-cell{font-family:'Courier New',monospace;font-size:12px;color:#666}
+.num-cell{font-size:28px;font-weight:900}
+.num-cell.matched{color:#ffd700;text-shadow:0 2px 8px rgba(255,215,0,.6);font-size:32px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ffed4e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.size-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.size-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white}
+.size-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);color:white}
+.color-dots{display:flex;justify-content:center;gap:6px}
+.dot{width:18px;height:18px;border-radius:50%;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.dot-red{background:#f5576c}
+.dot-green{background:#00f2fe}
+.dot-violet{background:#764ba2}
+.result-badge{padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase}
+.result-win{background:#4facfe;color:white}
+.result-loss{background:#f5576c;color:white}
+.match-badge{background:#ffd700;color:#333;padding:4px 10px;border-radius:15px;font-size:10px;font-weight:700;margin-left:5px}
+.refresh-btn{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:18px 35px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(102,126,234,.5);display:flex;align-items:center;gap:10px;transition:all .3s;z-index:1000;text-transform:uppercase;letter-spacing:1px}
+.refresh-btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(102,126,234,.7)}
+.refresh-btn:active{transform:translateY(-1px)}
+.refresh-icon{font-size:20px;transition:transform .5s}
+.refresh-icon.spin{animation:rotate .5s linear}
+@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.time-display{text-align:center;margin-top:20px;padding:15px;background:rgba(255,255,255,.2);border-radius:15px;backdrop-filter:blur(10px)}
+.current-time{font-size:32px;font-weight:900;color:white;text-shadow:0 2px 10px rgba(0,0,0,.3);letter-spacing:2px}
+.loading{text-align:center;padding:20px;color:#764ba2;font-size:16px;font-weight:600}
+.data-count{text-align:center;color:white;font-size:13px;margin-top:10px;opacity:.8}
+@media (max-width:768px){
+.logo{font-size:32px}
+.pred-result{font-size:48px;letter-spacing:4px}
+.stats-grid{grid-template-columns:repeat(2,1fr)}
+.refresh-btn{bottom:20px;right:20px;padding:15px 25px;font-size:14px}
+th,td{padding:12px 8px;font-size:11px}
+.num-cell{font-size:22px}
+}
 </style>
 </head>
 <body>
-<canvas class="matrix-bg" id="matrix"></canvas>
 <div class="container">
 <div class="header">
-<div class="scan-line"></div>
-<div class="logo">⚡ WINGO AI</div>
-<div class="title">AI ADAPTIVE ANALYZER v5.0</div>
-<div class="badge">🤖 AI POWERED</div>
+<div class="logo">⚡ WINGO PRO SIGNAL</div>
+<div class="subtitle">Advanced Pattern Analyzer</div>
+<div class="data-count" id="dataCount">Loading data...</div>
 </div>
-<div class="ai-status">
-<div class="ai-indicator">
-<span class="ai-dot"></span>
-<span id="aiStatus">AI LEARNING ACTIVE</span>
-</div>
-</div>
-<div class="prediction-container">
-<div class="prediction-header"><h3>🔮 AI PREDICTION</h3></div>
-<div class="prediction-content">
-<div class="prediction-result" id="currPred"><div class="loading" style="font-size:16px">[ AI ANALYZING... ]</div></div>
-<div class="ai-adjustment" id="aiMsg">AI initializing pattern recognition...</div>
-<div class="confidence-bar"><div class="confidence-fill" id="confBar" style="width:0%"></div></div>
-<div class="confidence-label" id="confLabel">ANALYZING</div>
+
+<div class="prediction-box">
+<div class="pred-title">🎯 Next Prediction</div>
+<div class="pred-result" id="predResult"><div class="loading">Analyzing...</div></div>
+<div class="confidence-info">
+<div class="conf-badge" id="confBadge">Calculating...</div>
+<div class="pattern-badge" id="patternBadge" style="display:none">Matches: <span id="patternMatch">0</span></div>
 </div>
 </div>
-<div class="stats-container">
-<div class="stats-info">
-<div class="stat-item"><div class="stat-label">Win</div><div class="stat-value stat-win" id="wc">0</div></div>
-<div class="stat-item"><div class="stat-label">Loss</div><div class="stat-value stat-loss" id="lc">0</div></div>
-<div class="stat-item"><div class="stat-label">Total</div><div class="stat-value" id="tc">0</div></div>
-<div class="stat-item"><div class="stat-label">Accuracy</div><div class="stat-value" id="wr">0%</div></div>
-<div class="stat-item"><div class="stat-label">Win Streak</div><div class="stat-value stat-streak" id="mw">0</div></div>
-<div class="stat-item"><div class="stat-label">Loss Streak</div><div class="stat-value stat-streak" id="ml">0</div></div>
+
+
+
+<div class="history-section">
+<div class="section-title">🔢 Number Pattern Analysis</div>
+<div id="numberPatternInfo" class="match-info">
+<div class="match-title">Last Number: <span id="lastNumber" style="font-size:20px;color:#f5576c">-</span> → Next Prediction</div>
+<div class="match-list" id="numberMatchList"></div>
 </div>
 </div>
-<div class="table-container">
+
+<div class="history-section">
+<div class="section-title">🎨 Color Pattern Analysis</div>
+<div id="colorPatternInfo" class="match-info">
+<div class="match-title">Last 3 Colors Pattern Match</div>
+<div class="match-list" id="colorMatchList"></div>
+</div>
+</div>
+
+<div class="table-wrapper">
 <table>
 <thead><tr><th>Period</th><th>Number</th><th>Size</th><th>Color</th><th>Result</th></tr></thead>
-<tbody id="tb"><tr><td colspan="5" class="loading">[ LOADING DATA... ]</td></tr></tbody>
+<tbody id="tableBody"><tr><td colspan="5" class="loading">Loading data...</td></tr></tbody>
 </table>
 </div>
-<p class="update-time"><span class="time-display"><div class="current-time" id="rt">00:00:00</div></span></p>
+
+<div class="time-display"><div class="current-time" id="currentTime">00:00:00</div></div>
 </div>
-<button class="refresh-btn" onclick="_r()"><span class="refresh-icon" id="ri">⟳</span><span>Refresh</span></button>
+
+<button class="refresh-btn" onclick="refreshData()"><span class="refresh-icon" id="refreshIcon">↻</span><span>Refresh</span></button>
 
 <script>
-  // ============================================
-// PART 1: Matrix Background Animation
-// ============================================
-const c = document.getElementById('matrix');
-const ctx = c.getContext('2d');
-c.width = window.innerWidth;
-c.height = window.innerHeight;
+const API='https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json';
+let currentPred=null;
+let lastPeriod=null;
+let allPeriods=[];
+let numberMatches=[];
+let colorMatches=[];
 
-const chars = '01';
-const fontSize = 14;
-const cols = c.width / fontSize;
-const drops = [];
-
-for(let i = 0; i < cols; i++) {
-  drops[i] = 1;
+function getSize(n){return parseInt(n)>=5?'Big':'Small'}
+function getColors(n){
+const num=parseInt(n);
+if(num===0)return['red','violet'];
+if(num===5)return['green','violet'];
+return num%2===0?['red']:['green'];
+}
+function getColorString(n){
+const colors=getColors(n);
+return colors.join(',');
 }
 
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(10,14,39,0.05)';
-  ctx.fillRect(0, 0, c.width, c.height);
-  ctx.fillStyle = '#00ff41';
-  ctx.font = fontSize + 'px monospace';
-  
-  for(let i = 0; i < drops.length; i++) {
-    const t = chars[Math.floor(Math.random() * chars.length)];
-    ctx.fillText(t, i * fontSize, drops[i] * fontSize);
-    
-    if(drops[i] * fontSize > c.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
-    drops[i]++;
-  }
+let periodsStorage=[];
+
+function savePeriods(data){
+periodsStorage=data;
 }
 
-setInterval(drawMatrix, 50);
+function loadSavedPeriods(){
+return periodsStorage;
+}
 
-// ============================================
-// PART 2: Main Prediction System with Advanced AI
-// ============================================
-(function() {
-  const _0x4a = ['Big', 'Small', 'win', 'loss'];
-  let _p = null, _c = null, _h = [], _lp = null, _ct;
-  
-  // Enhanced AI State
-  let AI = {
-    winStreak: 0,
-    lossStreak: 0,
-    mode: 'normal',
-    lastMode: 'normal',
-    last10Pattern: [],
-    positionPattern: []
-  };
-  
-  const _d = h => {
-    let s = '';
-    for(let i = 0; i < h.length; i += 2)
-      s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
-    return s;
-  };
-  
-  const _k = {
-    u1: _d('68747470733a2f2f647261772e61722d6c6f74746572793031'),
-    u2: _d('2e636f6d2f57696e476f2f57696e476f5f314d2f'),
-    u3: _d('476574486973746f7279497373756550616765'),
-    u4: _d('2e6a736f6e'),
-    i: 1000,
-    m: 59
-  };
-  
-  const _x = n => parseInt(n) >= 5 ? _0x4a[0] : _0x4a[1];
-  
-  const _g = (n, c) => {
-    let a = [];
-    if(c === 'red') a.push('red');
-    else if(c === 'green') a.push('green');
-    else if(c === 'violet') a.push('violet');
-    if(n === 0) { a.push('violet'); a.push('red'); }
-    else if(n === 5) { a.push('violet'); a.push('green'); }
-    return a;
-  };
-  
-  // ============================================
-  // ADVANCED AI DECISION ENGINE
-  // ============================================
-  const aiEngine = (basePred, baseConf, history) => {
-    if(history.length < 2) {
-      return {
-        pred: basePred,
-        conf: baseConf,
-        msg: '🤖 AI Learning: Collecting data...',
-        mode: 'normal'
-      };
-    }
-    
-    // Update streaks
-    const lastRes = history[0]?.res;
-    if(lastRes === 'win') {
-      AI.winStreak++;
-      AI.lossStreak = 0;
-    } else if(lastRes === 'loss') {
-      AI.lossStreak++;
-      AI.winStreak = 0;
-    }
-    
-    let finalPred = basePred;
-    let finalConf = baseConf;
-    let aiMsg = '';
-    let mode = 'normal';
-    
-    // ============================================
-    // 60% WEIGHT: Last 10 History Pattern Analysis
-    // ============================================
-    let patternScore = 0;
-    let patternPrediction = basePred;
-    
-    const last10 = history.slice(0, 10);
-    if(last10.length >= 10) {
-      const bigCount = last10.filter(h => h.act === 'Big').length;
-      const smallCount = last10.filter(h => h.act === 'Small').length;
-      
-      // Pattern detection
-      let consecutiveSame = 0;
-      let alternatingCount = 0;
-      
-      for(let i = 0; i < last10.length - 1; i++) {
-        if(last10[i].act === last10[i+1].act) {
-          consecutiveSame++;
-        } else {
-          alternatingCount++;
-        }
-      }
-      
-      // If alternating pattern detected
-      if(alternatingCount >= 7) {
-        const lastAct = last10[0].act;
-        patternPrediction = lastAct === 'Big' ? 'Small' : 'Big';
-        patternScore = 85;
-      }
-      // If one side dominates
-      else if(bigCount >= 7) {
-        patternPrediction = 'Small'; // Reverse logic
-        patternScore = 75;
-      }
-      else if(smallCount >= 7) {
-        patternPrediction = 'Big'; // Reverse logic
-        patternScore = 75;
-      }
-      // Balanced pattern
-      else if(Math.abs(bigCount - smallCount) <= 2) {
-        patternPrediction = basePred;
-        patternScore = 60;
-      }
-      else {
-        patternPrediction = bigCount > smallCount ? 'Small' : 'Big';
-        patternScore = 65;
-      }
-    }
-    
-    // ============================================
-    // 20% WEIGHT: Win/Loss Streak Analysis
-    // ============================================
-    let streakScore = 0;
-    let streakPrediction = basePred;
-    
-    if(AI.lossStreak >= 3) {
-      streakPrediction = basePred === 'Big' ? 'Small' : 'Big';
-      streakScore = 80 + (AI.lossStreak * 3);
-      mode = 'reverse';
-      aiMsg = `🔄 LOSS REVERSE: ${AI.lossStreak} consecutive losses`;
-    }
-    else if(AI.lossStreak >= 2) {
-      streakPrediction = basePred === 'Big' ? 'Small' : 'Big';
-      streakScore = 70;
-    }
-    else if(AI.winStreak >= 5) {
-      streakPrediction = basePred;
-      streakScore = 85;
-      mode = 'boost';
-      aiMsg = `✅ WIN BOOST: ${AI.winStreak} consecutive wins`;
-    }
-    else if(AI.winStreak >= 3) {
-      streakPrediction = basePred;
-      streakScore = 75;
-    }
-    else {
-      streakPrediction = basePred;
-      streakScore = 50;
-    }
-    
-    // ============================================
-    // 10% WEIGHT: Position Pattern (4-cell check)
-    // ============================================
-    let positionScore = 0;
-    let positionPrediction = basePred;
-    
-    if(history.length >= 6) {
-      // Check if position 1 and position 5 predictions match
-      const pos1Match = history[0].pred === history[0].act;
-      const pos5Match = history[4]?.pred === history[4]?.act;
-      
-      // Check previous 4 cells pattern (positions 2,3,4,5)
-      const prev4Cells = history.slice(1, 5);
-      let prev4Matches = 0;
-      prev4Cells.forEach(h => {
-        if(h.pred === h.act) prev4Matches++;
-      });
-      
-      // If last 4 cells had good predictions, follow pattern
-      if(prev4Matches >= 3) {
-        positionPrediction = basePred;
-        positionScore = 75;
-      }
-      // If last 4 cells had bad predictions, reverse
-      else if(prev4Matches <= 1) {
-        positionPrediction = basePred === 'Big' ? 'Small' : 'Big';
-        positionScore = 70;
-      }
-      else {
-        positionPrediction = basePred;
-        positionScore = 50;
-      }
-    }
-    
-    // ============================================
-    // 10% WEIGHT: Accuracy Range Analysis
-    // ============================================
-    let accuracyScore = 0;
-    let accuracyPrediction = basePred;
-    
-    const totalGames = history.length;
-    if(totalGames >= 8) {
-      const wins = history.filter(h => h.res === 'win').length;
-      const accuracy = (wins / totalGames) * 100;
-      
-      // 49-60% accuracy range: Follow prediction
-      if(accuracy >= 49 && accuracy <= 60) {
-        accuracyPrediction = basePred;
-        accuracyScore = 70;
-        if(!aiMsg) aiMsg = `📊 Accuracy ${Math.round(accuracy)}%: Following pattern`;
-      }
-      // 65%+ accuracy: Reduce following (reverse)
-      else if(accuracy >= 65) {
-        accuracyPrediction = basePred === 'Big' ? 'Small' : 'Big';
-        accuracyScore = 75;
-        if(!aiMsg) aiMsg = `⚠️ High Accuracy ${Math.round(accuracy)}%: Reversing strategy`;
-      }
-      // Below 49%: Strong reverse
-      else if(accuracy < 49) {
-        accuracyPrediction = basePred === 'Big' ? 'Small' : 'Big';
-        accuracyScore = 80;
-        if(!aiMsg) aiMsg = `🔄 Low Accuracy ${Math.round(accuracy)}%: Strong reverse`;
-      }
-      else {
-        accuracyPrediction = basePred;
-        accuracyScore = 55;
-      }
-    }
-    
-    // ============================================
-    // WEIGHTED DECISION MAKING
-    // ============================================
-    const weights = {
-      pattern: 0.60,
-      streak: 0.20,
-      position: 0.10,
-      accuracy: 0.10
-    };
-    
-    // Calculate weighted scores for Big and Small
-    let bigScore = 0;
-    let smallScore = 0;
-    
-    // Pattern contribution (60%)
-    if(patternPrediction === 'Big') {
-      bigScore += patternScore * weights.pattern;
-    } else {
-      smallScore += patternScore * weights.pattern;
-    }
-    
-    // Streak contribution (20%)
-    if(streakPrediction === 'Big') {
-      bigScore += streakScore * weights.streak;
-    } else {
-      smallScore += streakScore * weights.streak;
-    }
-    
-    // Position contribution (10%)
-    if(positionPrediction === 'Big') {
-      bigScore += positionScore * weights.position;
-    } else {
-      smallScore += positionScore * weights.position;
-    }
-    
-    // Accuracy contribution (10%)
-    if(accuracyPrediction === 'Big') {
-      bigScore += accuracyScore * weights.accuracy;
-    } else {
-      smallScore += accuracyScore * weights.accuracy;
-    }
-    
-    // Final decision
-    if(bigScore > smallScore) {
-      finalPred = 'Big';
-      finalConf = Math.min(98, Math.round(bigScore));
-    } else {
-      finalPred = 'Small';
-      finalConf = Math.min(98, Math.round(smallScore));
-    }
-    
-    // Default message if not set
-    if(!aiMsg) {
-      aiMsg = `🤖 AI Analysis: Pattern=${patternScore}% Streak=${streakScore}% Position=${positionScore}% Accuracy=${accuracyScore}%`;
-    }
-    
-    // Update AI status
-    const statusEl = document.getElementById('aiStatus');
-    if(statusEl) {
-      if(mode === 'reverse') {
-        statusEl.textContent = 'AI REVERSE MODE';
-        statusEl.style.color = '#ff0055';
-      } else if(mode === 'boost') {
-        statusEl.textContent = 'AI BOOST MODE';
-        statusEl.style.color = '#00ff41';
-      } else {
-        statusEl.textContent = 'AI LEARNING ACTIVE';
-        statusEl.style.color = '#aa00ff';
-      }
-    }
-    
-    return {
-      pred: finalPred,
-      conf: Math.max(50, finalConf),
-      msg: aiMsg,
-      mode: mode
-    };
-  };
-  
-  // Base Prediction Algorithm
-  const _a = d => {
-    if(d.length < 3) return { p: _0x4a[0], c: 55 };
-    
-    let cs = 0, cb = 0, lcs = 0, lcb = 0;
-    for(let i = 0; i < d.length; i++) {
-      if(d[i] === _0x4a[1]) {
-        cs++;
-        if(cb > 0) lcb = cb;
-        cb = 0;
-      } else {
-        cb++;
-        if(cs > 0) lcs = cs;
-        cs = 0;
-      }
-    }
-    
-    const lastWasBig = d[0] === _0x4a[0];
-    let isAlternating = true;
-    let alternateCount = 0;
-    
-    if(d.length >= 3) {
-      for(let i = 1; i < Math.min(6, d.length); i++) {
-        if(d[i] === d[i-1]) {
-          isAlternating = false;
-          break;
-        }
-        alternateCount++;
-      }
-    }
-    
-    let bigCount = 0, smallCount = 0;
-    const checkLen = Math.min(10, d.length);
-    for(let i = 0; i < checkLen; i++) {
-      if(d[i] === _0x4a[0]) bigCount++;
-      else smallCount++;
-    }
-    
-    let pred = '';
-    let conf = 50;
-    
-    if(isAlternating && alternateCount >= 4) {
-      pred = lastWasBig ? _0x4a[1] : _0x4a[0];
-      conf = 88 + Math.min(alternateCount * 2, 10);
-    }
-    else if(cs >= 7) {
-      pred = _0x4a[0];
-      conf = 92 + Math.min((cs - 7) * 2, 6);
-    }
-    else if(cb >= 7) {
-      pred = _0x4a[1];
-      conf = 92 + Math.min((cb - 7) * 2, 6);
-    }
-    else if(cs >= 5) {
-      pred = _0x4a[0];
-      conf = 82 + (cs * 3);
-    }
-    else if(cb >= 5) {
-      pred = _0x4a[1];
-      conf = 82 + (cb * 3);
-    }
-    else if(cs === 4) {
-      pred = _0x4a[0];
-      conf = 78;
-    }
-    else if(cb === 4) {
-      pred = _0x4a[1];
-      conf = 78;
-    }
-    else if(cs === 3) {
-      pred = _0x4a[0];
-      conf = 70 + Math.random() * 8;
-    }
-    else if(cb === 3) {
-      pred = _0x4a[1];
-      conf = 70 + Math.random() * 8;
-    }
-    else if(cs === 2) {
-      pred = _0x4a[0];
-      conf = 62 + Math.random() * 10;
-    }
-    else if(cb === 2) {
-      pred = _0x4a[1];
-      conf = 62 + Math.random() * 10;
-    }
-    else {
-      pred = lastWasBig ? _0x4a[1] : _0x4a[0];
-      conf = 52 + Math.random() * 10;
-    }
-    
-    conf = Math.min(98, Math.max(48, Math.round(conf)));
-    return { p: pred, c: conf };
-  };
-  
-  const _calcStreak = arr => {
-    let mw = 0, ml = 0, cw = 0, cl = 0;
-    arr.forEach(e => {
-      if(e.res === _0x4a[2]) {
-        cw++;
-        if(cl > ml) ml = cl;
-        cl = 0;
-      } else if(e.res === _0x4a[3]) {
-        cl++;
-        if(cw > mw) mw = cw;
-        cw = 0;
-      }
-    });
-    if(cw > mw) mw = cw;
-    if(cl > ml) ml = cl;
-    return { mw, ml };
-  };
-  
-  const _u = () => {
-    const n = new Date();
-    const h = String(n.getHours()).padStart(2, '0');
-    const m = String(n.getMinutes()).padStart(2, '0');
-    const s = String(n.getSeconds()).padStart(2, '0');
-    const e = document.getElementById('rt');
-    if(e) e.innerHTML = `${h}:${m}:<span class="seconds-highlight">${s}</span>`;
-    if(n.getSeconds() === _k.m) _l();
-  };
-  
-  const _s = () => {
-    _u();
-    clearInterval(_ct);
-    _ct = setInterval(_u, _k.i);
-  };
-  
-  window._r = () => {
-    const ic = document.getElementById('ri');
-    if(ic) {
-      ic.classList.add('spinning');
-      setTimeout(() => ic.classList.remove('spinning'), 500);
-    }
-    _l();
-  };
-  
-  const _l = async () => {
-    try {
-      const t = new Date().getTime();
-      const _u = _k.u1 + _k.u2 + _k.u3 + _k.u4;
-      const _q = `?${_d('7473')}=${t}`;
-      const _f = _u + _q;
-      const r = await fetch(_f);
-      const d = await r.json();
-      
-      let ls = [];
-      const _pk = ['data', 'list'];
-      const _sk = ['list'];
-      
-      if(d && d[_pk[0]] && d[_pk[0]][_pk[1]]) ls = d[_pk[0]][_pk[1]];
-      else if(d && d[_sk[0]]) ls = d[_sk[0]];
-      else if(Array.isArray(d)) ls = d;
-      
-      // UNLIMITED LOADING - Remove limit
-      ls = ls.slice(0, Math.min(100, ls.length)); // Show up to 100 records
-      
-      const tb = document.getElementById("tb");
-      tb.innerHTML = "";
-      
-      if(ls.length === 0) {
-        tb.innerHTML = '<tr><td colspan="5" class="loading">[ NO DATA ]</td></tr>';
-        return;
-      }
-      
-      const _f1 = ['issue', 'period', 'issueNo', 'periodId', 'issueNumber'];
-      const _f2 = ['result', 'number', 'num', 'openResult'];
-      const _f3 = ['color', 'colour'];
-      const _f4 = ['gameNo', 'drawNo', 'id'];
-      
-      const tp = String(ls[0][_f1[0]] || ls[0][_f1[1]] || ls[0][_f1[2]] || ls[0][_f1[3]] || ls[0][_f1[4]] || '');
-      const tn = String(ls[0][_f2[0]] || ls[0][_f2[1]] || ls[0][_f2[2]] || ls[0][_f2[3]] || '');
-      const ts = _x(tn);
-      
-      const sh = ls.map(i => {
-        const rn = i[_f2[0]] || i[_f2[1]] || i[_f2[2]] || i[_f2[3]] || "?";
-        return _x(rn);
-      });
-      
-      const basePred = _a(sh);
-      
-      if(_lp !== tp) {
-        if(_p) {
-          const im = _p.pred === ts;
-          const re = { 
-            per: tp, 
-            pred: _p.pred, 
-            act: ts, 
-            res: im ? _0x4a[2] : _0x4a[3], 
-            num: tn 
-          };
-          _h.unshift(re);
-          // UNLIMITED HISTORY - Remove limit
-          if(_h.length > 200) _h = _h.slice(0, 200); // Keep last 200
-        }
-        
-        const aiResult = aiEngine(basePred.p, basePred.c, _h);
-        _c = aiResult;
-        _p = { ..._c };
-        _lp = tp;
-      } else {
-        const aiResult = aiEngine(basePred.p, basePred.c, _h);
-        _c = aiResult;
-      }
-      
-      const cr = document.getElementById("currPred");
-      const cb = document.getElementById("confBar");
-      const cl = document.getElementById("confLabel");
-      const am = document.getElementById("aiMsg");
-      
-      cr.innerHTML = `<span class="prediction-${_c.pred.toLowerCase()}">${_c.pred}</span>`;
-      cb.style.width = _c.conf + '%';
-      am.textContent = _c.msg;
-      
-      if(_c.conf >= 70) cl.innerHTML = '<span class="confidence-high">HIGH CONFIDENCE</span>';
-      else cl.innerHTML = '<span class="confidence-low">LOW CONFIDENCE</span>';
-      
-      let wc = 0, lc = 0;
-      _h.forEach(e => {
-        if(e.res === _0x4a[2]) wc++;
-        if(e.res === _0x4a[3]) lc++;
-      });
-      
-      const st = _calcStreak(_h);
-      
-      ls.forEach((it, ix) => {
-        const tr = document.createElement("tr");
-        const tdp = document.createElement("td");
-        tdp.className = "period-cell";
-        const pv = String(it[_f1[0]] || it[_f1[1]] || it[_f1[2]] || it[_f1[3]] || it[_f1[4]] || it[_f4[0]] || it[_f4[1]] || it[_f4[2]] || '');
-        tdp.textContent = pv || "N/A";
-        
-        const rn = it[_f2[0]] || it[_f2[1]] || it[_f2[2]] || it[_f2[3]] || "?";
-        const tdn = document.createElement("td");
-        tdn.className = "number-cell";
-        const ns = document.createElement("span");
-        const co = (it[_f3[0]] || it[_f3[1]] || "").toLowerCase();
-        
-        if(co === 'red') {
-          ns.style.color = '#ff0055';
-          ns.style.textShadow = '0 0 10px #ff0055';
-        } else if(co === 'green') {
-          ns.style.color = '#00ff41';
-          ns.style.textShadow = '0 0 10px #00ff41';
-        } else if(co === 'violet' || co === 'purple') {
-          ns.style.color = '#aa00ff';
-          ns.style.textShadow = '0 0 10px #aa00ff';
-        }
-        ns.textContent = rn;
-        tdn.appendChild(ns);
-        
-        const tds = document.createElement("td");
-        tds.textContent = sh[ix];
-        
-        const tdc = document.createElement("td");
-        tdc.className = "color-cell";
-        const nv = parseInt(rn);
-        const cls = _g(nv, co);
-        cls.forEach(c => {
-          const dt = document.createElement("span");
-          dt.className = `color-dot ${c}`;
-          tdc.appendChild(dt);
-        });
-        
-        const tdr = document.createElement("td");
-        const mr = _h.find(q => String(q.per) === String(pv));
-        if(mr) {
-          if(mr.res === _0x4a[2]) {
-            tdr.className = "result-cell result-win";
-            tdr.textContent = "✓ WIN";
-          } else {
-            tdr.className = "result-cell result-loss";
-            tdr.textContent = "✗ LOSS";
-          }
-        } else {
-          tdr.textContent = "-";
-        }
-        
-        tr.appendChild(tdp);
-        tr.appendChild(tdn);
-        tr.appendChild(tds);
-        tr.appendChild(tdc);
-        tr.appendChild(tdr);
-        tb.appendChild(tr);
-      });
-      
-      const to = wc + lc;
-      const wrt = to > 0 ? Math.round((wc / to) * 100) : 0;
-      document.getElementById('wc').textContent = wc;
-      document.getElementById('lc').textContent = lc;
-      document.getElementById('tc').textContent = to;
-      document.getElementById('wr').textContent = wrt + '%';
-      document.getElementById('mw').textContent = st.mw;
-      document.getElementById('ml').textContent = st.ml;
-      
-    } catch(e) {
-      const _em = _d('5b204552524f52205d');
-      document.getElementById("tb").innerHTML = `<tr><td colspan="5" class="loading">${_em}</td></tr>`;
-    }
-  };
-  
-  _l();
-  _s();
-})();
-  </script>
+function findNumberMatches(lastNum){
+if(!lastNum)return[];
+const matches=[];
+for(let i=0;i<allPeriods.length-1;i++){
+if(allPeriods[i].num===lastNum){
+const nextNum=allPeriods[i+1].num;
+matches.push({
+period:allPeriods[i].period,
+currentNum:lastNum,
+nextNum:nextNum,
+index:i
+});
+}
+}
+return matches;
+}
 
+function findColorPatternMatches(last3Colors){
+if(!last3Colors||last3Colors.length<3)return[];
+const c1=last3Colors[0];
+const c2=last3Colors[1];
+const c3=last3Colors[2];
+const matches=[];
+for(let i=2;i<allPeriods.length-1;i++){
+const h1=getColorString(parseInt(allPeriods[i].num));
+const h2=getColorString(parseInt(allPeriods[i-1].num));
+const h3=getColorString(parseInt(allPeriods[i-2].num));
+if(h1===c1&&h2===c2&&h3===c3){
+const nextColor=getColorString(parseInt(allPeriods[i+1].num));
+matches.push({
+period:allPeriods[i].period,
+pattern:[c1,c2,c3],
+nextColor:nextColor,
+nextNum:allPeriods[i+1].num,
+index:i,
+positions:[i,i-1,i-2]
+});
+}
+}
+return matches;
+}
+
+async function loadData(){
+try{
+const res=await fetch(`${API}?ts=${Date.now()}`);
+const data=await res.json();
+let gameList=[];
+if(data&&data.data&&data.data.list)gameList=data.data.list;
+else if(data&&data.list)gameList=data.list;
+else if(Array.isArray(data))gameList=data;
+if(gameList.length===0){
+document.getElementById('tableBody').innerHTML='<tr><td colspan="5" class="loading">No data</td></tr>';
+return;
+}
+const processed=gameList.map(item=>({
+period:String(item.issue||item.period||item.issueNo||item.periodId||item.issueNumber||''),
+num:String(item.result||item.number||item.num||item.openResult||'0')
+}));
+
+const savedData=loadSavedPeriods();
+if(savedData.length>0){
+allPeriods=[...savedData];
+}
+
+const newPeriods=[];
+processed.forEach(item=>{
+const exists=allPeriods.find(p=>p.period===item.period);
+if(!exists){
+newPeriods.push(item);
+}
+});
+
+if(newPeriods.length>0){
+allPeriods=[...newPeriods,...allPeriods];
+}
+
+if(allPeriods.length>500){
+allPeriods=allPeriods.slice(0,500);
+}
+
+savePeriods(allPeriods);
+
+document.getElementById('dataCount').textContent=`Total Periods Stored: ${allPeriods.length}/500`;
+
+const lastNum=allPeriods[0].num;
+numberMatches=findNumberMatches(lastNum);
+
+const last3Colors=allPeriods.slice(0,3).map(p=>getColorString(parseInt(p.num)));
+colorMatches=findColorPatternMatches(last3Colors);
+
+document.getElementById('lastNumber').textContent=lastNum;
+const numberMatchList=document.getElementById('numberMatchList');
+if(numberMatches.length>0){
+const nextNumFreq={};
+numberMatches.forEach(m=>{
+nextNumFreq[m.nextNum]=(nextNumFreq[m.nextNum]||0)+1;
+});
+const sortedNums=Object.entries(nextNumFreq).sort((a,b)=>b[1]-a[1]);
+numberMatchList.innerHTML='';
+sortedNums.forEach(([num,count])=>{
+const div=document.createElement('div');
+div.className='match-item';
+div.innerHTML=`Number <strong>${num}</strong>: ${count} times (${Math.round(count/numberMatches.length*100)}%)`;
+numberMatchList.appendChild(div);
+});
+}else{
+numberMatchList.innerHTML='<div class="match-item">No previous matches found</div>';
+}
+
+const colorMatchList=document.getElementById('colorMatchList');
+if(colorMatches.length>0){
+const nextColorFreq={};
+colorMatches.forEach(m=>{
+const key=`${m.nextColor} (${m.nextNum})`;
+nextColorFreq[key]=(nextColorFreq[key]||0)+1;
+});
+const sortedColors=Object.entries(nextColorFreq).sort((a,b)=>b[1]-a[1]);
+colorMatchList.innerHTML='';
+sortedColors.forEach(([colorInfo,count])=>{
+const div=document.createElement('div');
+div.className='match-item';
+div.innerHTML=`${colorInfo}: ${count} times (${Math.round(count/colorMatches.length*100)}%)`;
+colorMatchList.appendChild(div);
+});
+}else{
+colorMatchList.innerHTML='<div class="match-item">No color pattern matches found</div>';
+}
+
+const currentPeriod=allPeriods[0].period;
+const currentNum=allPeriods[0].num;
+lastPeriod=currentPeriod;
+
+let predNum='0';
+let confidence=50;
+if(numberMatches.length>0){
+const nextNumFreq={};
+numberMatches.forEach(m=>{
+nextNumFreq[m.nextNum]=(nextNumFreq[m.nextNum]||0)+1;
+});
+const sortedNums=Object.entries(nextNumFreq).sort((a,b)=>b[1]-a[1]);
+predNum=sortedNums[0][0];
+confidence=Math.min(95,60+Math.round((sortedNums[0][1]/numberMatches.length)*35));
+}
+
+currentPred={prediction:predNum,confidence:confidence,matchCount:numberMatches.length+colorMatches.length};
+
+const predResult=document.getElementById('predResult');
+const confBadge=document.getElementById('confBadge');
+const patternBadge=document.getElementById('patternBadge');
+const patternMatch=document.getElementById('patternMatch');
+if(currentPred){
+predResult.innerHTML=`<span class="pred-big" style="font-size:72px">${currentPred.prediction}</span>`;
+confBadge.textContent=`Confidence: ${currentPred.confidence}%`;
+if(numberMatches.length>0||colorMatches.length>0){
+patternBadge.style.display='block';
+patternMatch.textContent=`${numberMatches.length} Number + ${colorMatches.length} Color`;
+}else{
+patternBadge.style.display='none';
+}
+}
+
+const tbody=document.getElementById('tableBody');
+tbody.innerHTML='';
+
+const matchedPeriods=new Set();
+numberMatches.forEach(match=>{
+matchedPeriods.add(allPeriods[match.index].period);
+});
+colorMatches.forEach(match=>{
+match.positions.forEach(pos=>{
+if(allPeriods[pos]){
+matchedPeriods.add(allPeriods[pos].period);
+}
+});
+});
+
+// Get last number to highlight in table
+const lastNumber=allPeriods[0].num;
+
+allPeriods.slice(0,50).forEach(item=>{
+const num=item.num;
+const size=getSize(num);
+const colors=getColors(parseInt(num));
+const isMatched=matchedPeriods.has(item.period);
+const isLastNumber=num===lastNumber;
+const tr=document.createElement('tr');
+if(isMatched)tr.className='match-row';
+
+const tdPeriod=document.createElement('td');
+tdPeriod.className='period-cell';
+tdPeriod.textContent=item.period.slice(-6);
+if(isMatched){
+const badge=document.createElement('span');
+badge.className='match-badge';
+badge.textContent='★';
+tdPeriod.appendChild(badge);
+}
+
+const tdNum=document.createElement('td');
+tdNum.className='num-cell'+(isLastNumber?' matched':'');
+tdNum.textContent=num;
+
+const tdSize=document.createElement('td');
+tdSize.innerHTML=`<span class="size-badge size-${size.toLowerCase()}">${size}</span>`;
+
+const tdColor=document.createElement('td');
+tdColor.className='color-dots';
+colors.forEach(c=>{
+const dot=document.createElement('span');
+dot.className=`dot dot-${c}`;
+tdColor.appendChild(dot);
+});
+
+const tdResult=document.createElement('td');
+tdResult.textContent='-';
+
+tr.appendChild(tdPeriod);
+tr.appendChild(tdNum);
+tr.appendChild(tdSize);
+tr.appendChild(tdColor);
+tr.appendChild(tdResult);
+tbody.appendChild(tr);
+});
+}catch(err){
+console.error('Error:',err);
+document.getElementById('tableBody').innerHTML='<tr><td colspan="5" class="loading">Error loading data</td></tr>';
+}
+}
+
+function updateTime(){
+const now=new Date();
+const h=String(now.getHours()).padStart(2,'0');
+const m=String(now.getMinutes()).padStart(2,'0');
+const s=String(now.getSeconds()).padStart(2,'0');
+document.getElementById('currentTime').textContent=`${h}:${m}:${s}`;
+if(s==='00'||s==='30')setTimeout(loadData,1000);
+}
+
+function refreshData(){
+const icon=document.getElementById('refreshIcon');
+icon.classList.add('spin');
+setTimeout(()=>icon.classList.remove('spin'),500);
+loadData();
+}
+
+loadData();
+setInterval(updateTime,1000);
+updateTime();
+</script>
 </body>
 </html>
