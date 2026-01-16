@@ -3,41 +3,70 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>WinGo Advanced Signal</title>
+<title>WinGo Pro Signal</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;position:relative;overflow-x:hidden}body::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");z-index:0;opacity:.3}.container{max-width:900px;margin:0 auto;position:relative;z-index:1}.header{text-align:center;margin-bottom:30px;background:rgba(255,255,255,.95);padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(255,255,255,.1),transparent);animation:shine 3s infinite}@keyframes shine{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.logo{font-size:42px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;margin-bottom:10px;letter-spacing:2px}.subtitle{color:#666;font-size:14px;letter-spacing:3px;text-transform:uppercase;font-weight:600}.prediction-box{background:rgba(255,255,255,.95);border-radius:20px;padding:40px;margin-bottom:25px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}.prediction-box::after{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#667eea,#764ba2,#f093fb);animation:loading 2s ease-in-out infinite}@keyframes loading{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}.pred-title{text-align:center;color:#764ba2;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:25px}.pred-result{text-align:center;font-size:72px;font-weight:900;margin-bottom:20px;text-transform:uppercase;letter-spacing:8px;animation:popIn .6s cubic-bezier(0.68,-0.55,0.265,1.55)}@keyframes popIn{0%{opacity:0;transform:scale(.3) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}.pred-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(245,87,108,.3))}.pred-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(79,172,254,.3))}.confidence-info{display:flex;justify-content:center;align-items:center;gap:15px;margin-top:20px;flex-wrap:wrap}.conf-badge{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:12px 30px;border-radius:50px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;box-shadow:0 10px 25px rgba(102,126,234,.4)}.pattern-badge{background:linear-gradient(135deg,#00f2fe 0%,#4facfe 100%);color:white;padding:12px 25px;border-radius:50px;font-weight:700;font-size:13px}.strategy-badge{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;padding:10px 20px;border-radius:50px;font-weight:600;font-size:12px}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin-bottom:25px}.stat-card{background:rgba(255,255,255,.95);border-radius:15px;padding:25px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:all .3s ease;position:relative;overflow:hidden}.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#667eea,#764ba2)}.stat-card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,0,0,.3)}.stat-label{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600}.stat-value{font-size:36px;font-weight:900;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stat-win{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stat-loss{background:linear-gradient(135deg,#f5576c 0%,#f093fb 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.history-section{background:rgba(255,255,255,.95);border-radius:20px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin-bottom:25px}.section-title{font-size:20px;font-weight:800;color:#764ba2;margin-bottom:20px;text-transform:uppercase;letter-spacing:2px;text-align:center}.history-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:20px}.history-item{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);border-radius:12px;padding:15px;text-align:center;transition:all .3s ease;border:3px solid transparent}.history-item:hover{transform:scale(1.05);border-color:#667eea}.history-item.matched{border:3px solid #ffd700;background:linear-gradient(135deg,#fff9e6 0%,#ffe8a3 100%);box-shadow:0 0 20px rgba(255,215,0,.5);animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(255,215,0,.5)}50%{box-shadow:0 0 30px rgba(255,215,0,.8)}}.history-item.reverse{border:3px solid #ff6b00;background:linear-gradient(135deg,#ffe8e0 0%,#ffc4a3 100%);box-shadow:0 0 20px rgba(255,107,0,.5)}.history-big{border-left:5px solid #f5576c}.history-small{border-left:5px solid #4facfe}.history-label{font-size:11px;color:#666;text-transform:uppercase;margin-bottom:5px;font-weight:600}.history-value{font-size:22px;font-weight:900;color:#333}.history-value.bold{font-size:26px;color:#ff6b00;text-shadow:0 2px 4px rgba(255,107,0,.3)}.table-wrapper{background:rgba(255,255,255,.95);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}table{width:100%;border-collapse:collapse}thead{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}th{padding:18px 12px;text-align:center;font-weight:700;color:white;font-size:13px;text-transform:uppercase;letter-spacing:1px}tbody tr{transition:all .3s ease;border-bottom:1px solid #f0f0f0}tbody tr:hover{background:linear-gradient(135deg,rgba(102,126,234,.1) 0%,rgba(118,75,162,.1) 100%);transform:scale(1.01)}td{padding:16px 12px;text-align:center;color:#333;font-size:13px;font-weight:600}.num-cell{font-size:28px;font-weight:900}.color-dots{display:flex;justify-content:center;gap:6px}.dot{width:18px;height:18px;border-radius:50%;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.2)}.dot-red{background:#f5576c}.dot-green{background:#00f2fe}.dot-violet{background:#764ba2}.result-badge{padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase}.result-win{background:#4facfe;color:white}.result-loss{background:#f5576c;color:white}.refresh-btn{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:18px 35px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(102,126,234,.5);display:flex;align-items:center;gap:10px;transition:all .3s;z-index:1000;text-transform:uppercase;letter-spacing:1px}.refresh-btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(102,126,234,.7)}.refresh-btn:active{transform:translateY(-1px)}.refresh-icon{font-size:20px;transition:transform .5s}.refresh-icon.spin{animation:rotate .5s linear}@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.time-display{text-align:center;margin-top:20px;padding:15px;background:rgba(255,255,255,.2);border-radius:15px;backdrop-filter:blur(10px)}.current-time{font-size:32px;font-weight:900;color:white;text-shadow:0 2px 10px rgba(0,0,0,.3);letter-spacing:2px}.loading{text-align:center;padding:20px;color:#764ba2;font-size:16px;font-weight:600}.data-count{text-align:center;color:white;font-size:13px;margin-top:10px;opacity:.8}@media (max-width:768px){.logo{font-size:32px}.pred-result{font-size:48px;letter-spacing:4px}.stats-grid{grid-template-columns:repeat(2,1fr)}.history-grid{grid-template-columns:repeat(3,1fr)}.refresh-btn{bottom:20px;right:20px;padding:15px 25px;font-size:14px}th,td{padding:12px 8px;font-size:11px}.num-cell{font-size:22px}}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;position:relative;overflow-x:hidden}body::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");z-index:0;opacity:.3}.container{max-width:1200px;margin:0 auto;position:relative;z-index:1}.header{text-align:center;margin-bottom:30px;background:rgba(255,255,255,.95);padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(255,255,255,.1),transparent);animation:shine 3s infinite}@keyframes shine{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.logo{font-size:42px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;margin-bottom:10px;letter-spacing:2px}.subtitle{color:#666;font-size:14px;letter-spacing:3px;text-transform:uppercase;font-weight:600}.prediction-box{background:rgba(255,255,255,.95);border-radius:20px;padding:40px;margin-bottom:25px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}.prediction-box::after{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#667eea,#764ba2,#f093fb);animation:loading 2s ease-in-out infinite}@keyframes loading{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}.pred-title{text-align:center;color:#764ba2;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:25px}.pred-result{text-align:center;font-size:72px;font-weight:900;margin-bottom:20px;text-transform:uppercase;letter-spacing:8px;animation:popIn .6s cubic-bezier(0.68,-0.55,0.265,1.55)}@keyframes popIn{0%{opacity:0;transform:scale(.3) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}.pred-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(245,87,108,.3))}.pred-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(79,172,254,.3))}.confidence-info{display:flex;justify-content:center;align-items:center;gap:15px;margin-top:20px;flex-wrap:wrap}.conf-badge{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:12px 30px;border-radius:50px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;box-shadow:0 10px 25px rgba(102,126,234,.4)}.pattern-badge{background:linear-gradient(135deg,#00f2fe 0%,#4facfe 100%);color:white;padding:10px 20px;border-radius:50px;font-weight:700;font-size:12px}.reverse-badge{background:linear-gradient(135deg,#f5576c 0%,#f093fb 100%);color:white;padding:10px 20px;border-radius:50px;font-weight:700;font-size:12px}.zigzag-badge{background:linear-gradient(135deg,#ffd700 0%,#ffed4e 100%);color:#333;padding:10px 20px;border-radius:50px;font-weight:700;font-size:12px}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:25px}.stat-card{background:rgba(255,255,255,.95);border-radius:15px;padding:25px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:all .3s ease;position:relative;overflow:hidden}.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#667eea,#764ba2)}.stat-card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,0,0,.3)}.stat-label{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600}.stat-value{font-size:36px;font-weight:900;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stat-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stat-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.history-section{background:rgba(255,255,255,.95);border-radius:20px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin-bottom:25px}.section-title{font-size:20px;font-weight:800;color:#764ba2;margin-bottom:20px;text-transform:uppercase;letter-spacing:2px;text-align:center}.zigzag-pattern{display:flex;justify-content:center;gap:10px;margin:20px 0;flex-wrap:wrap}.zigzag-item{width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;border:3px solid transparent;transition:all .3s}.zigzag-big{background:linear-gradient(135deg,#f093fb,#f5576c);color:white}.zigzag-small{background:linear-gradient(135deg,#4facfe,#00f2fe);color:white}.zigzag-active{border-color:#ffd700;box-shadow:0 0 20px rgba(255,215,0,.5);transform:scale(1.1)}.balance-bar{width:100%;height:30px;background:#f0f0f0;border-radius:15px;overflow:hidden;position:relative;margin:15px 0}.balance-fill-big{height:100%;background:linear-gradient(90deg,#f093fb,#f5576c);transition:width .5s ease;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:12px}.balance-fill-small{position:absolute;right:0;top:0;height:100%;background:linear-gradient(90deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:12px}.analysis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:25px}.analysis-card{background:rgba(255,255,255,.95);border-radius:15px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}.analysis-card h3{color:#764ba2;font-size:16px;margin-bottom:15px;text-align:center;font-weight:700}.match-info{background:rgba(255,215,0,.1);border-radius:15px;padding:15px;margin-top:15px;border:2px solid #ffd700}.match-title{font-size:14px;font-weight:700;color:#764ba2;margin-bottom:10px;text-align:center}.match-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.match-item{background:linear-gradient(135deg,#fff9e6 0%,#ffe8a3 100%);padding:8px 15px;border-radius:20px;font-size:12px;font-weight:600;color:#333;border:2px solid #ffd700}.reverse-match{background:linear-gradient(135deg,#ffe6f0 0%,#ffc4d6 100%);border:2px solid #f5576c}.table-wrapper{background:rgba(255,255,255,.95);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}table{width:100%;border-collapse:collapse}thead{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}th{padding:18px 12px;text-align:center;font-weight:700;color:white;font-size:13px;text-transform:uppercase;letter-spacing:1px}tbody tr{transition:all .3s ease;border-bottom:1px solid #f0f0f0}tbody tr:hover{background:linear-gradient(135deg,rgba(102,126,234,.1) 0%,rgba(118,75,162,.1) 100%);transform:scale(1.01)}tbody tr.match-row{background:linear-gradient(135deg,rgba(255,215,0,.15) 0%,rgba(255,215,0,.25) 100%);border-left:5px solid #ffd700}tbody tr.reverse-row{background:linear-gradient(135deg,rgba(245,87,108,.15) 0%,rgba(245,87,108,.25) 100%);border-left:5px solid #f5576c}tbody tr.zigzag-row{background:linear-gradient(135deg,rgba(79,172,254,.15) 0%,rgba(79,172,254,.25) 100%);border-left:5px solid #4facfe}td{padding:16px 12px;text-align:center;color:#333;font-size:13px;font-weight:600}.period-cell{font-family:'Courier New',monospace;font-size:12px;color:#666}.num-cell{font-size:28px;font-weight:900}.num-cell.matched{color:#ffd700;text-shadow:0 2px 8px rgba(255,215,0,.6);font-size:32px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ffed4e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.size-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px}.size-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white}.size-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);color:white}.color-dots{display:flex;justify-content:center;gap:6px}.dot{width:18px;height:18px;border-radius:50%;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.2)}.dot-red{background:#f5576c}.dot-green{background:#00f2fe}.dot-violet{background:#764ba2}.match-badge{background:#ffd700;color:#333;padding:4px 10px;border-radius:15px;font-size:10px;font-weight:700;margin-left:5px}.reverse-mark{background:#f5576c;color:white;padding:4px 10px;border-radius:15px;font-size:10px;font-weight:700;margin-left:5px}.zigzag-mark{background:#4facfe;color:white;padding:4px 10px;border-radius:15px;font-size:10px;font-weight:700;margin-left:5px}.refresh-btn{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:18px 35px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(102,126,234,.5);display:flex;align-items:center;gap:10px;transition:all .3s;z-index:1000;text-transform:uppercase;letter-spacing:1px}.refresh-btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(102,126,234,.7)}.refresh-btn:active{transform:translateY(-1px)}.refresh-icon{font-size:20px;transition:transform .5s}.refresh-icon.spin{animation:rotate .5s linear}@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.time-display{text-align:center;margin-top:20px;padding:15px;background:rgba(255,255,255,.2);border-radius:15px;backdrop-filter:blur(10px)}.current-time{font-size:32px;font-weight:900;color:white;text-shadow:0 2px 10px rgba(0,0,0,.3);letter-spacing:2px}.loading{text-align:center;padding:20px;color:#764ba2;font-size:16px;font-weight:600}.data-count{text-align:center;color:white;font-size:13px;margin-top:10px;opacity:.8}.progress-bar{width:100%;height:8px;background:rgba(255,255,255,.2);border-radius:10px;overflow:hidden;margin-top:10px}.progress-fill{height:100%;background:linear-gradient(90deg,#4facfe,#00f2fe);border-radius:10px;transition:width .3s ease}@media (max-width:768px){.logo{font-size:32px}.pred-result{font-size:48px;letter-spacing:4px}.stats-grid{grid-template-columns:repeat(2,1fr)}.analysis-grid{grid-template-columns:1fr}.refresh-btn{bottom:20px;right:20px;padding:15px 25px;font-size:14px}th,td{padding:12px 8px;font-size:11px}.num-cell{font-size:22px}}
 </style>
 </head>
 <body>
 <div class="container">
 <div class="header">
-<div class="logo">⚡ WINGO ADVANCED AI</div>
-<div class="subtitle">Multi-Layer Pattern Analyzer</div>
+<div class="logo">⚡ WINGO PRO SIGNAL</div>
+<div class="subtitle">Master AI Prediction System</div>
 <div class="data-count" id="dataCount">Loading...</div>
+<div class="progress-bar"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
 </div>
 <div class="prediction-box">
-<div class="pred-title">🎯 Next Prediction</div>
+<div class="pred-title">🎯 AI Master Prediction</div>
 <div class="pred-result" id="predResult"><div class="loading">Analyzing...</div></div>
 <div class="confidence-info">
 <div class="conf-badge" id="confBadge">Calculating...</div>
 <div class="pattern-badge" id="patternBadge" style="display:none"></div>
-<div class="strategy-badge" id="strategyBadge" style="display:none"></div>
+<div class="reverse-badge" id="reverseBadge" style="display:none"></div>
+<div class="zigzag-badge" id="zigzagBadge" style="display:none"></div>
 </div>
 </div>
 <div class="stats-grid">
-<div class="stat-card"><div class="stat-label">Total Win</div><div class="stat-value stat-win" id="winCount">0</div></div>
-<div class="stat-card"><div class="stat-label">Total Loss</div><div class="stat-value stat-loss" id="lossCount">0</div></div>
-<div class="stat-card"><div class="stat-label">Total Games</div><div class="stat-value" id="totalGames">0</div></div>
-<div class="stat-card"><div class="stat-label">Accuracy</div><div class="stat-value" id="accuracy">0%</div></div>
+<div class="stat-card"><div class="stat-label">Total Big</div><div class="stat-value stat-big" id="bigCount">0</div></div>
+<div class="stat-card"><div class="stat-label">Total Small</div><div class="stat-value stat-small" id="smallCount">0</div></div>
+<div class="stat-card"><div class="stat-label">Big %</div><div class="stat-value stat-big" id="bigPercent">0%</div></div>
+<div class="stat-card"><div class="stat-label">Small %</div><div class="stat-value stat-small" id="smallPercent">0%</div></div>
+<div class="stat-card"><div class="stat-label">Balance</div><div class="stat-value" id="balanceStatus">50/50</div></div>
 </div>
 <div class="history-section">
-<div class="section-title">📊 Last 10 Pattern Analysis</div>
-<div class="history-grid" id="historyPattern"></div>
+<div class="section-title">⚖️ Big/Small Balance Analysis</div>
+<div class="balance-bar">
+<div class="balance-fill-big" id="balanceFillBig">0%</div>
+<div class="balance-fill-small" id="balanceFillSmall" style="width:0%">0%</div>
+</div>
+<div class="match-title" id="balanceInfo"></div>
+</div>
+<div class="history-section">
+<div class="section-title">🔄 ZigZag Pattern (B-S-B-S)</div>
+<div class="zigzag-pattern" id="zigzagPattern"></div>
+<div class="match-info" id="zigzagInfo">
+<div class="match-title" id="zigzagStatus"></div>
+<div class="match-list" id="zigzagDetails"></div>
+</div>
+</div>
+<div class="analysis-grid">
+<div class="analysis-card">
+<h3>🔢 Number Pattern</h3>
+<div id="numberAnalysis" class="match-list"></div>
+</div>
+<div class="analysis-card">
+<h3>🎨 Color Pattern</h3>
+<div id="colorAnalysis" class="match-list"></div>
+</div>
+<div class="analysis-card">
+<h3>🔄 Reverse Pattern (11-20)</h3>
+<div id="reverseAnalysis" class="match-list"></div>
+</div>
 </div>
 <div class="table-wrapper">
 <table>
-<thead><tr><th>Number</th><th>Color</th><th>Result</th></tr></thead>
-<tbody id="tableBody"><tr><td colspan="3" class="loading">Loading...</td></tr></tbody>
+<thead><tr><th>Period</th><th>Number</th><th>Size</th><th>Color</th><th>Pattern</th></tr></thead>
+<tbody id="tableBody"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody>
 </table>
 </div>
 <div class="time-display"><div class="current-time" id="currentTime">00:00:00</div></div>
@@ -45,218 +74,22 @@
 <button class="refresh-btn" onclick="refreshData()"><span class="refresh-icon" id="refreshIcon">↻</span><span>Refresh</span></button>
 <script>
 const API='https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json';
-let allPeriods=[],predHistory=[],currentPred=null,lastPeriod=null;
+let allPeriods=[],periodsStorage=[],zigzagLossCount=0,currentZigzagPattern='BS';
 function getSize(n){return parseInt(n)>=5?'Big':'Small'}
 function getColors(n){const num=parseInt(n);if(num===0)return['red','violet'];if(num===5)return['green','violet'];return num%2===0?['red']:['green']}
-function reversePattern(p){return p.map(s=>s==='Big'?'Small':'Big')}
-function findAdvancedPattern(data){
-if(data.length<25)return null;
-const strategies=[];
-for(let pLen of[3,5,7]){
-if(data.length<pLen+1)continue;
-const currentP=data.slice(0,pLen).map(d=>getSize(d.num));
-for(let i=pLen;i<data.length-1;i++){
-const histP=data.slice(i,i+pLen).map(d=>getSize(d.num));
-const nextVal=getSize(data[i+pLen].num);
-const isMatch=currentP.every((v,idx)=>v===histP[idx]);
-const reverseP=reversePattern(histP);
-const isReverse=currentP.every((v,idx)=>v===reverseP[idx]);
-if(isMatch){
-const depth=i<10?'recent':i<20?'mid':'deep';
-const baseConf=pLen===7?95:pLen===5?88:80;
-const depthBonus=depth==='recent'?5:depth==='mid'?3:0;
-strategies.push({
-type:'direct',
-pattern:pLen,
-next:nextVal,
-confidence:Math.min(99,baseConf+depthBonus),
-depth:depth,
-location:i,
-period:data[i].period
-});
-}
-if(isReverse&&i>=10&&i<=20){
-const baseConf=pLen===7?92:pLen===5?85:78;
-strategies.push({
-type:'reverse',
-pattern:pLen,
-next:nextVal==='Big'?'Small':'Big',
-confidence:baseConf,
-depth:'reverse-zone',
-location:i,
-period:data[i].period
-});
-}
-}
-}
-strategies.sort((a,b)=>b.confidence-a.confidence);
-if(strategies.length>0){
-const topStrats=strategies.slice(0,3);
-const votes={Big:0,Small:0};
-topStrats.forEach(s=>{
-votes[s.next]+=s.confidence;
-});
-const prediction=votes.Big>votes.Small?'Big':'Small';
-const avgConf=Math.round(topStrats.reduce((sum,s)=>sum+s.confidence,0)/topStrats.length);
-return{
-prediction:prediction,
-confidence:avgConf,
-strategy:topStrats[0],
-allStrategies:topStrats
-};
-}
-const last10=data.slice(0,10);
-let bigC=0,smallC=0;
-last10.forEach(d=>{
-if(getSize(d.num)==='Big')bigC++;else smallC++;
-});
-const pred=bigC>smallC?'Big':'Small';
-const diff=Math.abs(bigC-smallC);
-const conf=diff>=7?70:diff>=5?60:50;
-return{prediction:pred,confidence:conf,strategy:{type:'frequency',pattern:10}};
-}
-async function loadData(){
-try{
-const res=await fetch(`${API}?ts=${Date.now()}`);
-const data=await res.json();
-let gameList=[];
-if(data?.data?.list)gameList=data.data.list;
-else if(data?.list)gameList=data.list;
-else if(Array.isArray(data))gameList=data;
-if(gameList.length===0){
-document.getElementById('tableBody').innerHTML='<tr><td colspan="3" class="loading">No data</td></tr>';
-return;
-}
-const processed=gameList.map(item=>({
-period:String(item.issue||item.period||item.issueNo||''),
-num:String(item.result||item.number||item.num||'0')
-}));
-const newPeriods=[];
-processed.forEach(item=>{
-if(!allPeriods.find(p=>p.period===item.period)){
-newPeriods.push(item);
-}
-});
-if(newPeriods.length>0){
-allPeriods=[...newPeriods,...allPeriods];
-}
-if(allPeriods.length>500)allPeriods=allPeriods.slice(0,500);
-document.getElementById('dataCount').textContent=`Periods: ${allPeriods.length}/500`;
-const last10=allPeriods.slice(0,10);
-const patternContainer=document.getElementById('historyPattern');
-patternContainer.innerHTML='';
-last10.forEach((item,idx)=>{
-const div=document.createElement('div');
-const size=getSize(item.num);
-div.className=`history-item history-${size.toLowerCase()}`;
-div.innerHTML=`<div class="history-label">#${idx+1}</div><div class="history-value">${size}</div>`;
-patternContainer.appendChild(div);
-});
-const currentPeriod=allPeriods[0].period;
-const currentNum=allPeriods[0].num;
-const currentSize=getSize(currentNum);
-if(lastPeriod&&lastPeriod!==currentPeriod&&currentPred){
-const isCorrect=currentPred.prediction===currentSize;
-predHistory.unshift({
-period:currentPeriod,
-predicted:currentPred.prediction,
-actual:currentSize,
-result:isCorrect?'Win':'Loss',
-number:currentNum
-});
-if(predHistory.length>500)predHistory=predHistory.slice(0,500);
-}
-lastPeriod=currentPeriod;
-const patternResult=findAdvancedPattern(allPeriods);
-currentPred=patternResult;
-const predResult=document.getElementById('predResult');
-const confBadge=document.getElementById('confBadge');
-const patternBadge=document.getElementById('patternBadge');
-const strategyBadge=document.getElementById('strategyBadge');
-if(currentPred){
-predResult.innerHTML=`<span class="pred-${currentPred.prediction.toLowerCase()}">${currentPred.prediction}</span>`;
-confBadge.textContent=`Confidence: ${currentPred.confidence}%`;
-if(currentPred.strategy){
-const strat=currentPred.strategy;
-if(strat.type==='direct'){
-patternBadge.style.display='block';
-patternBadge.textContent=`Pattern-${strat.pattern} Match (${strat.depth})`;
-}else if(strat.type==='reverse'){
-patternBadge.style.display='block';
-patternBadge.textContent=`Reverse-${strat.pattern} (Zone 11-20)`;
-}else{
-patternBadge.style.display='block';
-patternBadge.textContent=`Frequency Analysis`;
-}
-if(currentPred.allStrategies&&currentPred.allStrategies.length>1){
-strategyBadge.style.display='block';
-strategyBadge.textContent=`${currentPred.allStrategies.length} Strategies Combined`;
-}else{
-strategyBadge.style.display='none';
-}
-}
-}
-let winC=0,lossC=0;
-predHistory.forEach(h=>{
-if(h.result==='Win')winC++;
-else if(h.result==='Loss')lossC++;
-});
-const totalG=winC+lossC;
-const accRate=totalG>0?Math.round((winC/totalG)*100):0;
-document.getElementById('winCount').textContent=winC;
-document.getElementById('lossCount').textContent=lossC;
-document.getElementById('totalGames').textContent=totalG;
-document.getElementById('accuracy').textContent=accRate+'%';
-const tbody=document.getElementById('tableBody');
-tbody.innerHTML='';
-allPeriods.slice(0,50).forEach(item=>{
-const num=item.num;
-const colors=getColors(parseInt(num));
-const matchedHist=predHistory.find(h=>String(h.period)===item.period);
-const tr=document.createElement('tr');
-const tdNum=document.createElement('td');
-tdNum.className='num-cell';
-tdNum.textContent=num;
-const tdColor=document.createElement('td');
-tdColor.className='color-dots';
-colors.forEach(c=>{
-const dot=document.createElement('span');
-dot.className=`dot dot-${c}`;
-tdColor.appendChild(dot);
-});
-const tdResult=document.createElement('td');
-if(matchedHist){
-tdResult.innerHTML=matchedHist.result==='Win'?'<span class="result-badge result-win">✓ WIN</span>':'<span class="result-badge result-loss">✗ LOSS</span>';
-}else{
-tdResult.textContent='-';
-}
-tr.appendChild(tdNum);
-tr.appendChild(tdColor);
-tr.appendChild(tdResult);
-tbody.appendChild(tr);
-});
-}catch(err){
-console.error('Error:',err);
-document.getElementById('tableBody').innerHTML='<tr><td colspan="3" class="loading">Error</td></tr>';
-}
-}
-function updateTime(){
-const now=new Date();
-const h=String(now.getHours()).padStart(2,'0');
-const m=String(now.getMinutes()).padStart(2,'0');
-const s=String(now.getSeconds()).padStart(2,'0');
-document.getElementById('currentTime').textContent=`${h}:${m}:${s}`;
-if(s==='00'||s==='30')setTimeout(loadData,1000);
-}
-function refreshData(){
-const icon=document.getElementById('refreshIcon');
-icon.classList.add('spin');
-setTimeout(()=>icon.classList.remove('spin'),500);
-loadData();
-}
-loadData();
-setInterval(updateTime,1000);
-updateTime();
+function getColorString(n){return getColors(n).join(',')}
+function savePeriods(d){periodsStorage=d}
+function loadSavedPeriods(){return periodsStorage}
+function analyzeBalance(periods){let bigC=0,smallC=0;periods.forEach(p=>{getSize(p.num)==='Big'?bigC++:smallC++});const total=bigC+smallC;const bigPct=total>0?Math.round((bigC/total)*100):0;const smallPct=100-bigPct;let trend='Balanced';if(bigPct>=60)trend='Big Heavy';else if(smallPct>=60)trend='Small Heavy';const needReverse=bigPct>=55||smallPct>=55;return{bigCount:bigC,smallCount:smallC,bigPercent:bigPct,smallPercent:smallPct,trend:trend,needReverse:needReverse,reverseTarget:bigPct>smallPct?'Small':'Big'}}
+function analyzeZigzag(periods){const sizes=periods.map(p=>getSize(p.num));const pattern=[];let matches=0,current=currentZigzagPattern==='BS'?['Big','Small']:['Small','Big'];for(let i=0;i<Math.min(20,sizes.length);i++){const expected=current[i%2];const actual=sizes[i];const isMatch=expected===actual;pattern.push({index:i,expected:expected,actual:actual,match:isMatch});if(!isMatch)matches++;else matches=0;if(matches>=3&&currentZigzagPattern==='BS'){currentZigzagPattern='SB';return analyzeZigzag(periods)}}return{pattern:pattern.slice(0,10),currentPattern:currentZigzagPattern,lossCount:matches,shouldSwitch:matches>=3,nextExpected:current[0]}}
+function findNumberPattern(lastNum){if(!lastNum)return{normal:[],reverse:[]};const normal=[],reverse=[];for(let i=0;i<allPeriods.length-1;i++){if(allPeriods[i].num===lastNum){const nextNum=allPeriods[i+1].num;if(i>=10&&i<=19)reverse.push({period:allPeriods[i].period,nextNum:nextNum,index:i});else normal.push({period:allPeriods[i].period,nextNum:nextNum,index:i})}}return{normal,reverse}}
+function findColorPattern(last3){if(!last3||last3.length<3)return{normal:[],reverse:[]};const c1=last3[0],c2=last3[1],c3=last3[2],normal=[],reverse=[];for(let i=2;i<allPeriods.length-1;i++){const h1=getColorString(parseInt(allPeriods[i].num)),h2=getColorString(parseInt(allPeriods[i-1].num)),h3=getColorString(parseInt(allPeriods[i-2].num));if(h1===c1&&h2===c2&&h3===c3){const nextColor=getColorString(parseInt(allPeriods[i+1].num)),nextNum=allPeriods[i+1].num;if(i>=10&&i<=19)reverse.push({period:allPeriods[i].period,nextColor:nextColor,nextNum:nextNum,index:i});else normal.push({period:allPeriods[i].period,nextColor:nextColor,nextNum:nextNum,index:i})}}return{normal,reverse}}
+function analyzePatterns(normalMatches,reverseMatches){const freq={};normalMatches.forEach(m=>freq[m]=(freq[m]||0)+1);reverseMatches.forEach(m=>freq[m]=(freq[m]||0)-0.5);return Object.entries(freq).sort((a,b)=>b[1]-a[1])}
+function getMasterPrediction(numPattern,colorPattern,balance,zigzag){const normalNums=numPattern.normal.map(m=>m.nextNum);const reverseNums=numPattern.reverse.map(m=>m.nextNum);const normalColors=colorPattern.normal.map(m=>m.nextNum);const reverseColors=colorPattern.reverse.map(m=>m.nextNum);const allNormal=[...normalNums,...normalColors];const allReverse=[...reverseNums,...reverseColors];let analyzed=analyzePatterns(allNormal,allReverse);let basePred='0',baseConf=50;if(analyzed.length>0){basePred=analyzed[0][0];const totalMatches=allNormal.length+allReverse.length;baseConf=Math.min(95,55+Math.round((analyzed[0][1]/(totalMatches||1))*40))}const predSize=getSize(basePred);let finalPred=basePred,finalConf=baseConf;const zigzagPred=zigzag.nextExpected;const balancePred=balance.needReverse?balance.reverseTarget:predSize;let useZigzag=false,useBalance=false;if(zigzag.lossCount===0){useZigzag=true;finalPred=basePred;if(predSize===zigzagPred)finalConf=Math.min(98,finalConf+10);else finalConf=Math.max(50,finalConf-5)}if(balance.needReverse){useBalance=true;if(predSize!==balancePred){const reverseOptions=allPeriods.slice(1,11).filter(p=>getSize(p.num)===balancePred);if(reverseOptions.length>0){finalPred=reverseOptions[0].num;finalConf=Math.min(95,baseConf+5)}}}return{prediction:finalPred,confidence:finalConf,useZigzag:useZigzag,useBalance:useBalance,zigzagMatch:predSize===zigzagPred,balanceMatch:predSize===balancePred}}
+async function loadData(){try{const res=await fetch(`${API}?ts=${Date.now()}`);const data=await res.json();let gameList=[];if(data&&data.data&&data.data.list)gameList=data.data.list;else if(data&&data.list)gameList=data.list;else if(Array.isArray(data))gameList=data;if(gameList.length===0){document.getElementById('tableBody').innerHTML='<tr><td colspan="5" class="loading">No data</td></tr>';return}const processed=gameList.map(item=>({period:String(item.issue||item.period||item.issueNo||item.periodId||item.issueNumber||''),num:String(item.result||item.number||item.num||item.openResult||'0')}));const savedData=loadSavedPeriods();if(savedData.length>0)allPeriods=[...savedData];const newPeriods=[];processed.forEach(item=>{if(!allPeriods.find(p=>p.period===item.period))newPeriods.push(item)});if(newPeriods.length>0)allPeriods=[...newPeriods,...allPeriods];if(allPeriods.length>500)allPeriods=allPeriods.slice(0,500);savePeriods(allPeriods);const progress=Math.min(100,Math.round((allPeriods.length/500)*100));document.getElementById('dataCount').textContent=`Periods: ${allPeriods.length}/500 (${progress}%)`;document.getElementById('progressBar').style.width=progress+'%';const balance=analyzeBalance(allPeriods.slice(0,50));document.getElementById('bigCount').textContent=balance.bigCount;document.getElementById('smallCount').textContent=balance.smallCount;document.getElementById('bigPercent').textContent=balance.bigPercent+'%';document.getElementById('smallPercent').textContent=balance.smallPercent+'%';document.getElementById('balanceStatus').textContent=balance.bigPercent+'/'+balance.smallPercent;document.getElementById('balanceFillBig').textContent=balance.bigPercent+'%';document.getElementById('balanceFillBig').style.width=balance.bigPercent+'%';document.getElementById('balanceFillSmall').textContent=balance.smallPercent+'%';document.getElementById('balanceFillSmall').style.width=balance.smallPercent+'%';let balanceMsg=`Trend: ${balance.trend}`;if(balance.needReverse)balanceMsg+=` - Next should be ${balance.reverseTarget} to balance 50/50`;document.getElementById('balanceInfo').textContent=balanceMsg;const zigzag=analyzeZigzag(allPeriods);const zigzagCont=document.getElementById('zigzagPattern');zigzagCont.innerHTML='';zigzag.pattern.forEach((item,idx)=>{const div=document.createElement('div');div.className=`zigzag-item zigzag-${item.expected.toLowerCase()}${idx===0?' zigzag-active':''}`;div.textContent=item.expected[0];if(!item.match)div.style.opacity='0.5';zigzagCont.appendChild(div)});let zigzagMsg=`Current Pattern: ${zigzag.currentPattern==='BS'?'Big→Small':'Small→Big'}`;if(zigzag.shouldSwitch)zigzagMsg+=' ⚠️ Pattern should switch!';document.getElementById('zigzagStatus').textContent=zigzagMsg;const zigzagDetails=document.getElementById('zigzagDetails');zigzagDetails.innerHTML='';const detailDiv=document.createElement('div');detailDiv.className='match-item';detailDiv.innerHTML=`Loss Count: ${zigzag.lossCount}/3 | Next Expected: <strong>${zigzag.nextExpected}</strong>`;zigzagDetails.appendChild(detailDiv);const lastNum=allPeriods[0].num;const last3Colors=allPeriods.slice(0,3).map(p=>getColorString(parseInt(p.num)));const numPattern=findNumberPattern(lastNum);const colorPattern=findColorPattern(last3Colors);const prediction=getMasterPrediction(numPattern,colorPattern,balance,zigzag);const predSize=getSize(prediction.prediction);document.getElementById('predResult').innerHTML=`<span class="pred-${predSize.toLowerCase()}" style="font-size:72px">${prediction.prediction}</span>`;document.getElementById('confBadge').textContent=`Confidence: ${prediction.confidence}%`;const patternBadge=document.getElementById('patternBadge');const reverseBadge=document.getElementById('reverseBadge');const zigzagBadge=document.getElementById('zigzagBadge');const totalMatches=numPattern.normal.length+numPattern.reverse.length+colorPattern.normal.length+colorPattern.reverse.length;if(totalMatches>0){patternBadge.style.display='block';patternBadge.textContent=`${totalMatches} Patterns`}else{patternBadge.style.display='none'}if(prediction.useBalance){reverseBadge.style.display='block';reverseBadge.textContent='⚖️ Balance Mode'}else{reverseBadge.style.display='none'}if(prediction.useZigzag){zigzagBadge.style.display='block';zigzagBadge.textContent=prediction.zigzagMatch?'✓ ZigZag Match':'⚠️ ZigZag Active'}else{zigzagBadge.style.display='none'}const numberAnalysis=document.getElementById('numberAnalysis');numberAnalysis.innerHTML='';if(numPattern.normal.length>0||numPattern.reverse.length>0){const numFreq={};numPattern.normal.forEach(m=>numFreq[m.nextNum]=(numFreq[m.nextNum]||0)+1);numPattern.reverse.forEach(m=>numFreq[m.nextNum]=(numFreq[m.nextNum]||0)+0.5);const sorted=Object.entries(numFreq).sort((a,b)=>b[1]-a[1]).slice(0,5);sorted.forEach(([num,count])=>{const div=document.createElement('div');div.className='match-item';div.innerHTML=`<strong>${num}</strong>: ${Math.round(count)} times`;numberAnalysis.appendChild(div)})}else{numberAnalysis.innerHTML='<div class="match-item">No matches</div>'}const colorAnalysis=document.getElementById('colorAnalysis');colorAnalysis.innerHTML='';if(colorPattern.normal.length>0||colorPattern.reverse.length>0){const colorFreq={};colorPattern.normal.forEach(m=>{const key=`${m.nextColor}(${m.nextNum})`;colorFreq[key]=(colorFreq[key]||0)+1});colorPattern.reverse.forEach(m=>{const key=`${m.nextColor}(${m.nextNum})`;colorFreq[key]=(colorFreq[key]||0)+0.5});const sorted=Object.entries(colorFreq).sort((a,b)=>b[1]-a[1]).slice(0,5);sorted.forEach(([info,count])=>{const div=document.createElement('div');div.className='match-item';div.innerHTML=`${info}: ${Math.round(count)}`;colorAnalysis.appendChild(div)})}else{colorAnalysis.innerHTML='<div class="match-item">No matches</div>'}const reverseAnalysis=document.getElementById('reverseAnalysis');reverseAnalysis.innerHTML='';const reverseTotal=numPattern.reverse.length+colorPattern.reverse.length;if(reverseTotal>0){const div=document.createElement('div');div.className='match-item reverse-match';div.innerHTML=`${reverseTotal} reverse patterns (11-20)`;reverseAnalysis.appendChild(div)}else{reverseAnalysis.innerHTML='<div class="match-item">No reverse</div>'}const tbody=document.getElementById('tableBody');tbody.innerHTML='';const matchedPeriods=new Set();const reversePeriods=new Set();const zigzagPeriods=new Set();numPattern.normal.forEach(m=>matchedPeriods.add(allPeriods[m.index].period));colorPattern.normal.forEach(m=>matchedPeriods.add(allPeriods[m.index].period));numPattern.reverse.forEach(m=>reversePeriods.add(allPeriods[m.index].period));colorPattern.reverse.forEach(m=>reversePeriods.add(allPeriods[m.index].period));zigzag.pattern.forEach(p=>{if(allPeriods[p.index])zigzagPeriods.add(allPeriods[p.index].period)});allPeriods.slice(0,50).forEach((item,idx)=>{const num=item.num,size=getSize(num),colors=getColors(parseInt(num));const isMatched=matchedPeriods.has(item.period);const isReverse=reversePeriods.has(item.period);const isZigzag=zigzagPeriods.has(item.period);const isLastNumber=num===lastNum;const tr=document.createElement('tr');if(isZigzag)tr.className='zigzag-row';else if(isReverse)tr.className='reverse-row';else if(isMatched)tr.className='match-row';const tdPeriod=document.createElement('td');tdPeriod.className='period-cell';tdPeriod.textContent=item.period.slice(-6);if(isMatched){const badge=document.createElement('span');badge.className='match-badge';badge.textContent='★';tdPeriod.appendChild(badge)}if(isReverse){const badge=document.createElement('span');badge.className='reverse-mark';badge.textContent='⚠️';tdPeriod.appendChild(badge)}if(isZigzag){const badge=document.createElement('span');badge.className='zigzag-mark';badge.textContent='Z';tdPeriod.appendChild(badge)}const tdNum=document.createElement('td');tdNum.className='num-cell'+(isLastNumber?' matched':'');tdNum.textContent=num;const tdSize=document.createElement('td');tdSize.innerHTML=`<span class="size-badge size-${size.toLowerCase()}">${size}</span>`;const tdColor=document.createElement('td');tdColor.className='color-dots';colors.forEach(c=>{const dot=document.createElement('span');dot.className=`dot dot-${c}`;tdColor.appendChild(dot)});const tdPattern=document.createElement('td');if(idx>=10&&idx<=19)tdPattern.innerHTML='<span style="color:#f5576c;font-weight:700">R-Zone</span>';else if(isZigzag)tdPattern.innerHTML='<span style="color:#4facfe;font-weight:700">ZigZag</span>';else tdPattern.textContent='-';tr.appendChild(tdPeriod);tr.appendChild(tdNum);tr.appendChild(tdSize);tr.appendChild(tdColor);tr.appendChild(tdPattern);tbody.appendChild(tr)})}catch(err){console.error('Error:',err);document.getElementById('tableBody').innerHTML='<tr><td colspan="5" class="loading">Error</td></tr>'}}
+function updateTime(){const now=new Date(),h=String(now.getHours()).padStart(2,'0'),m=String(now.getMinutes()).padStart(2,'0'),s=String(now.getSeconds()).padStart(2,'0');document.getElementById('currentTime').textContent=`${h}:${m}:${s}`;if(s==='00'||s==='30')setTimeout(loadData,1000)}
+function refreshData(){const icon=document.getElementById('refreshIcon');icon.classList.add('spin');setTimeout(()=>icon.classList.remove('spin'),500);loadData()}
+loadData();setInterval(updateTime,1000);updateTime();
 </script>
 </body>
 </html>
