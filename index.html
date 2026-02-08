@@ -3,93 +3,402 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>WinGo Pro Signal</title>
+<title>WinGo Pro - Advanced Prediction System</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;position:relative;overflow-x:hidden}body::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");z-index:0;opacity:.3}.container{max-width:1200px;margin:0 auto;position:relative;z-index:1}.header{text-align:center;margin-bottom:30px;background:rgba(255,255,255,.95);padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(255,255,255,.1),transparent);animation:shine 3s infinite}@keyframes shine{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.logo{font-size:42px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;margin-bottom:10px;letter-spacing:2px}.subtitle{color:#666;font-size:14px;letter-spacing:3px;text-transform:uppercase;font-weight:600}.prediction-box{background:rgba(255,255,255,.95);border-radius:20px;padding:40px;margin-bottom:25px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;overflow:hidden}.prediction-box::after{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#667eea,#764ba2,#f093fb);animation:loading 2s ease-in-out infinite}@keyframes loading{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}.pred-title{text-align:center;color:#764ba2;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:25px}.pred-result{text-align:center;font-size:72px;font-weight:900;margin-bottom:20px;text-transform:uppercase;letter-spacing:8px;animation:popIn .6s cubic-bezier(0.68,-0.55,0.265,1.55)}@keyframes popIn{0%{opacity:0;transform:scale(.3) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}.pred-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(245,87,108,.3))}.pred-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(79,172,254,.3))}.confidence-info{display:flex;justify-content:center;align-items:center;gap:15px;margin-top:20px;flex-wrap:wrap}.conf-badge{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:12px 30px;border-radius:50px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;box-shadow:0 10px 25px rgba(102,126,234,.4)}.pattern-badge{background:linear-gradient(135deg,#00f2fe 0%,#4facfe 100%);color:white;padding:10px 20px;border-radius:50px;font-weight:700;font-size:12px}.reverse-badge{background:linear-gradient(135deg,#f5576c 0%,#f093fb 100%);color:white;padding:10px 20px;border-radius:50px;font-weight:700;font-size:12px}.zigzag-badge{background:linear-gradient(135deg,#ffd700 0%,#ffed4e 100%);color:#333;padding:10px 20px;border-radius:50px;font-weight:700;font-size:12px}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:25px}.stat-card{background:rgba(255,255,255,.95);border-radius:15px;padding:25px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:all .3s ease;position:relative;overflow:hidden}.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#667eea,#764ba2)}.stat-card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,0,0,.3)}.stat-label{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600}.stat-value{font-size:36px;font-weight:900;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stat-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stat-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.history-section{background:rgba(255,255,255,.95);border-radius:20px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin-bottom:25px}.section-title{font-size:20px;font-weight:800;color:#764ba2;margin-bottom:20px;text-transform:uppercase;letter-spacing:2px;text-align:center}.zigzag-pattern{display:flex;justify-content:center;gap:10px;margin:20px 0;flex-wrap:wrap}.zigzag-item{width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;border:3px solid transparent;transition:all .3s}.zigzag-big{background:linear-gradient(135deg,#f093fb,#f5576c);color:white}.zigzag-small{background:linear-gradient(135deg,#4facfe,#00f2fe);color:white}.zigzag-active{border-color:#ffd700;box-shadow:0 0 20px rgba(255,215,0,.5);transform:scale(1.1)}.balance-bar{width:100%;height:30px;background:#f0f0f0;border-radius:15px;overflow:hidden;position:relative;margin:15px 0}.balance-fill-big{height:100%;background:linear-gradient(90deg,#f093fb,#f5576c);transition:width .5s ease;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:12px}.balance-fill-small{position:absolute;right:0;top:0;height:100%;background:linear-gradient(90deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:12px}.analysis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:25px}.analysis-card{background:rgba(255,255,255,.95);border-radius:15px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}.analysis-card h3{color:#764ba2;font-size:16px;margin-bottom:15px;text-align:center;font-weight:700}.match-info{background:rgba(255,215,0,.1);border-radius:15px;padding:15px;margin-top:15px;border:2px solid #ffd700}.match-title{font-size:14px;font-weight:700;color:#764ba2;margin-bottom:10px;text-align:center}.match-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.match-item{background:linear-gradient(135deg,#fff9e6 0%,#ffe8a3 100%);padding:8px 15px;border-radius:20px;font-size:12px;font-weight:600;color:#333;border:2px solid #ffd700}.reverse-match{background:linear-gradient(135deg,#ffe6f0 0%,#ffc4d6 100%);border:2px solid #f5576c}.table-wrapper{background:rgba(255,255,255,.95);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}table{width:100%;border-collapse:collapse}thead{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}th{padding:18px 12px;text-align:center;font-weight:700;color:white;font-size:13px;text-transform:uppercase;letter-spacing:1px}tbody tr{transition:all .3s ease;border-bottom:1px solid #f0f0f0}tbody tr:hover{background:linear-gradient(135deg,rgba(102,126,234,.1) 0%,rgba(118,75,162,.1) 100%);transform:scale(1.01)}tbody tr.match-row{background:linear-gradient(135deg,rgba(255,215,0,.15) 0%,rgba(255,215,0,.25) 100%);border-left:5px solid #ffd700}tbody tr.reverse-row{background:linear-gradient(135deg,rgba(245,87,108,.15) 0%,rgba(245,87,108,.25) 100%);border-left:5px solid #f5576c}tbody tr.zigzag-row{background:linear-gradient(135deg,rgba(79,172,254,.15) 0%,rgba(79,172,254,.25) 100%);border-left:5px solid #4facfe}td{padding:16px 12px;text-align:center;color:#333;font-size:13px;font-weight:600}.period-cell{font-family:'Courier New',monospace;font-size:12px;color:#666}.num-cell{font-size:28px;font-weight:900}.num-cell.matched{color:#ffd700;text-shadow:0 2px 8px rgba(255,215,0,.6);font-size:32px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ffed4e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.size-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px}.size-big{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white}.size-small{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);color:white}.color-dots{display:flex;justify-content:center;gap:6px}.dot{width:18px;height:18px;border-radius:50%;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.2)}.dot-red{background:#f5576c}.dot-green{background:#00f2fe}.dot-violet{background:#764ba2}.match-badge{background:#ffd700;color:#333;padding:4px 10px;border-radius:15px;font-size:10px;font-weight:700;margin-left:5px}.reverse-mark{background:#f5576c;color:white;padding:4px 10px;border-radius:15px;font-size:10px;font-weight:700;margin-left:5px}.zigzag-mark{background:#4facfe;color:white;padding:4px 10px;border-radius:15px;font-size:10px;font-weight:700;margin-left:5px}.refresh-btn{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:18px 35px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(102,126,234,.5);display:flex;align-items:center;gap:10px;transition:all .3s;z-index:1000;text-transform:uppercase;letter-spacing:1px}.refresh-btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(102,126,234,.7)}.refresh-btn:active{transform:translateY(-1px)}.refresh-icon{font-size:20px;transition:transform .5s}.refresh-icon.spin{animation:rotate .5s linear}@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.time-display{text-align:center;margin-top:20px;padding:15px;background:rgba(255,255,255,.2);border-radius:15px;backdrop-filter:blur(10px)}.current-time{font-size:32px;font-weight:900;color:white;text-shadow:0 2px 10px rgba(0,0,0,.3);letter-spacing:2px}.loading{text-align:center;padding:20px;color:#764ba2;font-size:16px;font-weight:600}.data-count{text-align:center;color:white;font-size:13px;margin-top:10px;opacity:.8}.progress-bar{width:100%;height:8px;background:rgba(255,255,255,.2);border-radius:10px;overflow:hidden;margin-top:10px}.progress-fill{height:100%;background:linear-gradient(90deg,#4facfe,#00f2fe);border-radius:10px;transition:width .3s ease}@media (max-width:768px){.logo{font-size:32px}.pred-result{font-size:48px;letter-spacing:4px}.stats-grid{grid-template-columns:repeat(2,1fr)}.analysis-grid{grid-template-columns:1fr}.refresh-btn{bottom:20px;right:20px;padding:15px 25px;font-size:14px}th,td{padding:12px 8px;font-size:11px}.num-cell{font-size:22px}}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#0a0e27;min-height:100vh;padding:15px;overflow-x:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.03;pointer-events:none}.container{max-width:900px;margin:0 auto;position:relative;z-index:1}.header{text-align:center;margin-bottom:20px;position:relative}.logo{font-size:28px;color:#00ff41;text-shadow:0 0 20px #00ff41;animation:glow 2s ease-in-out infinite;margin-bottom:8px}@keyframes glow{0%,100%{text-shadow:0 0 20px #00ff41}50%{text-shadow:0 0 30px #00ff41,0 0 60px #00ff41}}.title{color:#00ff41;font-size:13px;letter-spacing:2px;text-transform:uppercase}.subtitle{color:#ffaa00;font-size:11px;margin-top:5px;letter-spacing:1px}.scan-line{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,#00ff41,transparent);animation:scan 3s linear infinite}@keyframes scan{0%{top:0}100%{top:100%}}.stats-container{background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,rgba(0,100,255,.05) 100%);border:1px solid rgba(0,255,65,.3);border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 0 20px rgba(0,255,65,.2)}.stats-info{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.stat-item{text-align:center;padding:12px 8px;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.2);border-radius:8px;transition:all .3s ease}.stat-item:hover{transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,255,65,.3)}.stat-label{font-size:9px;color:#00ff41;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;opacity:.7}.stat-value{font-size:24px;font-weight:bold;color:#00ff41;text-shadow:0 0 10px #00ff41}.table-container{background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,rgba(0,100,255,.05) 100%);border:1px solid rgba(0,255,65,.3);border-radius:12px;overflow-x:auto;box-shadow:0 0 20px rgba(0,255,65,.2)}table{width:100%;border-collapse:collapse;min-width:700px}thead{background:linear-gradient(135deg,rgba(0,255,65,.2) 0%,rgba(0,100,255,.2) 100%)}th{padding:12px 6px;text-align:center;font-weight:600;color:#00ff41;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #00ff41}tbody tr{background:rgba(0,0,0,.3);transition:all .3s ease;border-bottom:1px solid rgba(0,255,65,.1)}tbody tr:hover{background:rgba(0,255,65,.1);transform:scale(1.01);box-shadow:0 0 15px rgba(0,255,65,.3)}td{padding:10px 5px;text-align:center;color:#00ff41;font-size:11px}.period-cell{font-family:'Courier New',monospace;font-size:10px;opacity:.7}.number-cell{font-size:22px;font-weight:bold}.color-cell{display:flex;justify-content:center;align-items:center;gap:4px}.color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:2px solid rgba(0,255,65,.3);animation:dotPulse 2s infinite}@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}.red{background:#ff0055;box-shadow:0 0 8px #ff0055}.green{background:#00ff41;box-shadow:0 0 8px #00ff41}.violet{background:#aa00ff;box-shadow:0 0 8px #aa00ff}.pred-cell{font-weight:bold;font-size:12px;padding:8px 5px}.pred-single{color:#ffaa00;text-shadow:0 0 8px #ffaa00}.pred-double{color:#00aaff;text-shadow:0 0 8px #00aaff}.status-cell{font-weight:bold;font-size:13px;padding:8px 5px}.win{color:#00ff41;text-shadow:0 0 10px #00ff41}.miss{color:#ff0055;text-shadow:0 0 10px #ff0055}.waiting{color:#ffaa00;opacity:.5}.time-display{background:rgba(0,255,65,.1);padding:15px 30px;border-radius:12px;display:inline-block;margin-top:15px;border:1px solid rgba(0,255,65,.3);box-shadow:0 0 20px rgba(0,255,65,.2)}.current-time{font-size:28px;font-weight:bold;color:#00ff41;font-family:'Courier New',monospace;letter-spacing:2px;text-shadow:0 0 20px #00ff41}.seconds-highlight{color:#ff0055;font-size:32px;animation:pulse 1s infinite;text-shadow:0 0 20px #ff0055}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}.refresh-btn{position:fixed;bottom:25px;right:25px;background:linear-gradient(135deg,#00ff41 0%,#00aaff 100%);color:#0a0e27;border:none;padding:14px 24px;border-radius:40px;font-size:14px;font-weight:bold;cursor:pointer;box-shadow:0 0 30px rgba(0,255,65,.5);display:flex;align-items:center;gap:8px;transition:all .3s;z-index:1000;text-transform:uppercase;letter-spacing:1.5px}.refresh-btn:hover{transform:scale(1.08);box-shadow:0 0 50px rgba(0,255,65,.8)}.refresh-btn:active{transform:scale(.95)}.refresh-icon{font-size:18px}.refresh-icon.spinning{animation:spin .5s linear}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.loading{text-align:center;padding:15px;color:#00ff41;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}.update-time{text-align:center;margin-top:15px}.auth-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0e27;z-index:9999;display:flex;align-items:center;justify-content:center}.auth-box{background:linear-gradient(135deg,rgba(0,255,65,.1) 0%,rgba(0,100,255,.1) 100%);border:2px solid #00ff41;border-radius:12px;padding:40px;max-width:400px;box-shadow:0 0 50px rgba(0,255,65,.5)}.auth-title{text-align:center;margin-bottom:30px}.auth-icon{font-size:36px;color:#00ff41;text-shadow:0 0 20px #00ff41;margin-bottom:10px}.auth-text{color:#00ff41;font-size:20px;font-weight:bold;letter-spacing:2px;text-shadow:0 0 15px #00ff41}.auth-subtitle{color:#ffaa00;font-size:12px;margin-top:8px}.auth-input{width:100%;padding:15px;background:rgba(0,255,65,.1);border:2px solid #00ff41;border-radius:8px;color:#00ff41;text-align:center;font-size:16px;font-family:'Courier New',monospace;font-weight:bold;margin-bottom:20px}.auth-input:focus{outline:none;box-shadow:0 0 20px rgba(0,255,65,.5)}.auth-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00ff41 0%,#00aaff 100%);color:#0a0e27;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:2px}.auth-btn:hover{transform:scale(1.02)}.auth-error{color:#ff0055;text-align:center;margin-top:15px;font-size:12px;display:none;text-shadow:0 0 10px #ff0055}.blocked-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#ff0055;z-index:99999;display:none;align-items:center;justify-content:center;flex-direction:column}.blocked-text{color:#fff;font-size:32px;font-weight:bold;text-align:center;margin-bottom:20px}.blocked-msg{color:#fff;font-size:16px;text-align:center}@media (max-width:600px){.logo{font-size:22px}.title{font-size:10px;letter-spacing:1px}.stats-info{grid-template-columns:repeat(2,1fr);gap:10px}th,td{padding:8px 4px;font-size:10px}.number-cell{font-size:18px}.refresh-btn{bottom:15px;right:15px;padding:12px 20px;font-size:12px}.current-time{font-size:22px}.stat-value{font-size:20px}}
 </style>
 </head>
 <body>
+<div id="blockedScreen" class="blocked-screen">
+<div class="blocked-text">🚫 ACCESS DENIED</div>
+<div class="blocked-msg">Unauthorized tampering detected</div>
+</div>
+
+<div id="authScreen" class="auth-screen">
+<div class="auth-box">
+<div class="auth-title">
+<div class="auth-icon">🔒</div>
+<div class="auth-text">SECURE ACCESS</div>
+<div class="auth-subtitle">QUANTUM AUTHENTICATION REQUIRED</div>
+</div>
+<input type="password" id="passInput" class="auth-input" placeholder="Enter Master Key" autocomplete="off" />
+<button onclick="_0x3e4a9b()" class="auth-btn">AUTHENTICATE</button>
+<div id="errorMsg" class="auth-error"></div>
+</div>
+</div>
+
+<div id="mainApp" style="display:none;">
+<canvas class="matrix-bg" id="matrix"></canvas>
 <div class="container">
 <div class="header">
-<div class="logo">⚡ WINGO PRO SIGNAL</div>
-<div class="subtitle">Master AI Prediction System</div>
-<div class="data-count" id="dataCount">Loading...</div>
-<div class="progress-bar"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
+<div class="scan-line"></div>
+<div class="logo">⚡ WINGO PRO</div>
+<div class="title">AI PREDICTION SYSTEM v3.0</div>
+<div class="subtitle">QUANTUM DUAL LOGIC ENGINE</div>
 </div>
-<div class="prediction-box">
-<div class="pred-title">🎯 AI Master Prediction</div>
-<div class="pred-result" id="predResult"><div class="loading">Analyzing...</div></div>
-<div class="confidence-info">
-<div class="conf-badge" id="confBadge">Calculating...</div>
-<div class="pattern-badge" id="patternBadge" style="display:none"></div>
-<div class="reverse-badge" id="reverseBadge" style="display:none"></div>
-<div class="zigzag-badge" id="zigzagBadge" style="display:none"></div>
-</div>
-</div>
-<div class="stats-grid">
-<div class="stat-card"><div class="stat-label">Total Big</div><div class="stat-value stat-big" id="bigCount">0</div></div>
-<div class="stat-card"><div class="stat-label">Total Small</div><div class="stat-value stat-small" id="smallCount">0</div></div>
-<div class="stat-card"><div class="stat-label">Big %</div><div class="stat-value stat-big" id="bigPercent">0%</div></div>
-<div class="stat-card"><div class="stat-label">Small %</div><div class="stat-value stat-small" id="smallPercent">0%</div></div>
-<div class="stat-card"><div class="stat-label">Balance</div><div class="stat-value" id="balanceStatus">50/50</div></div>
-</div>
-<div class="history-section">
-<div class="section-title">⚖️ Big/Small Balance Analysis</div>
-<div class="balance-bar">
-<div class="balance-fill-big" id="balanceFillBig">0%</div>
-<div class="balance-fill-small" id="balanceFillSmall" style="width:0%">0%</div>
-</div>
-<div class="match-title" id="balanceInfo"></div>
-</div>
-<div class="history-section">
-<div class="section-title">🔄 ZigZag Pattern (B-S-B-S)</div>
-<div class="zigzag-pattern" id="zigzagPattern"></div>
-<div class="match-info" id="zigzagInfo">
-<div class="match-title" id="zigzagStatus"></div>
-<div class="match-list" id="zigzagDetails"></div>
+
+<div class="stats-container">
+<div class="stats-info">
+<div class="stat-item"><div class="stat-label">Single Win%</div><div class="stat-value" id="singleWinRate">0%</div></div>
+<div class="stat-item"><div class="stat-label">Double Win%</div><div class="stat-value" id="doubleWinRate">0%</div></div>
+<div class="stat-item"><div class="stat-label">Latest Period</div><div class="stat-value" id="lp">-</div></div>
+<div class="stat-item"><div class="stat-label">Total Analyzed</div><div class="stat-value" id="tc">0</div></div>
 </div>
 </div>
-<div class="analysis-grid">
-<div class="analysis-card">
-<h3>🔢 Number Pattern</h3>
-<div id="numberAnalysis" class="match-list"></div>
-</div>
-<div class="analysis-card">
-<h3>🎨 Color Pattern</h3>
-<div id="colorAnalysis" class="match-list"></div>
-</div>
-<div class="analysis-card">
-<h3>🔄 Reverse Pattern (11-20)</h3>
-<div id="reverseAnalysis" class="match-list"></div>
-</div>
-</div>
-<div class="table-wrapper">
+
+<div class="table-container">
 <table>
-<thead><tr><th>Period</th><th>Number</th><th>Size</th><th>Color</th><th>Pattern</th></tr></thead>
-<tbody id="tableBody"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody>
+<thead><tr><th>Period</th><th>Number</th><th>Size</th><th>Color</th><th>Single<br>(Logic A)</th><th>Status</th><th>Double<br>(Logic B)</th><th>Status</th></tr></thead>
+<tbody id="tb"><tr><td colspan="8" class="loading">[ INITIALIZING QUANTUM ENGINE... ]</td></tr></tbody>
 </table>
 </div>
-<div class="time-display"><div class="current-time" id="currentTime">00:00:00</div></div>
+
+<p class="update-time"><span class="time-display"><div class="current-time" id="rt">00:00:00</div></span></p>
 </div>
-<button class="refresh-btn" onclick="refreshData()"><span class="refresh-icon" id="refreshIcon">↻</span><span>Refresh</span></button>
+
+<button class="refresh-btn" onclick="_0x8d2f1c()"><span class="refresh-icon" id="ri">⟳</span><span>Refresh</span></button>
+</div>
+
 <script>
-const API='https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json';
-let allPeriods=[],periodsStorage=[],zigzagLossCount=0,currentZigzagPattern='BS';
-function getSize(n){return parseInt(n)>=5?'Big':'Small'}
-function getColors(n){const num=parseInt(n);if(num===0)return['red','violet'];if(num===5)return['green','violet'];return num%2===0?['red']:['green']}
-function getColorString(n){return getColors(n).join(',')}
-function savePeriods(d){periodsStorage=d}
-function loadSavedPeriods(){return periodsStorage}
-function analyzeBalance(periods){let bigC=0,smallC=0;periods.forEach(p=>{getSize(p.num)==='Big'?bigC++:smallC++});const total=bigC+smallC;const bigPct=total>0?Math.round((bigC/total)*100):0;const smallPct=100-bigPct;let trend='Balanced';if(bigPct>=60)trend='Big Heavy';else if(smallPct>=60)trend='Small Heavy';const needReverse=bigPct>=55||smallPct>=55;return{bigCount:bigC,smallCount:smallC,bigPercent:bigPct,smallPercent:smallPct,trend:trend,needReverse:needReverse,reverseTarget:bigPct>smallPct?'Small':'Big'}}
-function analyzeZigzag(periods){const sizes=periods.map(p=>getSize(p.num));const pattern=[];let matches=0,current=currentZigzagPattern==='BS'?['Big','Small']:['Small','Big'];for(let i=0;i<Math.min(20,sizes.length);i++){const expected=current[i%2];const actual=sizes[i];const isMatch=expected===actual;pattern.push({index:i,expected:expected,actual:actual,match:isMatch});if(!isMatch)matches++;else matches=0;if(matches>=3&&currentZigzagPattern==='BS'){currentZigzagPattern='SB';return analyzeZigzag(periods)}}return{pattern:pattern.slice(0,10),currentPattern:currentZigzagPattern,lossCount:matches,shouldSwitch:matches>=3,nextExpected:current[0]}}
-function findNumberPattern(lastNum){if(!lastNum)return{normal:[],reverse:[],bigCount:0,smallCount:0,bigPercent:0,smallPercent:0};const normal=[],reverse=[];let bigC=0,smallC=0;for(let i=0;i<allPeriods.length-1;i++){if(allPeriods[i].num===lastNum){const nextNum=allPeriods[i+1].num;const nextSize=getSize(nextNum);if(nextSize==='Big')bigC++;else smallC++;if(i>=10&&i<=19)reverse.push({period:allPeriods[i].period,nextNum:nextNum,nextSize:nextSize,index:i});else normal.push({period:allPeriods[i].period,nextNum:nextNum,nextSize:nextSize,index:i})}}const total=bigC+smallC;const bigPct=total>0?Math.round((bigC/total)*100):0;const smallPct=100-bigPct;return{normal,reverse,bigCount:bigC,smallCount:smallC,bigPercent:bigPct,smallPercent:smallPct,total:total}}
-function findColorPattern(last3){if(!last3||last3.length<3)return{normal:[],reverse:[]};const c1=last3[0],c2=last3[1],c3=last3[2],normal=[],reverse=[];for(let i=2;i<allPeriods.length-1;i++){const h1=getColorString(parseInt(allPeriods[i].num)),h2=getColorString(parseInt(allPeriods[i-1].num)),h3=getColorString(parseInt(allPeriods[i-2].num));if(h1===c1&&h2===c2&&h3===c3){const nextColor=getColorString(parseInt(allPeriods[i+1].num)),nextNum=allPeriods[i+1].num;if(i>=10&&i<=19)reverse.push({period:allPeriods[i].period,nextColor:nextColor,nextNum:nextNum,index:i});else normal.push({period:allPeriods[i].period,nextColor:nextColor,nextNum:nextNum,index:i})}}return{normal,reverse}}
-function analyzePatterns(normalMatches,reverseMatches){const freq={};normalMatches.forEach(m=>freq[m]=(freq[m]||0)+1);reverseMatches.forEach(m=>freq[m]=(freq[m]||0)-0.5);return Object.entries(freq).sort((a,b)=>b[1]-a[1])}
-function getMasterPrediction(numPattern,colorPattern,balance,zigzag){let finalSize='Big',finalConf=50,numBonus=0;if(numPattern.total>0){finalSize=numPattern.bigPercent>numPattern.smallPercent?'Big':'Small';const dominance=Math.max(numPattern.bigPercent,numPattern.smallPercent);finalConf=Math.min(95,50+Math.round((dominance-50)*0.8));numBonus=Math.round((dominance-50)*0.3)}else{const normalNums=numPattern.normal.map(m=>m.nextNum);const reverseNums=numPattern.reverse.map(m=>m.nextNum);const normalColors=colorPattern.normal.map(m=>m.nextNum);const reverseColors=colorPattern.reverse.map(m=>m.nextNum);const allNormal=[...normalNums,...normalColors];const allReverse=[...reverseNums,...reverseColors];let analyzed=analyzePatterns(allNormal,allReverse);if(analyzed.length>0){const predNum=analyzed[0][0];finalSize=getSize(predNum);const totalMatches=allNormal.length+allReverse.length;finalConf=Math.min(90,55+Math.round((analyzed[0][1]/(totalMatches||1))*35))}}finalConf=Math.min(98,finalConf+numBonus);const zigzagPred=zigzag.nextExpected;const balancePred=balance.needReverse?balance.reverseTarget:finalSize;let useZigzag=false,useBalance=false;if(zigzag.lossCount===0){useZigzag=true;if(finalSize===zigzagPred)finalConf=Math.min(98,finalConf+8);else finalConf=Math.max(55,finalConf-3)}if(balance.needReverse){useBalance=true;if(finalSize===balancePred)finalConf=Math.min(98,finalConf+5)}return{prediction:finalSize,confidence:finalConf,useZigzag:useZigzag,useBalance:useBalance,zigzagMatch:finalSize===zigzagPred,balanceMatch:finalSize===balancePred,numberBased:numPattern.total>0}}
-async function loadData(){try{const res=await fetch(`${API}?ts=${Date.now()}`);const data=await res.json();let gameList=[];if(data&&data.data&&data.data.list)gameList=data.data.list;else if(data&&data.list)gameList=data.list;else if(Array.isArray(data))gameList=data;if(gameList.length===0){document.getElementById('tableBody').innerHTML='<tr><td colspan="5" class="loading">No data</td></tr>';return}const processed=gameList.map(item=>({period:String(item.issue||item.period||item.issueNo||item.periodId||item.issueNumber||''),num:String(item.result||item.number||item.num||item.openResult||'0')}));const savedData=loadSavedPeriods();if(savedData.length>0)allPeriods=[...savedData];const newPeriods=[];processed.forEach(item=>{if(!allPeriods.find(p=>p.period===item.period))newPeriods.push(item)});if(newPeriods.length>0)allPeriods=[...newPeriods,...allPeriods];if(allPeriods.length>500)allPeriods=allPeriods.slice(0,500);savePeriods(allPeriods);const progress=Math.min(100,Math.round((allPeriods.length/500)*100));document.getElementById('dataCount').textContent=`Periods: ${allPeriods.length}/500 (${progress}%)`;document.getElementById('progressBar').style.width=progress+'%';const balance=analyzeBalance(allPeriods.slice(0,50));document.getElementById('bigCount').textContent=balance.bigCount;document.getElementById('smallCount').textContent=balance.smallCount;document.getElementById('bigPercent').textContent=balance.bigPercent+'%';document.getElementById('smallPercent').textContent=balance.smallPercent+'%';document.getElementById('balanceStatus').textContent=balance.bigPercent+'/'+balance.smallPercent;document.getElementById('balanceFillBig').textContent=balance.bigPercent+'%';document.getElementById('balanceFillBig').style.width=balance.bigPercent+'%';document.getElementById('balanceFillSmall').textContent=balance.smallPercent+'%';document.getElementById('balanceFillSmall').style.width=balance.smallPercent+'%';let balanceMsg=`Trend: ${balance.trend}`;if(balance.needReverse)balanceMsg+=` - Next should be ${balance.reverseTarget} to balance 50/50`;document.getElementById('balanceInfo').textContent=balanceMsg;const zigzag=analyzeZigzag(allPeriods);const zigzagCont=document.getElementById('zigzagPattern');zigzagCont.innerHTML='';zigzag.pattern.forEach((item,idx)=>{const div=document.createElement('div');div.className=`zigzag-item zigzag-${item.expected.toLowerCase()}${idx===0?' zigzag-active':''}`;div.textContent=item.expected[0];if(!item.match)div.style.opacity='0.5';zigzagCont.appendChild(div)});let zigzagMsg=`Current Pattern: ${zigzag.currentPattern==='BS'?'Big→Small':'Small→Big'}`;if(zigzag.shouldSwitch)zigzagMsg+=' ⚠️ Pattern should switch!';document.getElementById('zigzagStatus').textContent=zigzagMsg;const zigzagDetails=document.getElementById('zigzagDetails');zigzagDetails.innerHTML='';const detailDiv=document.createElement('div');detailDiv.className='match-item';detailDiv.innerHTML=`Loss Count: ${zigzag.lossCount}/3 | Next Expected: <strong>${zigzag.nextExpected}</strong>`;zigzagDetails.appendChild(detailDiv);const lastNum=allPeriods[0].num;const last3Colors=allPeriods.slice(0,3).map(p=>getColorString(parseInt(p.num)));const numPattern=findNumberPattern(lastNum);const colorPattern=findColorPattern(last3Colors);const prediction=getMasterPrediction(numPattern,colorPattern,balance,zigzag);document.getElementById('predResult').innerHTML=`<span class="pred-${prediction.prediction.toLowerCase()}" style="font-size:72px">${prediction.prediction}</span>`;document.getElementById('confBadge').textContent=`Confidence: ${prediction.confidence}%`;const patternBadge=document.getElementById('patternBadge');const reverseBadge=document.getElementById('reverseBadge');const zigzagBadge=document.getElementById('zigzagBadge');const totalMatches=numPattern.normal.length+numPattern.reverse.length+colorPattern.normal.length+colorPattern.reverse.length;if(totalMatches>0||numPattern.total>0){patternBadge.style.display='block';if(numPattern.total>0)patternBadge.textContent=`${numPattern.total} Number Matches Found`;else patternBadge.textContent=`${totalMatches} Patterns`}else{patternBadge.style.display='none'}if(prediction.useBalance){reverseBadge.style.display='block';reverseBadge.textContent='⚖️ Balance Mode'}else{reverseBadge.style.display='none'}if(prediction.useZigzag){zigzagBadge.style.display='block';zigzagBadge.textContent=prediction.zigzagMatch?'✓ ZigZag Match':'⚠️ ZigZag Active'}else{zigzagBadge.style.display='none'}const numberAnalysis=document.getElementById('numberAnalysis');numberAnalysis.innerHTML='';if(numPattern.total>0){const bigDiv=document.createElement('div');bigDiv.className='match-item';bigDiv.innerHTML=`<strong>Big</strong>: ${numPattern.bigCount} times (${numPattern.bigPercent}%)`;numberAnalysis.appendChild(bigDiv);const smallDiv=document.createElement('div');smallDiv.className='match-item';smallDiv.innerHTML=`<strong>Small</strong>: ${numPattern.smallCount} times (${numPattern.smallPercent}%)`;numberAnalysis.appendChild(smallDiv);const predDiv=document.createElement('div');predDiv.className='match-item';predDiv.style.background='linear-gradient(135deg,#fff9e6,#ffe8a3)';predDiv.style.borderColor='#ffd700';predDiv.style.fontWeight='900';predDiv.innerHTML=`Prediction: <strong>${prediction.prediction}</strong> (${Math.max(numPattern.bigPercent,numPattern.smallPercent)}%)`;numberAnalysis.appendChild(predDiv)}else{numberAnalysis.innerHTML='<div class="match-item">Last number not found in history</div>'}const colorAnalysis=document.getElementById('colorAnalysis');colorAnalysis.innerHTML='';if(colorPattern.normal.length>0||colorPattern.reverse.length>0){const colorFreq={};colorPattern.normal.forEach(m=>{const key=`${m.nextColor}(${m.nextNum})`;colorFreq[key]=(colorFreq[key]||0)+1});colorPattern.reverse.forEach(m=>{const key=`${m.nextColor}(${m.nextNum})`;colorFreq[key]=(colorFreq[key]||0)+0.5});const sorted=Object.entries(colorFreq).sort((a,b)=>b[1]-a[1]).slice(0,5);sorted.forEach(([info,count])=>{const div=document.createElement('div');div.className='match-item';div.innerHTML=`${info}: ${Math.round(count)}`;colorAnalysis.appendChild(div)})}else{colorAnalysis.innerHTML='<div class="match-item">No matches</div>'}const reverseAnalysis=document.getElementById('reverseAnalysis');reverseAnalysis.innerHTML='';const reverseTotal=numPattern.reverse.length+colorPattern.reverse.length;if(reverseTotal>0){const div=document.createElement('div');div.className='match-item reverse-match';div.innerHTML=`${reverseTotal} reverse patterns (11-20)`;reverseAnalysis.appendChild(div)}else{reverseAnalysis.innerHTML='<div class="match-item">No reverse</div>'}const tbody=document.getElementById('tableBody');tbody.innerHTML='';const matchedPeriods=new Set();const reversePeriods=new Set();const zigzagPeriods=new Set();numPattern.normal.forEach(m=>matchedPeriods.add(allPeriods[m.index].period));colorPattern.normal.forEach(m=>matchedPeriods.add(allPeriods[m.index].period));numPattern.reverse.forEach(m=>reversePeriods.add(allPeriods[m.index].period));colorPattern.reverse.forEach(m=>reversePeriods.add(allPeriods[m.index].period));zigzag.pattern.forEach(p=>{if(allPeriods[p.index])zigzagPeriods.add(allPeriods[p.index].period)});allPeriods.slice(0,50).forEach((item,idx)=>{const num=item.num,size=getSize(num),colors=getColors(parseInt(num));const isMatched=matchedPeriods.has(item.period);const isReverse=reversePeriods.has(item.period);const isZigzag=zigzagPeriods.has(item.period);const isLastNumber=num===lastNum;const tr=document.createElement('tr');if(isZigzag)tr.className='zigzag-row';else if(isReverse)tr.className='reverse-row';else if(isMatched)tr.className='match-row';const tdPeriod=document.createElement('td');tdPeriod.className='period-cell';tdPeriod.textContent=item.period.slice(-6);if(isMatched){const badge=document.createElement('span');badge.className='match-badge';badge.textContent='★';tdPeriod.appendChild(badge)}if(isReverse){const badge=document.createElement('span');badge.className='reverse-mark';badge.textContent='⚠️';tdPeriod.appendChild(badge)}if(isZigzag){const badge=document.createElement('span');badge.className='zigzag-mark';badge.textContent='Z';tdPeriod.appendChild(badge)}const tdNum=document.createElement('td');tdNum.className='num-cell'+(isLastNumber?' matched':'');tdNum.textContent=num;const tdSize=document.createElement('td');tdSize.innerHTML=`<span class="size-badge size-${size.toLowerCase()}">${size}</span>`;const tdColor=document.createElement('td');tdColor.className='color-dots';colors.forEach(c=>{const dot=document.createElement('span');dot.className=`dot dot-${c}`;tdColor.appendChild(dot)});const tdPattern=document.createElement('td');if(idx>=10&&idx<=19)tdPattern.innerHTML='<span style="color:#f5576c;font-weight:700">R-Zone</span>';else if(isZigzag)tdPattern.innerHTML='<span style="color:#4facfe;font-weight:700">ZigZag</span>';else tdPattern.textContent='-';tr.appendChild(tdPeriod);tr.appendChild(tdNum);tr.appendChild(tdSize);tr.appendChild(tdColor);tr.appendChild(tdPattern);tbody.appendChild(tr)})}catch(err){console.error('Error:',err);document.getElementById('tableBody').innerHTML='<tr><td colspan="5" class="loading">Error</td></tr>'}}
-function updateTime(){const now=new Date(),h=String(now.getHours()).padStart(2,'0'),m=String(now.getMinutes()).padStart(2,'0'),s=String(now.getSeconds()).padStart(2,'0');document.getElementById('currentTime').textContent=`${h}:${m}:${s}`;if(s==='00'||s==='30')setTimeout(loadData,1000)}
-function refreshData(){const icon=document.getElementById('refreshIcon');icon.classList.add('spin');setTimeout(()=>icon.classList.remove('spin'),500);loadData()}
-loadData();setInterval(updateTime,1000);updateTime();
+(function(){var _0x4a=['constructor','toString','search'];(function(_0x1b,_0x2c){var _0x3d=function(_0x4e){while(--_0x4e){_0x1b['push'](_0x1b['shift']());}};_0x3d(++_0x2c);}(_0x4a,0x91));var _0x5f=function(_0x6a,_0x7b){_0x6a=_0x6a-0x0;var _0x8c=_0x4a[_0x6a];return _0x8c;};var _0x9d=function(){var _0xae=!![];return function(_0xbf,_0xc0){var _0xd1=_0xae?function(){if(_0xc0){var _0xe2=_0xc0['apply'](_0xbf,arguments);_0xc0=null;return _0xe2;}}:function(){};_0xae=![];return _0xd1;};}();var _0xf3=_0x9d(this,function(){return _0xf3[_0x5f('0x0')]()[_0x5f('0x1')]('(((.+)+)+)+$')[_0x5f('0x0')]()[_0x5f('0x2')](_0xf3)[_0x5f('0x1')]('(((.+)+)+)+$');});_0xf3();})();
+
+(function(){setInterval(function(){var _0xa1=new Date();debugger;var _0xb2=new Date();if(_0xb2-_0xa1>100){document.getElementById('blockedScreen').style.display='flex';document.getElementById('authScreen').style.display='none';document.getElementById('mainApp').style.display='none';}},1000);})();
+
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('keydown',function(e){
+    // F12
+    if(e.keyCode===123){e.preventDefault();return false;}
+    // Ctrl+Shift+I (Windows/Linux)
+    if(e.ctrlKey&&e.shiftKey&&e.keyCode===73){e.preventDefault();return false;}
+    // Ctrl+Shift+J (Windows/Linux)
+    if(e.ctrlKey&&e.shiftKey&&e.keyCode===74){e.preventDefault();return false;}
+    // Ctrl+Shift+K (Firefox)
+    if(e.ctrlKey&&e.shiftKey&&e.keyCode===75){e.preventDefault();return false;}
+    // Ctrl+Shift+C (Windows/Linux)
+    if(e.ctrlKey&&e.shiftKey&&e.keyCode===67){e.preventDefault();return false;}
+    // Cmd+Option+I (Mac)
+    if(e.metaKey&&e.altKey&&e.keyCode===73){e.preventDefault();return false;}
+    // Cmd+Option+J (Mac)
+    if(e.metaKey&&e.altKey&&e.keyCode===74){e.preventDefault();return false;}
+    // Cmd+Option+K (Mac Firefox)
+    if(e.metaKey&&e.altKey&&e.keyCode===75){e.preventDefault();return false;}
+    // Cmd+Option+C (Mac)
+    if(e.metaKey&&e.altKey&&e.keyCode===67){e.preventDefault();return false;}
+    // Ctrl+U (View Source)
+    if(e.ctrlKey&&e.keyCode===85){e.preventDefault();return false;}
+    // Cmd+U (Mac View Source)
+    if(e.metaKey&&e.keyCode===85){e.preventDefault();return false;}
+    // Ctrl+S (Save)
+    if(e.ctrlKey&&e.keyCode===83){e.preventDefault();return false;}
+    // Cmd+S (Mac Save)
+    if(e.metaKey&&e.keyCode===83){e.preventDefault();return false;}
+    // Ctrl+A (Select All)
+    if(e.ctrlKey&&e.keyCode===65){e.preventDefault();return false;}
+    // Cmd+A (Mac Select All)
+    if(e.metaKey&&e.keyCode===65){e.preventDefault();return false;}
+    // Ctrl+C (Copy)
+    if(e.ctrlKey&&e.keyCode===67){e.preventDefault();return false;}
+    // Ctrl+V (Paste)
+    if(e.ctrlKey&&e.keyCode===86){e.preventDefault();return false;}
+    // Ctrl+X (Cut)
+    if(e.ctrlKey&&e.keyCode===88){e.preventDefault();return false;}
+});
+
+var _0x1a2b3c={_0x4d5e:function(_0x6f7g){var _0x8h='';for(var i=0;i<_0x6f7g.length;i+=2){_0x8h+=String.fromCharCode(parseInt(_0x6f7g.substr(i,2),16));}return _0x8h;},_0x9i0j:function(_0xkl){return btoa(unescape(encodeURIComponent(_0xkl)));},_0xmn1o:function(_0xpq){return decodeURIComponent(escape(atob(_0xpq)));},_0x2rs3:function(_0xtu,_0xvw){var _0xxy='';for(var i=0;i<_0xtu.length;i++){_0xxy+=String.fromCharCode(_0xtu.charCodeAt(i)^_0xvw);}return _0xxy;}};
+
+var _0x4z5a=[65,100,109,105,110,64,50,48,50,54];
+var _0x6b7c=[87,105,110,103,111,80,114,111,64,50,48,50,54];
+var _0x8d9e=[80,114,101,100,105,99,116,64,50,48,50,54];
+
+var _0xaf0=[],_0xb12=[],_0xc34=[];
+for(var i=0;i<_0x4z5a.length;i++){_0xaf0.push(String.fromCharCode(_0x4z5a[i]));}
+for(var i=0;i<_0x6b7c.length;i++){_0xb12.push(String.fromCharCode(_0x6b7c[i]));}
+for(var i=0;i<_0x8d9e.length;i++){_0xc34.push(String.fromCharCode(_0x8d9e[i]));}
+
+var _0xd56e=[_0xaf0.join(''),_0xb12.join(''),_0xc34.join('')];
+
+function _0x3e4a9b(){
+    var _0xf78=document.getElementById('passInput');
+    var _0xg90=document.getElementById('errorMsg');
+    var _0xh12=_0xf78.value.trim();
+    
+    if(!_0xh12){
+        _0xg90.textContent='⚠️ PASSWORD REQUIRED';
+        _0xg90.style.display='block';
+        setTimeout(function(){_0xg90.style.display='none';},2000);
+        return;
+    }
+    
+    var _0xi34=false;
+    for(var _0xj56=0;_0xj56<_0xd56e.length;_0xj56++){
+        if(_0xh12===_0xd56e[_0xj56]){
+            _0xi34=true;
+            break;
+        }
+    }
+    
+    if(_0xi34){
+        var _0xk78=_0x1a2b3c._0x9i0j(_0xh12);
+        sessionStorage.setItem(_0x1a2b3c._0x4d5e('5f246175746861757468'),_0xk78);
+        sessionStorage.setItem(_0x1a2b3c._0x4d5e('5f2474696d657374616d70'),new Date().getTime().toString());
+        document.getElementById('authScreen').style.display='none';
+        document.getElementById('mainApp').style.display='block';
+        _0x5l9m0();
+    }else{
+        _0xg90.textContent='❌ INVALID CREDENTIALS - ACCESS DENIED';
+        _0xg90.style.display='block';
+        _0xf78.value='';
+        _0xf78.style.borderColor='#ff0055';
+        setTimeout(function(){
+            _0xf78.style.borderColor='#00ff41';
+            _0xg90.style.display='none';
+        },2000);
+    }
+}
+
+function _0xn1p2(){
+    var _0xq3=sessionStorage.getItem(_0x1a2b3c._0x4d5e('5f246175746861757468'));
+    var _0xr4=sessionStorage.getItem(_0x1a2b3c._0x4d5e('5f2474696d657374616d70'));
+    
+    if(!_0xq3||!_0xr4)return false;
+    
+    var _0xs5=new Date().getTime();
+    var _0xt6=_0xs5-parseInt(_0xr4);
+    if(_0xt6>3600000){
+        sessionStorage.clear();
+        return false;
+    }
+    
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+    var _0xu7=document.getElementById('passInput');
+    if(_0xu7){
+        _0xu7.addEventListener('keypress',function(e){
+            if(e.key==='Enter')_0x3e4a9b();
+        });
+    }
+    
+    if(_0xn1p2()){
+        document.getElementById('authScreen').style.display='none';
+        document.getElementById('mainApp').style.display='block';
+        _0x5l9m0();
+    }
+});
+
+function _0x5l9m0(){
+    var c=document.getElementById('matrix'),ctx=c.getContext('2d');
+    c.width=window.innerWidth;c.height=window.innerHeight;
+    var chars='01',fontSize=14,cols=c.width/fontSize,drops=[];
+    for(var i=0;i<cols;i++)drops[i]=1;
+    function _0xv8w(){
+        ctx.fillStyle='rgba(10,14,39,0.05)';
+        ctx.fillRect(0,0,c.width,c.height);
+        ctx.fillStyle='#00ff41';
+        ctx.font=fontSize+'px monospace';
+        for(var i=0;i<drops.length;i++){
+            var t=chars[Math.floor(Math.random()*chars.length)];
+            ctx.fillText(t,i*fontSize,drops[i]*fontSize);
+            if(drops[i]*fontSize>c.height&&Math.random()>0.975)drops[i]=0;
+            drops[i]++;
+        }
+    }
+    setInterval(_0xv8w,50);
+
+    var _0xy9z={
+        _0xa1b:[2,2,2,2,2,1,2,2,1,2],
+        _0xc2d:function(_0xe3){return this._0xa1b[_0xe3]===2?'BIG':'SMALL';},
+        _0xf4g:[[1,2,1,2,2,2,2,1,1,1],[1,2,1,2,1,2,1,1,2,2],[1,2,1,2,1,2,1,1,1,2],[2,2,2,2,1,2,1,1,2,1],[1,1,1,1,2,1,1,2,2,1],[2,2,1,2,1,2,2,2,1,1],[1,1,2,1,1,1,2,1,1,2],[1,2,1,2,1,1,1,1,2,1],[2,1,2,2,1,1,1,2,2,1],[2,1,1,1,1,1,2,2,1,2]],
+        _0xh5i:function(_0xj6,_0xk7){return this._0xf4g[_0xj6][_0xk7]===2?'BIG':'SMALL';}
+    };
+
+    var _0xl8m=function(_0xn9){var _0xo=parseInt(_0xn9);return(_0xo>=0&&_0xo<=4)?'SMALL':'BIG';};
+
+    var _0xp1q,_0xr2s=new Date();
+    var _0xt3u=function(){
+        var _0xv4=new Date(),_0xw5=String(_0xv4.getHours()).padStart(2,'0'),_0xx6=String(_0xv4.getMinutes()).padStart(2,'0'),_0xy7=String(_0xv4.getSeconds()).padStart(2,'0');
+        var _0xz8=document.getElementById('rt');
+        if(_0xz8)_0xz8.innerHTML=_0xw5+':'+_0xx6+':<span class="seconds-highlight">'+_0xy7+'</span>';
+        if(_0xv4.getSeconds()===58&&Math.abs(_0xv4.getTime()-_0xr2s.getTime())>60000){_0xa9b();_0xr2s=new Date();}
+    };
+
+    var _0xc0d=function(){_0xt3u();clearInterval(_0xp1q);_0xp1q=setInterval(_0xt3u,1000);};
+
+    window._0x8d2f1c=function(){
+        if(!_0xn1p2()){
+            location.reload();
+            return;
+        }
+        var _0xe1f=document.getElementById('ri');
+        if(_0xe1f){_0xe1f.classList.add('spinning');setTimeout(function(){_0xe1f.classList.remove('spinning');},500);}
+        _0xa9b();
+    };
+
+    var _0xa9b=async function(){
+        if(!_0xn1p2()){
+            sessionStorage.clear();
+            location.reload();
+            return;
+        }
+        
+        try{
+            var _0xg2h=[104,116,116,112,115,58,47,47,100,114,97,119,46,97,114,45,108,111,116,116,101,114,121,48,49,46,99,111,109,47,87,105,110,71,111,47,87,105,110,71,111,95,49,77,47,71,101,116,72,105,115,116,111,114,121,73,115,115,117,101,80,97,103,101,46,106,115,111,110];
+            var _0xi3='';
+            for(var i=0;i<_0xg2h.length;i++){_0xi3+=String.fromCharCode(_0xg2h[i]);}
+            
+            var _0xj4=new Date().getTime();
+            var _0xk5=_0xi3+'?ts='+_0xj4;
+            var _0xl6=await fetch(_0xk5);
+            var _0xm7=await _0xl6.json();
+            
+            var _0xn8=[];
+            if(_0xm7&&_0xm7.data&&_0xm7.data.list)_0xn8=_0xm7.data.list.slice(0,10);
+            else if(_0xm7&&_0xm7.list)_0xn8=_0xm7.list.slice(0,10);
+            else if(Array.isArray(_0xm7))_0xn8=_0xm7.slice(0,10);
+
+            var _0xo9=document.getElementById("tb");
+            _0xo9.innerHTML="";
+            if(_0xn8.length===0){_0xo9.innerHTML='<tr><td colspan="8" class="loading">[ NO DATA AVAILABLE ]</td></tr>';return;}
+
+            var _0xp0=['issue','period','issueNo','periodId','issueNumber'];
+            var _0xq1=['result','number','num','openResult'];
+            var _0xr2=['color','colour'];
+            var _0xs3=['gameNo','drawNo','id'];
+
+            var _0xt4='';
+            var _0xu5=0,_0xv6=0;
+            var _0xw7=0,_0xx8=0;
+
+            _0xn8.forEach(function(_0xy9,_0xz0){
+                var _0xa1=document.createElement("tr");
+                
+                var _0xb2=document.createElement("td");
+                _0xb2.className="period-cell";
+                var _0xc3=String(_0xy9[_0xp0[0]]||_0xy9[_0xp0[1]]||_0xy9[_0xp0[2]]||_0xy9[_0xp0[3]]||_0xy9[_0xp0[4]]||_0xy9[_0xs3[0]]||_0xy9[_0xs3[1]]||_0xy9[_0xs3[2]]||'');
+                _0xb2.textContent=_0xc3||"N/A";
+                if(_0xz0===0)_0xt4=_0xc3;
+
+                var _0xd4=String(_0xy9[_0xq1[0]]||_0xy9[_0xq1[1]]||_0xy9[_0xq1[2]]||_0xy9[_0xq1[3]]||"?");
+                var _0xe5=document.createElement("td");
+                _0xe5.className="number-cell";
+                var _0xf6=document.createElement("span");
+                var _0xg7=(_0xy9[_0xr2[0]]||_0xy9[_0xr2[1]]||"").toLowerCase();
+                if(_0xg7==='red'){_0xf6.style.color='#ff0055';_0xf6.style.textShadow='0 0 10px #ff0055';}
+                else if(_0xg7==='green'){_0xf6.style.color='#00ff41';_0xf6.style.textShadow='0 0 10px #00ff41';}
+                else if(_0xg7==='violet'||_0xg7==='purple'){_0xf6.style.color='#aa00ff';_0xf6.style.textShadow='0 0 10px #aa00ff';}
+                _0xf6.textContent=_0xd4;
+                _0xe5.appendChild(_0xf6);
+
+                var _0xh8=document.createElement("td");
+                _0xh8.textContent=parseInt(_0xd4)>=5?'Big':'Small';
+
+                var _0xi9=document.createElement("td");
+                _0xi9.className="color-cell";
+                var _0xj0=parseInt(_0xd4);
+                var _0xk1=[];
+                if(_0xg7==='red')_0xk1.push('red');
+                else if(_0xg7==='green')_0xk1.push('green');
+                else if(_0xg7==='violet'||_0xg7==='purple')_0xk1.push('violet');
+                if(_0xj0===0){_0xk1.push('violet');_0xk1.push('red');}
+                else if(_0xj0===5){_0xk1.push('violet');_0xk1.push('green');}
+                _0xk1.forEach(function(_0xl2){
+                    var _0xm3=document.createElement("span");
+                    _0xm3.className='color-dot '+_0xl2;
+                    _0xi9.appendChild(_0xm3);
+                });
+
+                var _0xn4='-',_0xo5='-',_0xp6='waiting';
+                var _0xq7='-',_0xr8='-',_0xs9='waiting';
+
+                if(_0xz0<_0xn8.length-1){
+                    var _0xt0=String(_0xn8[_0xz0+1][_0xq1[0]]||_0xn8[_0xz0+1][_0xq1[1]]||_0xn8[_0xz0+1][_0xq1[2]]||_0xn8[_0xz0+1][_0xq1[3]]||"?");
+                    var _0xu1=_0xl8m(_0xd4);
+
+                    if(_0xt0!=='?'){
+                        var _0xv2=parseInt(_0xt0.slice(-1));
+                        _0xn4=_0xy9z._0xc2d(_0xv2);
+                        if(_0xn4!=='-'){
+                            _0xv6++;
+                            if(_0xn4===_0xu1){
+                                _0xo5='WIN ✓';
+                                _0xp6='win';
+                                _0xu5++;
+                            }else{
+                                _0xo5='MISS ✗';
+                                _0xp6='miss';
+                            }
+                        }
+                    }
+
+                    if(_0xz0<_0xn8.length-2){
+                        var _0xw3=String(_0xn8[_0xz0+2][_0xq1[0]]||_0xn8[_0xz0+2][_0xq1[1]]||_0xn8[_0xz0+2][_0xq1[2]]||_0xn8[_0xz0+2][_0xq1[3]]||"?");
+                        if(_0xw3!=='?'&&_0xt0!=='?'){
+                            var _0xx4=parseInt(_0xw3.slice(-1));
+                            var _0xy5=parseInt(_0xt0.slice(-1));
+                            _0xq7=_0xy9z._0xh5i(_0xx4,_0xy5);
+                            if(_0xq7!=='-'){
+                                _0xx8++;
+                                if(_0xq7===_0xu1){
+                                    _0xr8='WIN ✓';
+                                    _0xs9='win';
+                                    _0xw7++;
+                                }else{
+                                    _0xr8='MISS ✗';
+                                    _0xs9='miss';
+                                }
+                            }
+                        }
+                    }
+                }
+
+                var _0xz6=document.createElement("td");
+                _0xz6.className="pred-cell pred-single";
+                _0xz6.textContent=_0xn4;
+
+                var _0xa7=document.createElement("td");
+                _0xa7.className='status-cell '+_0xp6;
+                _0xa7.textContent=_0xo5;
+
+                var _0xb8=document.createElement("td");
+                _0xb8.className="pred-cell pred-double";
+                _0xb8.textContent=_0xq7;
+
+                var _0xc9=document.createElement("td");
+                _0xc9.className='status-cell '+_0xs9;
+                _0xc9.textContent=_0xr8;
+
+                _0xa1.appendChild(_0xb2);_0xa1.appendChild(_0xe5);_0xa1.appendChild(_0xh8);_0xa1.appendChild(_0xi9);
+                _0xa1.appendChild(_0xz6);_0xa1.appendChild(_0xa7);_0xa1.appendChild(_0xb8);_0xa1.appendChild(_0xc9);
+                _0xo9.appendChild(_0xa1);
+            });
+
+            var _0xd0=_0xv6>0?Math.round((_0xu5/_0xv6)*100):0;
+            var _0xe1=_0xx8>0?Math.round((_0xw7/_0xx8)*100):0;
+            
+            document.getElementById('singleWinRate').textContent=_0xd0+'%';
+            document.getElementById('doubleWinRate').textContent=_0xe1+'%';
+            document.getElementById('lp').textContent=_0xt4||'-';
+            document.getElementById('tc').textContent=_0xn8.length;
+
+        }catch(_0xf2){
+            var _0xg3='[ ERROR: '+_0xf2.message.substr(0,30)+' ]';
+            document.getElementById("tb").innerHTML='<tr><td colspan="8" class="loading">'+_0xg3+'</td></tr>';
+        }
+    };
+
+    _0xa9b();
+    _0xc0d();
+}
+
+setInterval(function(){
+    if(!document.getElementById('authScreen')||!document.getElementById('mainApp')){
+        location.reload();
+    }
+},5000);
+
+document.addEventListener('copy',function(e){e.preventDefault();return false;});
+document.addEventListener('cut',function(e){e.preventDefault();return false;});
 </script>
 </body>
 </html>
