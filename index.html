@@ -1,404 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>WinGo Pro - Advanced Prediction System</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#0a0e27;min-height:100vh;padding:15px;overflow-x:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.03;pointer-events:none}.container{max-width:900px;margin:0 auto;position:relative;z-index:1}.header{text-align:center;margin-bottom:20px;position:relative}.logo{font-size:28px;color:#00ff41;text-shadow:0 0 20px #00ff41;animation:glow 2s ease-in-out infinite;margin-bottom:8px}@keyframes glow{0%,100%{text-shadow:0 0 20px #00ff41}50%{text-shadow:0 0 30px #00ff41,0 0 60px #00ff41}}.title{color:#00ff41;font-size:13px;letter-spacing:2px;text-transform:uppercase}.subtitle{color:#ffaa00;font-size:11px;margin-top:5px;letter-spacing:1px}.scan-line{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,#00ff41,transparent);animation:scan 3s linear infinite}@keyframes scan{0%{top:0}100%{top:100%}}.stats-container{background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,rgba(0,100,255,.05) 100%);border:1px solid rgba(0,255,65,.3);border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 0 20px rgba(0,255,65,.2)}.stats-info{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.stat-item{text-align:center;padding:12px 8px;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.2);border-radius:8px;transition:all .3s ease}.stat-item:hover{transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,255,65,.3)}.stat-label{font-size:9px;color:#00ff41;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;opacity:.7}.stat-value{font-size:24px;font-weight:bold;color:#00ff41;text-shadow:0 0 10px #00ff41}.table-container{background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,rgba(0,100,255,.05) 100%);border:1px solid rgba(0,255,65,.3);border-radius:12px;overflow-x:auto;box-shadow:0 0 20px rgba(0,255,65,.2)}table{width:100%;border-collapse:collapse;min-width:700px}thead{background:linear-gradient(135deg,rgba(0,255,65,.2) 0%,rgba(0,100,255,.2) 100%)}th{padding:12px 6px;text-align:center;font-weight:600;color:#00ff41;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #00ff41}tbody tr{background:rgba(0,0,0,.3);transition:all .3s ease;border-bottom:1px solid rgba(0,255,65,.1)}tbody tr:hover{background:rgba(0,255,65,.1);transform:scale(1.01);box-shadow:0 0 15px rgba(0,255,65,.3)}td{padding:10px 5px;text-align:center;color:#00ff41;font-size:11px}.period-cell{font-family:'Courier New',monospace;font-size:10px;opacity:.7}.number-cell{font-size:22px;font-weight:bold}.color-cell{display:flex;justify-content:center;align-items:center;gap:4px}.color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:2px solid rgba(0,255,65,.3);animation:dotPulse 2s infinite}@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}.red{background:#ff0055;box-shadow:0 0 8px #ff0055}.green{background:#00ff41;box-shadow:0 0 8px #00ff41}.violet{background:#aa00ff;box-shadow:0 0 8px #aa00ff}.pred-cell{font-weight:bold;font-size:12px;padding:8px 5px}.pred-single{color:#ffaa00;text-shadow:0 0 8px #ffaa00}.pred-double{color:#00aaff;text-shadow:0 0 8px #00aaff}.status-cell{font-weight:bold;font-size:13px;padding:8px 5px}.win{color:#00ff41;text-shadow:0 0 10px #00ff41}.miss{color:#ff0055;text-shadow:0 0 10px #ff0055}.waiting{color:#ffaa00;opacity:.5}.time-display{background:rgba(0,255,65,.1);padding:15px 30px;border-radius:12px;display:inline-block;margin-top:15px;border:1px solid rgba(0,255,65,.3);box-shadow:0 0 20px rgba(0,255,65,.2)}.current-time{font-size:28px;font-weight:bold;color:#00ff41;font-family:'Courier New',monospace;letter-spacing:2px;text-shadow:0 0 20px #00ff41}.seconds-highlight{color:#ff0055;font-size:32px;animation:pulse 1s infinite;text-shadow:0 0 20px #ff0055}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}.refresh-btn{position:fixed;bottom:25px;right:25px;background:linear-gradient(135deg,#00ff41 0%,#00aaff 100%);color:#0a0e27;border:none;padding:14px 24px;border-radius:40px;font-size:14px;font-weight:bold;cursor:pointer;box-shadow:0 0 30px rgba(0,255,65,.5);display:flex;align-items:center;gap:8px;transition:all .3s;z-index:1000;text-transform:uppercase;letter-spacing:1.5px}.refresh-btn:hover{transform:scale(1.08);box-shadow:0 0 50px rgba(0,255,65,.8)}.refresh-btn:active{transform:scale(.95)}.refresh-icon{font-size:18px}.refresh-icon.spinning{animation:spin .5s linear}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.loading{text-align:center;padding:15px;color:#00ff41;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}.update-time{text-align:center;margin-top:15px}.auth-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0e27;z-index:9999;display:flex;align-items:center;justify-content:center}.auth-box{background:linear-gradient(135deg,rgba(0,255,65,.1) 0%,rgba(0,100,255,.1) 100%);border:2px solid #00ff41;border-radius:12px;padding:40px;max-width:400px;box-shadow:0 0 50px rgba(0,255,65,.5)}.auth-title{text-align:center;margin-bottom:30px}.auth-icon{font-size:36px;color:#00ff41;text-shadow:0 0 20px #00ff41;margin-bottom:10px}.auth-text{color:#00ff41;font-size:20px;font-weight:bold;letter-spacing:2px;text-shadow:0 0 15px #00ff41}.auth-subtitle{color:#ffaa00;font-size:12px;margin-top:8px}.auth-input{width:100%;padding:15px;background:rgba(0,255,65,.1);border:2px solid #00ff41;border-radius:8px;color:#00ff41;text-align:center;font-size:16px;font-family:'Courier New',monospace;font-weight:bold;margin-bottom:20px}.auth-input:focus{outline:none;box-shadow:0 0 20px rgba(0,255,65,.5)}.auth-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00ff41 0%,#00aaff 100%);color:#0a0e27;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:2px}.auth-btn:hover{transform:scale(1.02)}.auth-error{color:#ff0055;text-align:center;margin-top:15px;font-size:12px;display:none;text-shadow:0 0 10px #ff0055}.blocked-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#ff0055;z-index:99999;display:none;align-items:center;justify-content:center;flex-direction:column}.blocked-text{color:#fff;font-size:32px;font-weight:bold;text-align:center;margin-bottom:20px}.blocked-msg{color:#fff;font-size:16px;text-align:center}@media (max-width:600px){.logo{font-size:22px}.title{font-size:10px;letter-spacing:1px}.stats-info{grid-template-columns:repeat(2,1fr);gap:10px}th,td{padding:8px 4px;font-size:10px}.number-cell{font-size:18px}.refresh-btn{bottom:15px;right:15px;padding:12px 20px;font-size:12px}.current-time{font-size:22px}.stat-value{font-size:20px}}
-</style>
-</head>
-<body>
-<div id="blockedScreen" class="blocked-screen">
-<div class="blocked-text">🚫 ACCESS DENIED</div>
-<div class="blocked-msg">Unauthorized tampering detected</div>
-</div>
-
-<div id="authScreen" class="auth-screen">
-<div class="auth-box">
-<div class="auth-title">
-<div class="auth-icon">🔒</div>
-<div class="auth-text">SECURE ACCESS</div>
-<div class="auth-subtitle">QUANTUM AUTHENTICATION REQUIRED</div>
-</div>
-<input type="password" id="passInput" class="auth-input" placeholder="Enter Master Key" autocomplete="off" />
-<button onclick="_0x3e4a9b()" class="auth-btn">AUTHENTICATE</button>
-<div id="errorMsg" class="auth-error"></div>
-</div>
-</div>
-
-<div id="mainApp" style="display:none;">
-<canvas class="matrix-bg" id="matrix"></canvas>
-<div class="container">
-<div class="header">
-<div class="scan-line"></div>
-<div class="logo">⚡ WINGO PRO</div>
-<div class="title">AI PREDICTION SYSTEM v3.0</div>
-<div class="subtitle">QUANTUM DUAL LOGIC ENGINE</div>
-</div>
-
-<div class="stats-container">
-<div class="stats-info">
-<div class="stat-item"><div class="stat-label">Single Win%</div><div class="stat-value" id="singleWinRate">0%</div></div>
-<div class="stat-item"><div class="stat-label">Double Win%</div><div class="stat-value" id="doubleWinRate">0%</div></div>
-<div class="stat-item"><div class="stat-label">Latest Period</div><div class="stat-value" id="lp">-</div></div>
-<div class="stat-item"><div class="stat-label">Total Analyzed</div><div class="stat-value" id="tc">0</div></div>
-</div>
-</div>
-
-<div class="table-container">
-<table>
-<thead><tr><th>Period</th><th>Number</th><th>Size</th><th>Color</th><th>Single<br>(Logic A)</th><th>Status</th><th>Double<br>(Logic B)</th><th>Status</th></tr></thead>
-<tbody id="tb"><tr><td colspan="8" class="loading">[ INITIALIZING QUANTUM ENGINE... ]</td></tr></tbody>
-</table>
-</div>
-
-<p class="update-time"><span class="time-display"><div class="current-time" id="rt">00:00:00</div></span></p>
-</div>
-
-<button class="refresh-btn" onclick="_0x8d2f1c()"><span class="refresh-icon" id="ri">⟳</span><span>Refresh</span></button>
-</div>
-
-<script>
-(function(){var _0x4a=['constructor','toString','search'];(function(_0x1b,_0x2c){var _0x3d=function(_0x4e){while(--_0x4e){_0x1b['push'](_0x1b['shift']());}};_0x3d(++_0x2c);}(_0x4a,0x91));var _0x5f=function(_0x6a,_0x7b){_0x6a=_0x6a-0x0;var _0x8c=_0x4a[_0x6a];return _0x8c;};var _0x9d=function(){var _0xae=!![];return function(_0xbf,_0xc0){var _0xd1=_0xae?function(){if(_0xc0){var _0xe2=_0xc0['apply'](_0xbf,arguments);_0xc0=null;return _0xe2;}}:function(){};_0xae=![];return _0xd1;};}();var _0xf3=_0x9d(this,function(){return _0xf3[_0x5f('0x0')]()[_0x5f('0x1')]('(((.+)+)+)+$')[_0x5f('0x0')]()[_0x5f('0x2')](_0xf3)[_0x5f('0x1')]('(((.+)+)+)+$');});_0xf3();})();
-
-(function(){setInterval(function(){var _0xa1=new Date();debugger;var _0xb2=new Date();if(_0xb2-_0xa1>100){document.getElementById('blockedScreen').style.display='flex';document.getElementById('authScreen').style.display='none';document.getElementById('mainApp').style.display='none';}},1000);})();
-
-document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
-document.addEventListener('keydown',function(e){
-    // F12
-    if(e.keyCode===123){e.preventDefault();return false;}
-    // Ctrl+Shift+I (Windows/Linux)
-    if(e.ctrlKey&&e.shiftKey&&e.keyCode===73){e.preventDefault();return false;}
-    // Ctrl+Shift+J (Windows/Linux)
-    if(e.ctrlKey&&e.shiftKey&&e.keyCode===74){e.preventDefault();return false;}
-    // Ctrl+Shift+K (Firefox)
-    if(e.ctrlKey&&e.shiftKey&&e.keyCode===75){e.preventDefault();return false;}
-    // Ctrl+Shift+C (Windows/Linux)
-    if(e.ctrlKey&&e.shiftKey&&e.keyCode===67){e.preventDefault();return false;}
-    // Cmd+Option+I (Mac)
-    if(e.metaKey&&e.altKey&&e.keyCode===73){e.preventDefault();return false;}
-    // Cmd+Option+J (Mac)
-    if(e.metaKey&&e.altKey&&e.keyCode===74){e.preventDefault();return false;}
-    // Cmd+Option+K (Mac Firefox)
-    if(e.metaKey&&e.altKey&&e.keyCode===75){e.preventDefault();return false;}
-    // Cmd+Option+C (Mac)
-    if(e.metaKey&&e.altKey&&e.keyCode===67){e.preventDefault();return false;}
-    // Ctrl+U (View Source)
-    if(e.ctrlKey&&e.keyCode===85){e.preventDefault();return false;}
-    // Cmd+U (Mac View Source)
-    if(e.metaKey&&e.keyCode===85){e.preventDefault();return false;}
-    // Ctrl+S (Save)
-    if(e.ctrlKey&&e.keyCode===83){e.preventDefault();return false;}
-    // Cmd+S (Mac Save)
-    if(e.metaKey&&e.keyCode===83){e.preventDefault();return false;}
-    // Ctrl+A (Select All)
-    if(e.ctrlKey&&e.keyCode===65){e.preventDefault();return false;}
-    // Cmd+A (Mac Select All)
-    if(e.metaKey&&e.keyCode===65){e.preventDefault();return false;}
-    // Ctrl+C (Copy)
-    if(e.ctrlKey&&e.keyCode===67){e.preventDefault();return false;}
-    // Ctrl+V (Paste)
-    if(e.ctrlKey&&e.keyCode===86){e.preventDefault();return false;}
-    // Ctrl+X (Cut)
-    if(e.ctrlKey&&e.keyCode===88){e.preventDefault();return false;}
-});
-
-var _0x1a2b3c={_0x4d5e:function(_0x6f7g){var _0x8h='';for(var i=0;i<_0x6f7g.length;i+=2){_0x8h+=String.fromCharCode(parseInt(_0x6f7g.substr(i,2),16));}return _0x8h;},_0x9i0j:function(_0xkl){return btoa(unescape(encodeURIComponent(_0xkl)));},_0xmn1o:function(_0xpq){return decodeURIComponent(escape(atob(_0xpq)));},_0x2rs3:function(_0xtu,_0xvw){var _0xxy='';for(var i=0;i<_0xtu.length;i++){_0xxy+=String.fromCharCode(_0xtu.charCodeAt(i)^_0xvw);}return _0xxy;}};
-
-var _0x4z5a=[65,100,109,105,110,64,50,48,50,54];
-var _0x6b7c=[87,105,110,103,111,80,114,111,64,50,48,50,54];
-var _0x8d9e=[80,114,101,100,105,99,116,64,50,48,50,54];
-
-var _0xaf0=[],_0xb12=[],_0xc34=[];
-for(var i=0;i<_0x4z5a.length;i++){_0xaf0.push(String.fromCharCode(_0x4z5a[i]));}
-for(var i=0;i<_0x6b7c.length;i++){_0xb12.push(String.fromCharCode(_0x6b7c[i]));}
-for(var i=0;i<_0x8d9e.length;i++){_0xc34.push(String.fromCharCode(_0x8d9e[i]));}
-
-var _0xd56e=[_0xaf0.join(''),_0xb12.join(''),_0xc34.join('')];
-
-function _0x3e4a9b(){
-    var _0xf78=document.getElementById('passInput');
-    var _0xg90=document.getElementById('errorMsg');
-    var _0xh12=_0xf78.value.trim();
-    
-    if(!_0xh12){
-        _0xg90.textContent='⚠️ PASSWORD REQUIRED';
-        _0xg90.style.display='block';
-        setTimeout(function(){_0xg90.style.display='none';},2000);
-        return;
-    }
-    
-    var _0xi34=false;
-    for(var _0xj56=0;_0xj56<_0xd56e.length;_0xj56++){
-        if(_0xh12===_0xd56e[_0xj56]){
-            _0xi34=true;
-            break;
-        }
-    }
-    
-    if(_0xi34){
-        var _0xk78=_0x1a2b3c._0x9i0j(_0xh12);
-        sessionStorage.setItem(_0x1a2b3c._0x4d5e('5f246175746861757468'),_0xk78);
-        sessionStorage.setItem(_0x1a2b3c._0x4d5e('5f2474696d657374616d70'),new Date().getTime().toString());
-        document.getElementById('authScreen').style.display='none';
-        document.getElementById('mainApp').style.display='block';
-        _0x5l9m0();
-    }else{
-        _0xg90.textContent='❌ INVALID CREDENTIALS - ACCESS DENIED';
-        _0xg90.style.display='block';
-        _0xf78.value='';
-        _0xf78.style.borderColor='#ff0055';
-        setTimeout(function(){
-            _0xf78.style.borderColor='#00ff41';
-            _0xg90.style.display='none';
-        },2000);
-    }
-}
-
-function _0xn1p2(){
-    var _0xq3=sessionStorage.getItem(_0x1a2b3c._0x4d5e('5f246175746861757468'));
-    var _0xr4=sessionStorage.getItem(_0x1a2b3c._0x4d5e('5f2474696d657374616d70'));
-    
-    if(!_0xq3||!_0xr4)return false;
-    
-    var _0xs5=new Date().getTime();
-    var _0xt6=_0xs5-parseInt(_0xr4);
-    if(_0xt6>3600000){
-        sessionStorage.clear();
-        return false;
-    }
-    
-    return true;
-}
-
-document.addEventListener('DOMContentLoaded',function(){
-    var _0xu7=document.getElementById('passInput');
-    if(_0xu7){
-        _0xu7.addEventListener('keypress',function(e){
-            if(e.key==='Enter')_0x3e4a9b();
-        });
-    }
-    
-    if(_0xn1p2()){
-        document.getElementById('authScreen').style.display='none';
-        document.getElementById('mainApp').style.display='block';
-        _0x5l9m0();
-    }
-});
-
-function _0x5l9m0(){
-    var c=document.getElementById('matrix'),ctx=c.getContext('2d');
-    c.width=window.innerWidth;c.height=window.innerHeight;
-    var chars='01',fontSize=14,cols=c.width/fontSize,drops=[];
-    for(var i=0;i<cols;i++)drops[i]=1;
-    function _0xv8w(){
-        ctx.fillStyle='rgba(10,14,39,0.05)';
-        ctx.fillRect(0,0,c.width,c.height);
-        ctx.fillStyle='#00ff41';
-        ctx.font=fontSize+'px monospace';
-        for(var i=0;i<drops.length;i++){
-            var t=chars[Math.floor(Math.random()*chars.length)];
-            ctx.fillText(t,i*fontSize,drops[i]*fontSize);
-            if(drops[i]*fontSize>c.height&&Math.random()>0.975)drops[i]=0;
-            drops[i]++;
-        }
-    }
-    setInterval(_0xv8w,50);
-
-    var _0xy9z={
-        _0xa1b:[2,2,2,2,2,1,2,2,1,2],
-        _0xc2d:function(_0xe3){return this._0xa1b[_0xe3]===2?'BIG':'SMALL';},
-        _0xf4g:[[1,2,1,2,2,2,2,1,1,1],[1,2,1,2,1,2,1,1,2,2],[1,2,1,2,1,2,1,1,1,2],[2,2,2,2,1,2,1,1,2,1],[1,1,1,1,2,1,1,2,2,1],[2,2,1,2,1,2,2,2,1,1],[1,1,2,1,1,1,2,1,1,2],[1,2,1,2,1,1,1,1,2,1],[2,1,2,2,1,1,1,2,2,1],[2,1,1,1,1,1,2,2,1,2]],
-        _0xh5i:function(_0xj6,_0xk7){return this._0xf4g[_0xj6][_0xk7]===2?'BIG':'SMALL';}
-    };
-
-    var _0xl8m=function(_0xn9){var _0xo=parseInt(_0xn9);return(_0xo>=0&&_0xo<=4)?'SMALL':'BIG';};
-
-    var _0xp1q,_0xr2s=new Date();
-    var _0xt3u=function(){
-        var _0xv4=new Date(),_0xw5=String(_0xv4.getHours()).padStart(2,'0'),_0xx6=String(_0xv4.getMinutes()).padStart(2,'0'),_0xy7=String(_0xv4.getSeconds()).padStart(2,'0');
-        var _0xz8=document.getElementById('rt');
-        if(_0xz8)_0xz8.innerHTML=_0xw5+':'+_0xx6+':<span class="seconds-highlight">'+_0xy7+'</span>';
-        if(_0xv4.getSeconds()===58&&Math.abs(_0xv4.getTime()-_0xr2s.getTime())>60000){_0xa9b();_0xr2s=new Date();}
-    };
-
-    var _0xc0d=function(){_0xt3u();clearInterval(_0xp1q);_0xp1q=setInterval(_0xt3u,1000);};
-
-    window._0x8d2f1c=function(){
-        if(!_0xn1p2()){
-            location.reload();
-            return;
-        }
-        var _0xe1f=document.getElementById('ri');
-        if(_0xe1f){_0xe1f.classList.add('spinning');setTimeout(function(){_0xe1f.classList.remove('spinning');},500);}
-        _0xa9b();
-    };
-
-    var _0xa9b=async function(){
-        if(!_0xn1p2()){
-            sessionStorage.clear();
-            location.reload();
-            return;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIN GO Game</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        try{
-            var _0xg2h=[104,116,116,112,115,58,47,47,100,114,97,119,46,97,114,45,108,111,116,116,101,114,121,48,49,46,99,111,109,47,87,105,110,71,111,47,87,105,110,71,111,95,49,77,47,71,101,116,72,105,115,116,111,114,121,73,115,115,117,101,80,97,103,101,46,106,115,111,110];
-            var _0xi3='';
-            for(var i=0;i<_0xg2h.length;i++){_0xi3+=String.fromCharCode(_0xg2h[i]);}
-            
-            var _0xj4=new Date().getTime();
-            var _0xk5=_0xi3+'?ts='+_0xj4;
-            var _0xl6=await fetch(_0xk5);
-            var _0xm7=await _0xl6.json();
-            
-            var _0xn8=[];
-            if(_0xm7&&_0xm7.data&&_0xm7.data.list)_0xn8=_0xm7.data.list.slice(0,10);
-            else if(_0xm7&&_0xm7.list)_0xn8=_0xm7.list.slice(0,10);
-            else if(Array.isArray(_0xm7))_0xn8=_0xm7.slice(0,10);
-
-            var _0xo9=document.getElementById("tb");
-            _0xo9.innerHTML="";
-            if(_0xn8.length===0){_0xo9.innerHTML='<tr><td colspan="8" class="loading">[ NO DATA AVAILABLE ]</td></tr>';return;}
-
-            var _0xp0=['issue','period','issueNo','periodId','issueNumber'];
-            var _0xq1=['result','number','num','openResult'];
-            var _0xr2=['color','colour'];
-            var _0xs3=['gameNo','drawNo','id'];
-
-            var _0xt4='';
-            var _0xu5=0,_0xv6=0;
-            var _0xw7=0,_0xx8=0;
-
-            _0xn8.forEach(function(_0xy9,_0xz0){
-                var _0xa1=document.createElement("tr");
-                
-                var _0xb2=document.createElement("td");
-                _0xb2.className="period-cell";
-                var _0xc3=String(_0xy9[_0xp0[0]]||_0xy9[_0xp0[1]]||_0xy9[_0xp0[2]]||_0xy9[_0xp0[3]]||_0xy9[_0xp0[4]]||_0xy9[_0xs3[0]]||_0xy9[_0xs3[1]]||_0xy9[_0xs3[2]]||'');
-                _0xb2.textContent=_0xc3||"N/A";
-                if(_0xz0===0)_0xt4=_0xc3;
-
-                var _0xd4=String(_0xy9[_0xq1[0]]||_0xy9[_0xq1[1]]||_0xy9[_0xq1[2]]||_0xy9[_0xq1[3]]||"?");
-                var _0xe5=document.createElement("td");
-                _0xe5.className="number-cell";
-                var _0xf6=document.createElement("span");
-                var _0xg7=(_0xy9[_0xr2[0]]||_0xy9[_0xr2[1]]||"").toLowerCase();
-                if(_0xg7==='red'){_0xf6.style.color='#ff0055';_0xf6.style.textShadow='0 0 10px #ff0055';}
-                else if(_0xg7==='green'){_0xf6.style.color='#00ff41';_0xf6.style.textShadow='0 0 10px #00ff41';}
-                else if(_0xg7==='violet'||_0xg7==='purple'){_0xf6.style.color='#aa00ff';_0xf6.style.textShadow='0 0 10px #aa00ff';}
-                _0xf6.textContent=_0xd4;
-                _0xe5.appendChild(_0xf6);
-
-                var _0xh8=document.createElement("td");
-                _0xh8.textContent=parseInt(_0xd4)>=5?'Big':'Small';
-
-                var _0xi9=document.createElement("td");
-                _0xi9.className="color-cell";
-                var _0xj0=parseInt(_0xd4);
-                var _0xk1=[];
-                if(_0xg7==='red')_0xk1.push('red');
-                else if(_0xg7==='green')_0xk1.push('green');
-                else if(_0xg7==='violet'||_0xg7==='purple')_0xk1.push('violet');
-                if(_0xj0===0){_0xk1.push('violet');_0xk1.push('red');}
-                else if(_0xj0===5){_0xk1.push('violet');_0xk1.push('green');}
-                _0xk1.forEach(function(_0xl2){
-                    var _0xm3=document.createElement("span");
-                    _0xm3.className='color-dot '+_0xl2;
-                    _0xi9.appendChild(_0xm3);
-                });
-
-                var _0xn4='-',_0xo5='-',_0xp6='waiting';
-                var _0xq7='-',_0xr8='-',_0xs9='waiting';
-
-                if(_0xz0<_0xn8.length-1){
-                    var _0xt0=String(_0xn8[_0xz0+1][_0xq1[0]]||_0xn8[_0xz0+1][_0xq1[1]]||_0xn8[_0xz0+1][_0xq1[2]]||_0xn8[_0xz0+1][_0xq1[3]]||"?");
-                    var _0xu1=_0xl8m(_0xd4);
-
-                    if(_0xt0!=='?'){
-                        var _0xv2=parseInt(_0xt0.slice(-1));
-                        _0xn4=_0xy9z._0xc2d(_0xv2);
-                        if(_0xn4!=='-'){
-                            _0xv6++;
-                            if(_0xn4===_0xu1){
-                                _0xo5='WIN ✓';
-                                _0xp6='win';
-                                _0xu5++;
-                            }else{
-                                _0xo5='MISS ✗';
-                                _0xp6='miss';
-                            }
-                        }
-                    }
-
-                    if(_0xz0<_0xn8.length-2){
-                        var _0xw3=String(_0xn8[_0xz0+2][_0xq1[0]]||_0xn8[_0xz0+2][_0xq1[1]]||_0xn8[_0xz0+2][_0xq1[2]]||_0xn8[_0xz0+2][_0xq1[3]]||"?");
-                        if(_0xw3!=='?'&&_0xt0!=='?'){
-                            var _0xx4=parseInt(_0xw3.slice(-1));
-                            var _0xy5=parseInt(_0xt0.slice(-1));
-                            _0xq7=_0xy9z._0xh5i(_0xx4,_0xy5);
-                            if(_0xq7!=='-'){
-                                _0xx8++;
-                                if(_0xq7===_0xu1){
-                                    _0xr8='WIN ✓';
-                                    _0xs9='win';
-                                    _0xw7++;
-                                }else{
-                                    _0xr8='MISS ✗';
-                                    _0xs9='miss';
-                                }
-                            }
-                        }
-                    }
-                }
-
-                var _0xz6=document.createElement("td");
-                _0xz6.className="pred-cell pred-single";
-                _0xz6.textContent=_0xn4;
-
-                var _0xa7=document.createElement("td");
-                _0xa7.className='status-cell '+_0xp6;
-                _0xa7.textContent=_0xo5;
-
-                var _0xb8=document.createElement("td");
-                _0xb8.className="pred-cell pred-double";
-                _0xb8.textContent=_0xq7;
-
-                var _0xc9=document.createElement("td");
-                _0xc9.className='status-cell '+_0xs9;
-                _0xc9.textContent=_0xr8;
-
-                _0xa1.appendChild(_0xb2);_0xa1.appendChild(_0xe5);_0xa1.appendChild(_0xh8);_0xa1.appendChild(_0xi9);
-                _0xa1.appendChild(_0xz6);_0xa1.appendChild(_0xa7);_0xa1.appendChild(_0xb8);_0xa1.appendChild(_0xc9);
-                _0xo9.appendChild(_0xa1);
-            });
-
-            var _0xd0=_0xv6>0?Math.round((_0xu5/_0xv6)*100):0;
-            var _0xe1=_0xx8>0?Math.round((_0xw7/_0xx8)*100):0;
-            
-            document.getElementById('singleWinRate').textContent=_0xd0+'%';
-            document.getElementById('doubleWinRate').textContent=_0xe1+'%';
-            document.getElementById('lp').textContent=_0xt4||'-';
-            document.getElementById('tc').textContent=_0xn8.length;
-
-        }catch(_0xf2){
-            var _0xg3='[ ERROR: '+_0xf2.message.substr(0,30)+' ]';
-            document.getElementById("tb").innerHTML='<tr><td colspan="8" class="loading">'+_0xg3+'</td></tr>';
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-    };
-
-    _0xa9b();
-    _0xc0d();
-}
-
-setInterval(function(){
-    if(!document.getElementById('authScreen')||!document.getElementById('mainApp')){
-        location.reload();
-    }
-},5000);
-
-document.addEventListener('copy',function(e){e.preventDefault();return false;});
-document.addEventListener('cut',function(e){e.preventDefault();return false;});
-</script>
+        
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .balance {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .balance-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .color-btn {
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .color-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .color-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .red { background: linear-gradient(135deg, #ff6b6b, #ee5a6f); }
+        .green { background: linear-gradient(135deg, #51cf66, #37b24d); }
+        .violet { background: linear-gradient(135deg, #845ef7, #5f3dc4); }
+        
+        .bet-amount {
+            margin-bottom: 20px;
+        }
+        
+        .bet-amount label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .bet-amount input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        .play-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .play-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .play-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .result.win {
+            background: #d3f9d8;
+            color: #2b8a3e;
+            display: block;
+        }
+        
+        .result.lose {
+            background: #ffe3e3;
+            color: #c92a2a;
+            display: block;
+        }
+        
+        .history {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .history h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .history-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🎮 WIN GO GAME</h1>
+            <p>Choose a color and win!</p>
+        </div>
+        
+        <div class="balance">
+            <div>Your Balance</div>
+            <div class="balance-amount" id="balance">1000</div>
+        </div>
+        
+        <div class="bet-amount">
+            <label>Bet Amount:</label>
+            <input type="number" id="betAmount" value="10" min="1" max="1000">
+        </div>
+        
+        <div class="color-options">
+            <button class="color-btn red" onclick="selectColor('red')">
+                🔴 RED
+            </button>
+            <button class="color-btn green" onclick="selectColor('green')">
+                🟢 GREEN
+            </button>
+            <button class="color-btn violet" onclick="selectColor('violet')">
+                🟣 VIOLET
+            </button>
+        </div>
+        
+        <button class="play-btn" id="playBtn" onclick="playGame()">
+            PLAY NOW
+        </button>
+        
+        <div class="result" id="result"></div>
+        
+        <div class="history">
+            <h3>Last 5 Results:</h3>
+            <div id="historyList"></div>
+        </div>
+    </div>
+    
+    <script>
+        let balance = 1000;
+        let selectedColor = null;
+        let history = [];
+        
+        // Initialize Telegram WebApp
+        let tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+        
+        function selectColor(color) {
+            selectedColor = color;
+            
+            // Highlight selected button
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.style.opacity = '0.5';
+            });
+            event.target.style.opacity = '1';
+        }
+        
+        function playGame() {
+            if (!selectedColor) {
+                alert('Please select a color first!');
+                return;
+            }
+            
+            const betAmount = parseInt(document.getElementById('betAmount').value);
+            
+            if (betAmount > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+            
+            if (betAmount < 1) {
+                alert('Minimum bet is 1!');
+                return;
+            }
+            
+            // Disable play button
+            document.getElementById('playBtn').disabled = true;
+            
+            // Random result
+            const colors = ['red', 'green', 'violet'];
+            const resultColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Calculate win/loss
+            const isWin = resultColor === selectedColor;
+            const winAmount = isWin ? betAmount * 2 : -betAmount;
+            
+            balance += winAmount;
+            
+            // Update UI
+            document.getElementById('balance').textContent = balance;
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result ' + (isWin ? 'win' : 'lose');
+            resultDiv.innerHTML = `
+                Result: ${getColorEmoji(resultColor)} ${resultColor.toUpperCase()}<br>
+                ${isWin ? '🎉 YOU WIN!' : '😢 YOU LOSE'}<br>
+                ${isWin ? '+' : ''}${winAmount} coins
+            `;
+            
+            // Add to history
+            history.unshift({
+                color: resultColor,
+                result: isWin ? 'WIN' : 'LOSE',
+                amount: winAmount
+            });
+            
+            if (history.length > 5) history.pop();
+            updateHistory();
+            
+            // Send score to Telegram
+            if (tg.initDataUnsafe.user) {
+                tg.sendData(JSON.stringify({
+                    score: balance,
+                    userId: tg.initDataUnsafe.user.id
+                }));
+            }
+            
+            // Reset after 2 seconds
+            setTimeout(() => {
+                document.getElementById('playBtn').disabled = false;
+                selectedColor = null;
+                document.querySelectorAll('.color-btn').forEach(btn => {
+                    btn.style.opacity = '1';
+                });
+            }, 2000);
+        }
+        
+        function getColorEmoji(color) {
+            const emojis = {
+                red: '🔴',
+                green: '🟢',
+                violet: '🟣'
+            };
+            return emojis[color];
+        }
+        
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <span>${getColorEmoji(item.color)} ${item.color}</span>
+                    <span style="color: ${item.result === 'WIN' ? 'green' : 'red'}">
+                        ${item.amount > 0 ? '+' : ''}${item.amount}
+                    </span>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+    </script>
 </body>
 </html>
